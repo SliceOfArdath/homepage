@@ -10,50 +10,44 @@
         h1 {
           font-size:120%;
         }
+        .flexZone {
+            display: flex;
+            flex-direction: row; 
+            flex-wrap:wrap;
+            align-items:flex-start;
+        }
         .games {
           background-color:peru;
-          padding:10px;
-          display:block;
-          margin:5px;
           float:left;
           width:20%; /* The width is 20%, by default */
         }
         .cartoons {
           background-color:grey;
-          padding:10px;
           float:left;
-          display:block;
-          margin:5px;
           width: 20%; /* The width is 20%, by default */
         }
         .books {
           background-color:limegreen;
-          padding:10px;
-          display:block;
-          margin:5px;
           float:left;
           width:20%; /* The width is 20%, by default */
         }
         
         /* Use a media query to add a break point at 800px: */
-        @media screen and (max-width:800px) {
+        @media screen and (max-width:600px) {
           .games, .cartoons, .books {
             width:100%; /* The width is 100%, when the viewport is 800px or smaller */
+            flex-direction:column;
           }
         }
     </style>
     <title>OscarHavril's hub</title>
 </head>
-<body style="background-color:black; color:white">
+<body class="flexZone" style="background-color:black; color:white">
     <div class="games">
       <pre>
 <h1><b>My Games:</b></h1>
 <a href="https://oscarhavril.github.io/the-journey/" title="Go and break the game" target="_blank"><b>Labyrinth</b> (2019)</a> 
   Temporary name, not working yet
-
-
-
-
       </pre>
     </div>
               
@@ -74,10 +68,6 @@
 <h1><b>Bookshelf:</b></h1>
 <a href="https://www.wattpad.com/user/OscarHavril" title="Wattpad, weird french books." target="_blank"><b>Wattpad</b> (2017-2019)</a> 
   "Regularily updated"
-
-
-
-
       </pre>
     </div>
 </body>
