@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+          box-sizing:border-box;
+        }
+        
+        .games {
+          background-color:#2196F3;
+          padding:20px;
+          display:block;
+          margin-top:7px;
+          margin-left:7px;
+          float:left;
+          width:20%; /* The width is 20%, by default */
+        }
+        .cartoons {
+          background-color:black;
+          padding:20px;
+          float:left;
+          display:block;
+          margin-top:7px;
+          margin-left:7px;
+          width:20%; /* The width is 20%, by default */
+        }
+        .books {
+          background-color:#4CAF50;
+          padding:20px;
+          display:block;
+          margin-top:7px;
+          margin-left:7px;
+          float:left;
+          width:20%; /* The width is 20%, by default */
+        }
+        
+        /* Use a media query to add a break point at 800px: */
+        @media screen and (max-width:800px) {
+          .games, .cartoons, .books {
+            width:100%; /* The width is 100%, when the viewport is 800px or smaller */
+          }
+        }
+    </style>
+    <title>OscarHavril's hub</title>
+</head>
+<body>
+    <div class="games">
+      <p>My Games</p>
+    </div>
+              
+    <div class="cartoons">
+      <p>Cartoons and Dawings</p>
+    </div>
+              
+    <div class="books">
+      <p>Bookshef</p>
+    </div>
+</body>
+</html>
