@@ -19,19 +19,22 @@
         }
         .games {
           background-color:peru;
-          padding:7px;
+          padding:15px;
+          margin:8px;
           float:left;
           max-width:20%; /* The width is 20%, by default */
         }
         .cartoons {
           background-color:grey;
-          padding:7px;
+          padding:15px;
+          margin:8px;
           float:left;
           max-width: 20%; /* The width is 20%, by default */
         }
         .books {
           background-color:limegreen;
-          padding:7px;
+          padding:15px;
+          margin:8px;
           float:left;
           max-width:20%; /* The width is 20%, by default */
         }
@@ -40,6 +43,7 @@
         @media screen and (max-width:600px) {
           .games, .cartoons, .books {
             width:100%; /* The width is 100%, when the viewport is 800px or smaller */
+            max-width:100%;
             flex-direction:column;
           }
         }
