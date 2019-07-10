@@ -22,10 +22,13 @@ var psw = "a"
 var cr = "z"
 function tryValidation() {
   psw = document.getElementById('pwd');
+  return psw;
   //encrypt
-cr = psw
+cr = psw;
+return cr;
   if (cr == "abcd") {
     document.getElementById('locked').style.display = "block";
+    return document.getElementById('locked').style.display;
   }
 }
 </script>
