@@ -6,6 +6,19 @@
   <meta name="description" content="Where you come and go">
   <meta name="keywords" content="OscarHavril,main,hub">
   <meta name="author" content="OscarHavril">
+<style>
+.sz {
+   display:none; 
+   border: 3px solid grey; 
+   background-color:grey; 
+   color:white
+}
+</style>
+  <script>
+      if (window.location.search = '?enhancedmode' ) {
+        document.getElementById('sz').style.display = "block";
+  }
+    </script>
     <style>
         * {
           box-sizing:border-box;
@@ -52,9 +65,7 @@
 
 </head>
 <body class="flexZone" style="background-color:black; color:white">
-   <p id="sz" style="position: fixed; bottom: 0; right: 0; width: 100%; display:none; border: 3px solid grey; background-color:grey; color:white"> 
-    Secret Box ;), here you can access the <a href="secret.html" style="text-decoration:none;color:black;" title="..." target="_blank"><b>Hyper Secret Zone</b></a>
-  </p>
+
     <div style="background-color:peru">
       <pre>
 <h1><b>My Games:</b></h1>
@@ -105,15 +116,10 @@
 </pre> 
 <p class="desc">
   "Regularily updated". Hopefully
-</p>
-<p id="demo" style="display:none">Hello JavaScript!</p>
-
-<button type="button" onclick="document.getElementById('demo').style.display='block'">Click Me!</button>
+</p>   
+<p id="sz"> 
+    Secret Box ;), here you can access the <a href="secret.html" style="text-decoration:none;color:black;" title="..." target="_blank"><b>Hyper Secret Zone</b></a>
+  </p>
     </div>
-    <script>
-        if (window.location.search = '?enhancedmode' ) {
-          document.getElementById('demo').innerHTML='woah'
-    }
-      </script>
 </body>
 </html>
