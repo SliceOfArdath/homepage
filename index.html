@@ -7,7 +7,7 @@
   <meta name="keywords" content="OscarHavril,main,hub">
   <meta name="author" content="OscarHavril">
 <style>
-.nopey {
+#secret {
    display:none; 
    border: 3px solid grey; 
    background-color:grey; 
@@ -59,7 +59,7 @@
 
 
 </head>
-<body>
+<body style="background-color:black;">
 <section class="flexZone" style="background-color:black; color:white">
     <div style="background-color:peru">
       <pre>
@@ -112,15 +112,16 @@
 <p class="desc">
   "Regularily updated". Hopefully
 </p>   
-<p class="nopey" id="nopey" style="display:none"> 
+<p id="secret" style="display:none"> 
     Secret Box ;), here you can access the <a href="secret.html" style="text-decoration:none;color:black;" title="..." target="_blank"><b>Hyper Secret Zone</b></a>
   </p>
     </div>
 </section>
-</body>
 <script>
     if (window.location.search = '?enhancedmode' ) {
-      document.getElementById('nopey').style.display = "block";
+      document.getElementById('secret').style.display = "block";
 }
 </script>
+</body>
+
 </html>
