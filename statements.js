@@ -9,4 +9,4 @@ var statments = [
 "Procrastination is my word."
 ];
 
-document.getElementById("top").innerHTML = statements[x];
+document.getElementById("top").innerHTML = statments[x];
