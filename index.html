@@ -18,10 +18,8 @@
 }
 </style>
 <script>
-var psw = "a";
-var cr = "z";
+var psw = document.getElementById('pwd');
 function tryValidation() {
-  psw = document.getElementById('pwd');
   if (psw != "a") {
     document.getElementById('locked').style.display = "block";
 document.getElementById('q').innerHTML = psw;
