@@ -18,33 +18,31 @@
             align-content:space-around;
             word-wrap:normal;
         }
-        .games {
-          background-color:peru;
-          padding:15px;
-          margin:8px;
-          float:left;
-          max-width:20%; /* The width is 20%, by default */
-        }
-        .cartoons {
+        .flexZone > div {
           background-color:grey;
           padding:15px;
           margin:8px;
           float:left;
-          max-width: 20%; /* The width is 20%, by default */
+          word-wrap:break-word;
+        }
+        /*.games {
+          background-color:peru;
+          max-width:20%; 
+        }
+        .cartoons {
+          background-color:grey;
+          max-width: 20%; 
         }
         .books {
           background-color:limegreen;
-          padding:15px;
-          margin:8px;
-          float:left;
-          max-width:20%; /* The width is 20%, by default */
-        }
+          max-width:20%; 
+        }*/
         
         /* Use a media query to add a break point at 800px: */
         @media screen and (max-width:600px) {
           .games, .cartoons, .books {
-            width:100%; /* The width is 100%, when the viewport is 800px or smaller */
-            max-width:100%;
+           /* width:100%; 
+            max-width:100%;*/
             flex-direction:column;
           }
         }
