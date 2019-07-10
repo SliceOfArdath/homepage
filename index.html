@@ -6,6 +6,11 @@
   <meta name="description" content="Where you come and go">
   <meta name="keywords" content="OscarHavril,main,hub">
   <meta name="author" content="OscarHavril">
+  <script>
+    	if (window.location.search.indexOf('enhanced-mode=true') > -1) {
+        document.getElementById('sz').style.display='block'
+	}
+    </script>
     <style>
         * {
           box-sizing:border-box;
@@ -48,6 +53,13 @@
         }
     </style>
     <title>OscarHavril's hub</title>
+    <p id="sz" style="position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 100%; display:none; border: 3px solid grey; background-color:grey; color:white"> 
+    Secret Box ;), here you can access the <a href="secret.html" style="text-decoration:none;color:black;" title="..." target="_blank"><b>Hyper Secret Zone</b></a>
+  </p>
+
 </head>
 <body class="flexZone" style="background-color:black; color:white">
     <div style="background-color:peru">
@@ -102,5 +114,6 @@
   "Regularily updated". Hopefully
 </p>
     </div>
+
 </body>
 </html>
