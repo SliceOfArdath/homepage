@@ -22,9 +22,9 @@ var psw = "a";
 var cr = "z";
 function tryValidation() {
   psw = document.getElementById('pwd');
-  if (psw == "abcd") {
+  if (psw != "a") {
     document.getElementById('locked').style.display = "block";
-
+document.getElementById('q').innerHTML = psw;
   };
 };
 </script>
@@ -80,7 +80,7 @@ function tryValidation() {
 <h1><b>My Games:</b></h1>
 <a href="https://oscarhavril.github.io/the-journey/" title="Go and break the game" target="_blank"><b>Labyrinth</b> (2019)</a> 
 </pre> 
-<p class="desc">
+<p id="q" class="desc">
         Temporary name, not working yet.
 </p>
 <pre>
