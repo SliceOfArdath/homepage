@@ -6,11 +6,6 @@
   <meta name="description" content="Where you come and go">
   <meta name="keywords" content="OscarHavril,main,hub">
   <meta name="author" content="OscarHavril">
-  <script>
-    	if (window.location.search = '?enhancedmode' ) {
-        document.getElementById('demo').innerHTML='woah'
-	}
-    </script>
     <style>
         * {
           box-sizing:border-box;
@@ -115,6 +110,10 @@
 
 <button type="button" onclick="document.getElementById('demo').style.display='block'">Click Me!</button>
     </div>
-
+    <script>
+        if (window.location.search = '?enhancedmode' ) {
+          document.getElementById('demo').innerHTML='woah'
+    }
+      </script>
 </body>
 </html>
