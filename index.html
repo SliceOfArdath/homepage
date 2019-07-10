@@ -7,18 +7,13 @@
   <meta name="keywords" content="OscarHavril,main,hub">
   <meta name="author" content="OscarHavril">
 <style>
-.peas {
+.nopey {
    display:none; 
    border: 3px solid grey; 
    background-color:grey; 
    color:white
 }
 </style>
-  <script>
-      if (window.location.search = '?enhancedmode' ) {
-        document.getElementById('nopey').style.display = "block";
-  }
-    </script>
     <style>
         * {
           box-sizing:border-box;
@@ -117,11 +112,15 @@
 <p class="desc">
   "Regularily updated". Hopefully
 </p>   
-<p class="peas" id="nopey" style="display:none"> 
+<p class="nopey" id="nopey" style="display:none"> 
     Secret Box ;), here you can access the <a href="secret.html" style="text-decoration:none;color:black;" title="..." target="_blank"><b>Hyper Secret Zone</b></a>
   </p>
     </div>
 </section>
-
 </body>
+<script>
+    if (window.location.search = '?enhancedmode' ) {
+      document.getElementById('nopey').style.display = "block";
+}
+</script>
 </html>
