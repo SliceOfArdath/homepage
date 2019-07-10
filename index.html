@@ -8,12 +8,27 @@
   <meta name="author" content="OscarHavril">
 <style>
 #secret {
-   display:none; 
-   border: 3px solid grey; 
+   position: fixed;
+   bottom: 0;
+   left: 0;
+   width: 100%;
+   border: 3px solid rgb(70, 70, 70); 
    background-color:grey; 
    color:white
 }
 </style>
+<script>
+var psw = "a"
+var cr = "z"
+function tryValidation() {
+  psw = document.getElementById('pwd');
+  //encrypt
+cr = psw
+  if (cr == "abcd") {
+    document.getElementById('secret').style.display = "block";
+  }
+}
+</script>
     <style>
         * {
           box-sizing:border-box;
@@ -112,16 +127,12 @@
 <p class="desc">
   "Regularily updated". Hopefully
 </p>   
-<p id="secret" style="display:none"> 
-    Secret Box ;), here you can access the <a href="secret.html" style="text-decoration:none;color:black;" title="..." target="_blank"><b>Hyper Secret Zone</b></a>
-  </p>
+
     </div>
 </section>
-<script>
-    if (window.location.search = '?enhancedmode' ) {
-      document.getElementById('secret').style.display = "block";
-}
-</script>
+<p id="secret"> 
+    Secret Box ;), here you can access the  <input type="password" id="pwd" class="pwd" name="pwd"> <button onclick="tryValidation()">Validate</button>  <a id="locked" style="display:none" href="secret.html" style="text-decoration:none;color:black;" title="..." target="_blank"><b>Hyper Secret Zone</b></a>
+  </p>
 </body>
 
 </html>
