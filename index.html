@@ -70,7 +70,7 @@
 <h1><b>My Games:</b></h1>
 <a href="https://oscarhavril.github.io/the-journey/" title="Go and break the game" target="_blank"><b>Labyrinth</b> (2019)</a> 
 </pre> 
-<p id="q" class="desc">
+<p class="desc">
         Temporary name, not working yet.
 </p>
 <pre>
@@ -120,23 +120,41 @@
     </div>
 </section>
 <p id="secret" style="display:none;"> 
-    Secret Box ;), here you can access the  <input type="password" id="pwd" class="pwd" name="pwd"> <button onclick="tryValidation()">Validate</button>  <a id="locked" href="secret.html" style="display:none;text-decoration:none;color:black;" title="..." target="_blank"><b>Hyper Secret Zone</b></a>
+    <input type="password" id="myPsw"> <button onclick="myFunction()">Validate</button>   Secret Box ;), here you can access the <a id="locked" href="secret.html" style="display:none;text-decoration:none;color:black;" title="..." target="_blank"><b>Hyper Secret Zone</b></a>
   </p>
+  <p id="demo" style="color:white;"></p>
   <script>
     if (window.location.search == '?enhancedmode=true' ) {
     document.getElementById('secret').style.display = "block";
     }
   </script>
     <script src="statements.js"></script>
+    <script src="hash.js"></script>
   <script>
-      var psw = document.getElementById('pwd').value;
-      function tryValidation() {
-        psw = document.getElementsByName("pwd").value;
-        if (psw != "a") {
+    hashCode = function(s){
+  return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);              
+}
+    function myFunction() {
+  var x = document.getElementById("myPsw");
+  var defaultVal = "b3725122c9d3bfef5664619e08e31877";
+  var currentVal = hex_md5(x.value);
+  
+  if (defaultVal == currentVal) {
+    document.getElementById("demo").innerHTML = "Access granted";
+    document.getElementById('locked').style.display = "inline";
+  } else {
+    document.getElementById("demo").innerHTML = currentVal;
+  }
+}
+/*      function tryValidation() {
+        var psw = document.getElementsById("pwd");
+        var o = psw.value;
+        document.getElementById("demo").innerHTML = o;
+        if (o == "none") {
           document.getElementById('locked').style.display = "block";
-      document.getElementById('q').innerHTML = psw;
-        };
-      };
+      document.getElementById("demo").innerHTML = o;
+        }
+      }*/
       </script>
 </body>
 
