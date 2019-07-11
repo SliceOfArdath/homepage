@@ -128,12 +128,11 @@
     }
   </script>
     <script src="statements.js"></script>
-
   <script>
       var psw = document.getElementById('pwd').value;
       function tryValidation() {
         psw = document.getElementsByName("pwd").value;
-        if (psw == "marie") {
+        if (psw != "a") {
           document.getElementById('locked').style.display = "block";
       document.getElementById('q').innerHTML = psw;
         };
