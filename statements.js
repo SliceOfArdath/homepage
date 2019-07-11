@@ -1,4 +1,4 @@
-var lengh = 8;
+var lengh = 9;
 var x = Math.floor(Math.random() * lengh);
 
 var statments = [
@@ -10,6 +10,7 @@ var statments = [
 "pls rt",
 "sqrt(-1) love you!",
 "Orthographicaly correct!",
+"PHP free!",
 "This message will never appear on the splash screen, isn't that weird?"
 ];
 
