@@ -1,4 +1,4 @@
-var l = 11;
+var l = 12;
 if (window.location.search == '?enhancedmode=true') {
 l++;
     }
@@ -16,6 +16,7 @@ var statments = [
 "PHP free!",
 "Being annoying is the best thing you could ever imagine",
 "There\'s really no hard limit to how long these statements can be and to be quite honest I\'m rather curious to see how far we can go. Adolphus W. Green (1844–1917) started as the Principal of the Groton School in 1864. By 1865, he became second assistant librarian at the New York Mercantile Library; from 1867 to 1869, he was promoted to full librarian. From 1869 to 1873, he worked for Evarts, Southmayd & Choate, a law firm co-founded by William M. Evarts, Charles Ferdinand Southmayd and Joseph Hodges Choate. He was admitted to the New York State Bar Association in 1873. Anyway, how\'s your day been?",
+"Hơw dŏes Z҉҉ąĺgo te҉xț worǩ?",
 "Pro tip: the password is someone's name",
 "This message will never appear on the top bar, isn't that weird?"
 ];
