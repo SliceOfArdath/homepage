@@ -6,6 +6,7 @@
   <meta name="description" content="Where you come and go">
   <meta name="keywords" content="OscarHavril,main,hub">
   <meta name="author" content="OscarHavril">
+  <script src="statements.js"></script>
 <style>
 #secret {
    position: fixed;
@@ -18,13 +19,11 @@
 }
 </style>
 <script>
-var psw = "a";
-var cr = "z";
+var psw = document.getElementById('pwd');
 function tryValidation() {
-  psw = document.getElementById('pwd');
   if (psw != "a") {
     document.getElementById('locked').style.display = "block";
-
+document.getElementById('q').innerHTML = psw;
   };
 };
 </script>
@@ -74,13 +73,14 @@ function tryValidation() {
 
 </head>
 <body style="background-color:black;">
+  <p id="top" style="text-align:center; color:white">Sentence loading failed</p>
 <section class="flexZone" style="background-color:black; color:white">
     <div style="background-color:peru">
       <pre>
 <h1><b>My Games:</b></h1>
 <a href="https://oscarhavril.github.io/the-journey/" title="Go and break the game" target="_blank"><b>Labyrinth</b> (2019)</a> 
 </pre> 
-<p class="desc">
+<p id="q" class="desc">
         Temporary name, not working yet.
 </p>
 <pre>
