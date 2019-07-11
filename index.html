@@ -122,18 +122,17 @@
 <p id="secret" style="display:none;"> 
     <input type="password" id="myPsw"> <button onclick="myFunction()">Validate</button>   Secret Box ;), here you can access the <a id="locked" href="secret.html" style="display:none;text-decoration:none;color:black;" title="..." target="_blank"><b>Hyper Secret Zone</b></a>
   </p>
-  <p id="demo" style="color:white;"></p>
-  <script>
-    if (window.location.search == '?enhancedmode=true' ) {
-    document.getElementById('secret').style.display = "block";
-    }
-  </script>
+  <p id="demo" style="color:white;"></p> 
     <script src="statements.js"></script>
     <script src="hash.js"></script>
   <script>
-    hashCode = function(s){
-  return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);              
-}
+    if (window.location.search == '?enhancedmode=true' ) {
+    document.getElementById('secret').style.display = "block";
+    l++
+    }
+  </script>
+
+  <script>
     function myFunction() {
   var x = document.getElementById("myPsw");
   var defaultVal = "b3725122c9d3bfef5664619e08e31877";
