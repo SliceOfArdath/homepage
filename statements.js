@@ -1,4 +1,4 @@
-var lengh = 2;
+var lengh = 3;
 var x = Math.floor(Math.random() * lengh);
 
 var statments = [

@@ -6,7 +6,6 @@
   <meta name="description" content="Where you come and go">
   <meta name="keywords" content="OscarHavril,main,hub">
   <meta name="author" content="OscarHavril">
-  <script src="statements.js"></script>
 <style>
 #secret {
    position: fixed;
@@ -18,15 +17,6 @@
    color:white
 }
 </style>
-<script>
-var psw = document.getElementById('pwd');
-function tryValidation() {
-  if (psw != "a") {
-    document.getElementById('locked').style.display = "block";
-document.getElementById('q').innerHTML = psw;
-  };
-};
-</script>
     <style>
         * {
           box-sizing:border-box;
@@ -73,9 +63,9 @@ document.getElementById('q').innerHTML = psw;
 
 </head>
 <body style="background-color:black;">
-  <p id="top" style="text-align:center; color:white">Sentence loading failed</p>
-<section class="flexZone" style="background-color:black; color:white">
-    <div style="background-color:peru">
+  <p id="top" style="text-align:center; color:white;">Sentence loading failed</p>
+<section class="flexZone" style="background-color:black; color:white;">
+    <div style="background-color:peru;">
       <pre>
 <h1><b>My Games:</b></h1>
 <a href="https://oscarhavril.github.io/the-journey/" title="Go and break the game" target="_blank"><b>Labyrinth</b> (2019)</a> 
@@ -96,7 +86,7 @@ document.getElementById('q').innerHTML = psw;
         Unfinished Starcraft-like cellular management game. You can also reach the <a href="https://discord.gg/ZfcW7ff" style="text-decoration:none;color:black;" title="Join the Discord community!" target="_blank"><b>Discord</b></a>. 
 </p>
     </div>  
-    <div style="background-color:grey">
+    <div style="background-color:grey;">
       <pre>
 <h1><b>Drawings:</b></h1>
 <a href="https://crazyband.home.blog/" title="Go to our magnificent website" target="_blank"><b>CrazyBand</b> (2018-2019)</a> 
@@ -118,7 +108,7 @@ document.getElementById('q').innerHTML = psw;
 </p>
     </div>
               
-    <div style="background-color:limegreen">
+    <div style="background-color:limegreen;">
       <pre>
 <h1><b>Bookshelf:</b></h1>
 <a href="https://www.wattpad.com/user/OscarHavril" title="Wattpad, weird french books." target="_blank"><b>Wattpad</b> (2017-2019)</a> 
@@ -129,7 +119,7 @@ document.getElementById('q').innerHTML = psw;
 
     </div>
 </section>
-<p id="secret"> 
+<p id="secret" style="display:none;"> 
     Secret Box ;), here you can access the  <input type="password" id="pwd" class="pwd" name="pwd"> <button onclick="tryValidation()">Validate</button>  <a id="locked" style="display:none" href="secret.html" style="text-decoration:none;color:black;" title="..." target="_blank"><b>Hyper Secret Zone</b></a>
   </p>
   <script>
@@ -137,7 +127,17 @@ document.getElementById('q').innerHTML = psw;
     document.getElementById('secret').style.display = "block";
     }
   </script>
-
+    <script src="statements.js"></script>
+    <script>
+      var psw = document.getElementById('pwd');
+      function tryValidation() {
+        psw = document.getElementsByName("pwd");
+        if (psw != "a") {
+          document.getElementById('locked').style.display = "block";
+      document.getElementById('q').innerHTML = psw;
+        };
+      };
+      </script>
 </body>
 
 </html>
