@@ -11,7 +11,7 @@ var statments = [
 "sqrt(-1) love you!",
 "Orthographicaly correct!",
 "PHP free!",
-"This message will never appear on the splash screen, isn't that weird?"
+"This message will never appear on the top bar, isn't that weird?"
 ];
 
 document.getElementById("top").innerHTML = statments[x];

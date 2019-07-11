@@ -120,7 +120,7 @@
     </div>
 </section>
 <p id="secret" style="display:none;"> 
-    Secret Box ;), here you can access the  <input type="password" id="pwd" class="pwd" name="pwd"> <button onclick="tryValidation()">Validate</button>  <a id="locked" style="display:none" href="secret.html" style="text-decoration:none;color:black;" title="..." target="_blank"><b>Hyper Secret Zone</b></a>
+    Secret Box ;), here you can access the  <input type="password" id="pwd" class="pwd" name="pwd"> <button onclick="tryValidation()">Validate</button>  <a id="locked" href="secret.html" style="display:none;text-decoration:none;color:black;" title="..." target="_blank"><b>Hyper Secret Zone</b></a>
   </p>
   <script>
     if (window.location.search == '?enhancedmode=true' ) {
@@ -128,7 +128,8 @@
     }
   </script>
     <script src="statements.js"></script>
-    <script>
+<!--
+  <script>
       var psw = document.getElementById('pwd');
       function tryValidation() {
         psw = document.getElementsByName("pwd");
@@ -138,6 +139,7 @@
         };
       };
       </script>
+    -->
 </body>
 
 </html>
