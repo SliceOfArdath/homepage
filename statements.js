@@ -1,7 +1,5 @@
 var lengh = 2;
-var x = 0;
-x = Math.floor(Math.random() * lengh);
-
+var x = Math.floor(Math.random() * lengh);
 
 var statments = [
 "Life is.. wait WHAAAAT???",

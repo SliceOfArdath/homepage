@@ -132,6 +132,12 @@ document.getElementById('q').innerHTML = psw;
 <p id="secret"> 
     Secret Box ;), here you can access the  <input type="password" id="pwd" class="pwd" name="pwd"> <button onclick="tryValidation()">Validate</button>  <a id="locked" style="display:none" href="secret.html" style="text-decoration:none;color:black;" title="..." target="_blank"><b>Hyper Secret Zone</b></a>
   </p>
+  <script>
+    if (window.location.search == '?enhancedmode=true' ) {
+    document.getElementById('secret').style.display = "block";
+    }
+  </script>
+
 </body>
 
 </html>
