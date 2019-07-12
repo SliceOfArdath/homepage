@@ -107,250 +107,29 @@ function SHA256(s){
 }
 
 
+
+
+
+
+
 /*
  * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
  * Digest Algorithm, as defined in RFC 1321.
- * Version 2.2 Copyright (C) Paul Johnston 1999 - 2009
+ * Version 2.1 Copyright (C) Paul Johnston 1999 - 2002.
  * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
  * Distributed under the BSD License
  * See http://pajhome.org.uk/crypt/md5 for more info.
  */
 
-/*
- * Configurable variables. You may need to tweak these to be compatible with
- * the server-side, but the defaults work in most cases.
- */
-var hexcase = 0;   /* hex output format. 0 - lowercase; 1 - uppercase        */
-var b64pad  = "";  /* base-64 pad character. "=" for strict RFC compliance   */
+var hexcase = 0;  /* hex output format. 0 - lowercase; 1 - uppercase        */
+var b64pad  = ""; /* base-64 pad character. "=" for strict RFC compliance   */
+var chrsz   = 8;  /* bits per input character. 8 - ASCII; 16 - Unicode      */
+
 
 /*
- * These are the functions you'll usually want to call
- * They take string arguments and return either hex or base-64 encoded strings
+ * Calculate the MD5 of an array of little-endian words, and a bit length
  */
-function hex_md5(s)    { return rstr2hex(rstr_md5(str2rstr_utf8(s))); }
-function b64_md5(s)    { return rstr2b64(rstr_md5(str2rstr_utf8(s))); }
-function any_md5(s, e) { return rstr2any(rstr_md5(str2rstr_utf8(s)), e); }
-function hex_hmac_md5(k, d)
-  { return rstr2hex(rstr_hmac_md5(str2rstr_utf8(k), str2rstr_utf8(d))); }
-function b64_hmac_md5(k, d)
-  { return rstr2b64(rstr_hmac_md5(str2rstr_utf8(k), str2rstr_utf8(d))); }
-function any_hmac_md5(k, d, e)
-  { return rstr2any(rstr_hmac_md5(str2rstr_utf8(k), str2rstr_utf8(d)), e); }
-
-/*
- * Perform a simple self-test to see if the VM is working
- */
-function md5_vm_test()
-{
-  return hex_md5("abc").toLowerCase() == "900150983cd24fb0d6963f7d28e17f72";
-}
-
-/*
- * Calculate the MD5 of a raw string
- */
-function rstr_md5(s)
-{
-  return binl2rstr(binl_md5(rstr2binl(s), s.length * 8));
-}
-
-/*
- * Calculate the HMAC-MD5, of a key and some data (raw strings)
- */
-function rstr_hmac_md5(key, data)
-{
-  var bkey = rstr2binl(key);
-  if(bkey.length > 16) bkey = binl_md5(bkey, key.length * 8);
-
-  var ipad = Array(16), opad = Array(16);
-  for(var i = 0; i < 16; i++)
-  {
-    ipad[i] = bkey[i] ^ 0x36363636;
-    opad[i] = bkey[i] ^ 0x5C5C5C5C;
-  }
-
-  var hash = binl_md5(ipad.concat(rstr2binl(data)), 512 + data.length * 8);
-  return binl2rstr(binl_md5(opad.concat(hash), 512 + 128));
-}
-
-/*
- * Convert a raw string to a hex string
- */
-function rstr2hex(input)
-{
-  try { hexcase } catch(e) { hexcase=0; }
-  var hex_tab = hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
-  var output = "";
-  var x;
-  for(var i = 0; i < input.length; i++)
-  {
-    x = input.charCodeAt(i);
-    output += hex_tab.charAt((x >>> 4) & 0x0F)
-           +  hex_tab.charAt( x        & 0x0F);
-  }
-  return output;
-}
-
-/*
- * Convert a raw string to a base-64 string
- */
-function rstr2b64(input)
-{
-  try { b64pad } catch(e) { b64pad=''; }
-  var tab = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-  var output = "";
-  var len = input.length;
-  for(var i = 0; i < len; i += 3)
-  {
-    var triplet = (input.charCodeAt(i) << 16)
-                | (i + 1 < len ? input.charCodeAt(i+1) << 8 : 0)
-                | (i + 2 < len ? input.charCodeAt(i+2)      : 0);
-    for(var j = 0; j < 4; j++)
-    {
-      if(i * 8 + j * 6 > input.length * 8) output += b64pad;
-      else output += tab.charAt((triplet >>> 6*(3-j)) & 0x3F);
-    }
-  }
-  return output;
-}
-
-/*
- * Convert a raw string to an arbitrary string encoding
- */
-function rstr2any(input, encoding)
-{
-  var divisor = encoding.length;
-  var i, j, q, x, quotient;
-
-  /* Convert to an array of 16-bit big-endian values, forming the dividend */
-  var dividend = Array(Math.ceil(input.length / 2));
-  for(i = 0; i < dividend.length; i++)
-  {
-    dividend[i] = (input.charCodeAt(i * 2) << 8) | input.charCodeAt(i * 2 + 1);
-  }
-
-  /*
-   * Repeatedly perform a long division. The binary array forms the dividend,
-   * the length of the encoding is the divisor. Once computed, the quotient
-   * forms the dividend for the next step. All remainders are stored for later
-   * use.
-   */
-  var full_length = Math.ceil(input.length * 8 /
-                                    (Math.log(encoding.length) / Math.log(2)));
-  var remainders = Array(full_length);
-  for(j = 0; j < full_length; j++)
-  {
-    quotient = Array();
-    x = 0;
-    for(i = 0; i < dividend.length; i++)
-    {
-      x = (x << 16) + dividend[i];
-      q = Math.floor(x / divisor);
-      x -= q * divisor;
-      if(quotient.length > 0 || q > 0)
-        quotient[quotient.length] = q;
-    }
-    remainders[j] = x;
-    dividend = quotient;
-  }
-
-  /* Convert the remainders to the output string */
-  var output = "";
-  for(i = remainders.length - 1; i >= 0; i--)
-    output += encoding.charAt(remainders[i]);
-
-  return output;
-}
-
-/*
- * Encode a string as utf-8.
- * For efficiency, this assumes the input is valid utf-16.
- */
-function str2rstr_utf8(input)
-{
-  var output = "";
-  var i = -1;
-  var x, y;
-
-  while(++i < input.length)
-  {
-    /* Decode utf-16 surrogate pairs */
-    x = input.charCodeAt(i);
-    y = i + 1 < input.length ? input.charCodeAt(i + 1) : 0;
-    if(0xD800 <= x && x <= 0xDBFF && 0xDC00 <= y && y <= 0xDFFF)
-    {
-      x = 0x10000 + ((x & 0x03FF) << 10) + (y & 0x03FF);
-      i++;
-    }
-
-    /* Encode output as utf-8 */
-    if(x <= 0x7F)
-      output += String.fromCharCode(x);
-    else if(x <= 0x7FF)
-      output += String.fromCharCode(0xC0 | ((x >>> 6 ) & 0x1F),
-                                    0x80 | ( x         & 0x3F));
-    else if(x <= 0xFFFF)
-      output += String.fromCharCode(0xE0 | ((x >>> 12) & 0x0F),
-                                    0x80 | ((x >>> 6 ) & 0x3F),
-                                    0x80 | ( x         & 0x3F));
-    else if(x <= 0x1FFFFF)
-      output += String.fromCharCode(0xF0 | ((x >>> 18) & 0x07),
-                                    0x80 | ((x >>> 12) & 0x3F),
-                                    0x80 | ((x >>> 6 ) & 0x3F),
-                                    0x80 | ( x         & 0x3F));
-  }
-  return output;
-}
-
-/*
- * Encode a string as utf-16
- */
-function str2rstr_utf16le(input)
-{
-  var output = "";
-  for(var i = 0; i < input.length; i++)
-    output += String.fromCharCode( input.charCodeAt(i)        & 0xFF,
-                                  (input.charCodeAt(i) >>> 8) & 0xFF);
-  return output;
-}
-
-function str2rstr_utf16be(input)
-{
-  var output = "";
-  for(var i = 0; i < input.length; i++)
-    output += String.fromCharCode((input.charCodeAt(i) >>> 8) & 0xFF,
-                                   input.charCodeAt(i)        & 0xFF);
-  return output;
-}
-
-/*
- * Convert a raw string to an array of little-endian words
- * Characters >255 have their high-byte silently ignored.
- */
-function rstr2binl(input)
-{
-  var output = Array(input.length >> 2);
-  for(var i = 0; i < output.length; i++)
-    output[i] = 0;
-  for(var i = 0; i < input.length * 8; i += 8)
-    output[i>>5] |= (input.charCodeAt(i / 8) & 0xFF) << (i%32);
-  return output;
-}
-
-/*
- * Convert an array of little-endian words to a string
- */
-function binl2rstr(input)
-{
-  var output = "";
-  for(var i = 0; i < input.length * 32; i += 8)
-    output += String.fromCharCode((input[i>>5] >>> (i % 32)) & 0xFF);
-  return output;
-}
-
-/*
- * Calculate the MD5 of an array of little-endian words, and a bit length.
- */
-function binl_md5(x, len)
+function core_md5(x, len)
 {
   /* append padding */
   x[len >> 5] |= 0x80 << ((len) % 32);
@@ -468,10 +247,6 @@ function md5_ii(a, b, c, d, x, s, t)
   return md5_cmn(c ^ (b | (~d)), a, b, x, s, t);
 }
 
-/*
- * Add integers, wrapping at 2^32. This uses 16-bit operations internally
- * to work around bugs in some JS interpreters.
- */
 function safe_add(x, y)
 {
   var lsw = (x & 0xFFFF) + (y & 0xFFFF);
@@ -479,10 +254,174 @@ function safe_add(x, y)
   return (msw << 16) | (lsw & 0xFFFF);
 }
 
-/*
- * Bitwise rotate a 32-bit number to the left.
- */
 function bit_rol(num, cnt)
 {
   return (num << cnt) | (num >>> (32 - cnt));
+}
+
+function str2binl(str)
+{
+  var bin = Array();
+  var mask = (1 << chrsz) - 1;
+  for(var i = 0; i < str.length * chrsz; i += chrsz)
+    bin[i>>5] |= (str.charCodeAt(i / chrsz) & mask) << (i%32);
+  return bin;
+}
+
+
+
+/*
+ * Self Decrypting Archive
+ * http://jgae.de/sda.htm
+ */
+
+var xxx =
+"yOB6pozgtArLU/ek/Tad93qjMfwv9HLIFf6X7iNpgw5tSOXSRQVa6poAHW3Cwry8"+
+"Ig";
+
+
+var State31, Polynom31, State33, Polynom33,
+    State64H, State64L, Polynom64, Butt;
+
+Polynomials31 = new Array
+(
+ 0x40c6e78f,0x44ea7b19,0x45da25ce,0x470c368e,0x4920f4c1,0x4a2fb865,
+ 0x4b641875,0x4d474412,0x4c175700,0x4e880047,0x50a5894c,0x51ae3883,
+ 0x531df126,0x563e62e8,0x586801c2,0x5bef4706,0x5c14c48a,0x5d06e2a7,
+ 0x5f2f8a72,0x623311d9,0x65616f52,0x668043b4,0x672161c9,0x67f0a6a8,
+ 0x6814750f,0x6c4920c3,0x6dca541b,0x6e97e1ed,0x70963ac8,0x72de5f24,
+ 0x7411688a,0x7502196b,0x76202331,0x7887a9e1,0x790621f4,0x7e79deae,
+ 0x7faca450
+);
+
+
+function pn()
+{
+  do
+  {
+    MSB = State31 & 0x80000000;
+    State31 &= 0x7fffffff;
+
+    if( State31 & 1 )
+      State31 = ( State31 >>> 1 ) ^ Polynom31;
+    else
+      State31 >>>= 1;
+
+    if( State33 & 0x80000000 ) State31 |= 0x80000000;
+
+    if( MSB )
+      State33 = ( State33 << 1 ) ^ Polynom33;
+    else
+      State33 <<= 1;
+
+    MSB = ( State64H & 1 );
+    State64H >>>= 1;
+    State64H |= State64L & 0x80000000;
+
+    if( MSB )
+      State64L = ( State64L << 1 ) ^ Polynom64;
+    else
+      State64L <<= 1;
+  }
+  while( State64L & Butt );
+
+  return( State31 ^ State33 );
+}
+
+
+var b64_tab = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+function b64_decode_tab()
+{
+  var decode = Array();
+  for( i = 0; i < b64_tab.length; i++ )
+  {
+    decode[ b64_tab.charCodeAt( i ) ] = i;
+  }
+  return decode;
+}
+
+var decode = b64_decode_tab();
+
+function b64_to_array( str )
+{
+  var arr = Array();
+  lng = str.length;
+  for( i = 0; i < str.length; i += 4 )
+  {
+    b1 = str.charCodeAt(i);
+    b2 = ( i+1 < lng ) ? str.charCodeAt( i+1 ) : 0;
+    b3 = ( i+2 < lng ) ? str.charCodeAt( i+2 ) : 0;
+    b4 = ( i+3 < lng ) ? str.charCodeAt( i+3 ) : 0;
+    triplet = ((decode[ b1 ] << 18) & 0xffffff)
+            | ((decode[ b2 ] << 12) & 0x3ffff)
+            | ((decode[ b3 ] <<  6) & 0xfff)
+            | ((decode[ b4 ]      ) & 0x3f);
+    arr[ arr.length ] = ( triplet >> 16 ) & 0xff;
+    if( b3 ) arr[ arr.length ] = ( triplet >> 8 ) & 0xff;
+    if( b4 ) arr[ arr.length ] = triplet & 0xff;
+  }
+  return arr;
+}
+
+
+function crypt( ina )
+{
+  var ota = Array();
+  for( i = 0; i < ina.length; i++ )
+  {
+    ota[ i ] = ina[ i ] ^ pn();
+  }
+  return ota;
+}
+
+
+function expand7to8( array )
+{
+  str = "";
+  for( i = 0; i < array.length; i += 7 )
+  {
+    tmp = array[ i ];
+    out = tmp >> 1;
+    str += String.fromCharCode( out & 0x7f );
+    for( j = 1; j < 8; j++ )
+    {
+      out = ( tmp << ( 7-j ) ) & 0x7f;
+      tmp = array[ i+j ];
+      str += String.fromCharCode( out |= ( tmp & 0xff ) >> ( j+1 ) );
+    }
+  }
+  str = str.split( "\0" )[ 0 ];
+  return str;
+}
+
+
+function pnInit( passphr )
+{
+  pnState  = core_md5( str2binl( passphr ), passphr.length * chrsz );
+  State31  = pnState[ 0 ]; if( !(State31 & 0x7fffffff)) State31++;
+  State33  = pnState[ 1 ]; if( !State33 ) State33++;
+  State64H = pnState[ 2 ];
+  State64L = pnState[ 3 ]; if( !State64H && !State64L ) State64L++;
+  Polynom  = core_md5( pnState, 0x80 );
+  Polynom ^= core_md5( str2binl( passphr ), passphr.length * chrsz >> 1 );
+  Polynom31 = Polynomials31[ ( Polynom[ 0 ] >>> 1 ) % Polynomials31.length ];
+  Polynom33 = Polynom[ 1 ] | 1;
+  Polynom64 = Polynom[ 2 ] | 1;
+  Butt  = 1 << ( Polynom[ 3 ] & 0x1f );
+  Butt |= 1 << ( ( Polynom[ 3 ] >> 8 ) & 0x1f );
+}
+
+
+function decrypt_sda()
+{
+  var wbuffer = "<pre>";
+  document.close();
+
+  pnInit( document.forms["sda"].passphrase.value );
+  wbuffer += expand7to8( crypt( b64_to_array( xxx ) ) );
+
+  document.write( wbuffer );
+  document.close();
+  return false;
 }

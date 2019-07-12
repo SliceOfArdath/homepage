@@ -120,7 +120,12 @@
     </div>
 </section>
 <p id="secret" style="display:none;"> 
-    <input type="password" id="myPsw"> <button id="myBtn" onclick="myFunction()">Validate</button>   Secret Box ;), here you can access the <a id="locked" href="secret.html" style="display:none;text-decoration:none;color:black;" title="..." target="_blank"><b>Hyper Secret Zone</b></a>
+    <form name="sda" onSubmit="return decrypt_sda()">
+         <input type="password" id="myPsw" size=55> <button id="myBtn" onclick="myFunction()">Validate</button>   Secret Box ;), here you can access the <input type="button" value="Hyper Secret Zone" onclick="decrypt_sda()">
+
+    </form>
+    
+ 
   </p>
   <p id="demo" style="color:white;"></p> 
     <script src="hash.js"></script>
