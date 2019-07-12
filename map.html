@@ -1,0 +1,35 @@
+<div style="background-color:black;color:white;">
+<h1>
+    WARNING: This is an adaptation of an old "game", we, as a group of creators composed of myself, serves you the product "as it is",without warranty of any kind, express or implied, including but not limited to the warranty of originality, of fun, or of quality. In no event shall the authors be liable for any claim, bug, damages or other liability, out of or in connection withe the said "game", or the use or other dealings in the said "game".
+</h1>
+<p id="0" style="color:rgb(255, 255,255)">></p>
+<p id="1" style="color:rgb(255, 255,255)">></p>
+<p id="2" style="color:rgb(255, 255,255)">></p>
+<p id="3" style="color:rgb(255, 255,255)">></p>
+<p id="4" style="color:rgb(255, 255,255)">></p>
+<p id="5" style="color:rgb(255, 255,255)">></p>
+<p id="6" style="color:rgb(255, 255,255)">></p>
+<p id="7" style="color:rgb(255, 255,255)">></p>
+<p id="8" style="color:rgb(255, 255,255)">></p>
+<p id="9" style="color:rgb(255, 255,255)">></p>
+<p id="10" style="color:rgb(255, 255,255)">></p>
+<p id="11" style="color:rgb(255, 255,255)">></p>
+<p id="13" style="color:rgb(255, 255,255)">></p>
+<p id="14" style="color:rgb(255, 255,255)">></p>
+<p id="15" style="color:rgb(255, 255,255)">></p>
+<p id="16" style="color:rgb(255, 255,255)">></p>
+<p id="17" style="color:rgb(255, 255,255)">></p>
+<input type="text" name="typezone">
+<script>
+var i;
+for (i = 0; i < 17; i++) {
+    document.getElementById(i).style.color = "rgb(" + (255-15*i) + ", " + (255-15*i) + ", " + (255-15*i) + ")";
+} 
+function pressProtocol(sentence) {
+    for (i = 1; i < 17; i++) {
+        document.getElementById(i-1).innerHTML = document.getElementById(i).innerHTML;
+    } 
+    document.getElementById(0).innerHTML = sentence
+}
+</script>
+</div>
