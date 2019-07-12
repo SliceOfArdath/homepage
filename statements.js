@@ -22,3 +22,4 @@ var statments = [
 ];
 
 document.getElementById("top").innerHTML = statments[x];
+document.getElementById("top").style.color = "white";
