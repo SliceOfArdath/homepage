@@ -145,7 +145,7 @@ input.addEventListener("keyup", function(event) {
   if (defaultVal == currentVal) {
     document.getElementById("demo").innerHTML = "Access granted";
     document.getElementById('locked').style.display = "inline";
-    document.cookie = "pass=" + x.value + ";path=https://oscarhavril.github.io/homepage/secret.htmlS";
+    document.cookie = "pass=" + x.value + ";";
   } else {
     document.getElementById("demo").innerHTML = "Access denied";
   }
