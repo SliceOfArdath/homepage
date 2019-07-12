@@ -121,7 +121,7 @@
     </div>
 </section>
 <p id="secret" style="display:none;"> 
-    <input type="password" id="myPsw"> <button onclick="myFunction()">Validate</button>   Secret Box ;), here you can access the <a id="locked" href="secret.html" style="display:none;text-decoration:none;color:black;" title="..." target="_blank"><b>Hyper Secret Zone</b></a>
+    <input type="password" id="myPsw"> <button id="myBtn" onclick="myFunction()">Validate</button>   Secret Box ;), here you can access the <a id="locked" href="secret.html" style="display:none;text-decoration:none;color:black;" title="..." target="_blank"><b>Hyper Secret Zone</b></a>
   </p>
   <p id="demo" style="color:white;"></p> 
     <script src="hash.js"></script>
@@ -129,14 +129,20 @@
     if (window.location.search == '?enhancedmode=true' ) {
     document.getElementById('secret').style.display = "block";
     }
+    var input = document.getElementById("myPsw");
+input.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+   event.preventDefault();
+   document.getElementById("myBtn").click();
+  }
+});
   </script>
 
   <script>
     function myFunction() {
   var x = document.getElementById("myPsw");
-  var defaultVal = "9f7d755df7d41c3fe76bcbf8ec1529b1";
-  var currentVal = hex_md5(x.value);
-  
+  var defaultVal = "b64fa3f22c23f62bce4c22c55d79085e5b414b82efb35606068c6ea2f3a62c8e";
+  var currentVal = SHA256(x.value);
   if (defaultVal == currentVal) {
     document.getElementById("demo").innerHTML = "Access granted";
     document.getElementById('locked').style.display = "inline";
