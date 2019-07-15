@@ -3,27 +3,27 @@
 <h1>
     WARNING: This is an adaptation of an old "game", we, as a group of creators composed of myself, serves you the product "as it is",without warranty of any kind, express or implied, including but not limited to the warranty of originality, of fun, or of quality. In no event shall the authors be liable for any claim, bug, damages or other liability, out of or in connection withe the said "game", or the use or other dealings in the said "game".
 </h1>
-<div id="box" style="border: 1px solid darkgrey;widows:500px;height:500px;overflow: auto;">
+<div id="box" style="border: 1px solid darkgrey;width:500px;height:500px;overflow:auto;color:white;">
 
 </div>
-<input id="entry" type="text" name="typezone">
+<input id="entry" type="text" name="typezone"> <button id="myBtn" onclick="answer()">Enter</button>
 <script>
-    //codes
+    //code
+    var input = document.getElementById("entry");
     input.addEventListener("keyup", function(event) {
   if (event.keyCode === 13) {
    event.preventDefault();
-   document.getElementById("entry").answer();
+   document.getElementById("mybtn").click();
   }
 });
 var r;
 var path
 function print(sentence) {
-    document.getElementById('box').innerHTML += "<p>" + "</p> </br>";
+    document.getElementById('box').innerHTML += "<p>" + sentence + "</p> </br>";
 }
 function closedAsk(sentence) {
-    document.getElementById('box').innerHTML += "<p>" + "</p> </br>";
-    r = "yn"
-    
+    document.getElementById('box').innerHTML += "<p>" + sentence + "</p> </br>";
+    r = "yn" 
 }
 function answer() {
     var x = document.getElementById('entry');
@@ -41,8 +41,8 @@ function answer() {
 
 //story
 setTimeout(print("[System]Extracting File..."), 1000)
-setTimeout(print("[System]Error: file not found. New path found. Type 'yes' to re-create the file."), 1000)
-closedAsk("[Warn]The re-creation might be very different from the original lost file.</br>You migth not want to start the process.</br>A 'yes/no' answer is required to start the process.")
+setTimeout(print("[System]Error: file not found. New path found. Type 'yes' to re-create the file."), 2000)
+setTimeout(closedAsk("[Warn]The re-creation might be very different from the original lost file.</br>You migth not want to start the process.</br>A 'yes/no' answer is required to start the process."),3000)
 </script>
 </section>
 
