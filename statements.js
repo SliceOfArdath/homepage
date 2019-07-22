@@ -1,4 +1,4 @@
-var l = 15;
+var l = 17;
 if (window.location.search == '?enhancedmode=true') {
 l++;
 l++;
@@ -21,7 +21,8 @@ var statments = [
 "150% hyperbole!",
 '<span style="color:#0000AA;">C</span><span style="color:#00AA00;">o</span><span style="color:#00AAAA;">l</span><span style="color:#AA0000;">o</span><span style="color:#AA00AA;">r</span><span style="color:#FFAA00;">m</span><span style="color:#AAAAAA;">a</span><span style="color:#555555;">t</span><span style="color:#5555FF;">i</span><span style="color:#55FF55;">c</span>',
 "It's dangerous to go alone! Take <a href='ref.html'><b>this.</b></a>",
-
+"This satement is false!",
+"Do a set of all sets contain itself ?",
 "Pro tip: the password is someone's name",
 "Did I mention the name was followed by a number between 0 and 9? Oh yeah.",
 "This message will never appear on the top bar, isn't that weird?"
