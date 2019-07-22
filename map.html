@@ -25,9 +25,8 @@ function timedCount() {
 });
 var r;
 var path
-function print(sentence, time) {
-    time = time * 1000
-    setTimeout(document.getElementById('box').innerHTML += "<p>" + sentence + "</p> </br>",time);
+function print(sentence) {
+    document.getElementById('box').innerHTML += "<p>" + sentence + "</p> </br>";
 }
 function cAsk(sentence) {
     document.getElementById('box').innerHTML += "<p>" + sentence + "</p> </br>";
@@ -48,9 +47,9 @@ function answer() {
 
 
 //story
-print("[System]Extracting File...", 4)
-print("[System]Error: file not found. New path found. Type 'yes' to re-create the file.", 6)
-cAsk("[Warn]The re-creation might be very different from the original lost file.</br>You migth not want to start the process.</br>A 'yes/no' answer is required to start the process.", 8)
+setInterval(print("[System]Extracting File..."), 4000);
+setInterval(print("[System]Error: file not found. New path found. Type 'yes' to re-create the file."), 2000);
+setInterval(cAsk("[Warn]The re-creation might be very different from the original lost file.</br>You migth not want to start the process.</br>A 'yes/no' answer is required to start the process."), 3000);
 </script>
 </section>
 
