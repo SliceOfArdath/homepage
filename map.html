@@ -10,15 +10,15 @@
 <script>
     //time machine
 var i = 0;
-
 function timedCount() {
-   if (play == 1) {
-       i = i + 1;
-   }
+    if (play == 1) {
+        i = i + 1;
+    }
    setTimeout("timedCount()",1000);
-   if (i == t) {
-    document.getElementById('box').innerHTML += "<p>" + sentence + "</p> </br>";
-   }
+    if (i == t) {
+        document.getElementById('box').innerHTML += "<p>" + text + "</p> </br>";
+        currPos += 1
+    }
 }
     //code
     var input = document.getElementById("entry");
@@ -36,15 +36,6 @@ var play = 1;
 var pos;
 var currPos;
 var currPath;
-function print(pathValue, position, senderNo, type, sentence, time) {
-    document.getElementById('box').innerHTML += "<p style=\"color=" + color + "\">" + sendtype + sentence + "</p> </br>";
-    currPos++;
-    scipt()
-}
-function cAsk(sentence, time) {
-    document.getElementById('box').innerHTML += "<p>" + sentence + "</p> </br>";
-    r = "yn" 
-}
 function pause() {
     if (play == 1) {
         play = 0
@@ -58,6 +49,23 @@ function pause() {
         document.getElementById('pause').innerHTML = "Pause";
     }
 }
+//Tryin' Switch ?
+function next() {
+    switch (currPos) {
+        case 1:
+    }
+}
+
+/*function print(pathValue, position, senderNo, type, sentence, time) {
+    document.getElementById('box').innerHTML += "<p style=\"color=" + color + "\">" + sendtype + sentence + "</p> </br>";
+    currPos++;
+    scipt()
+}
+function cAsk(sentence, time) {
+    document.getElementById('box').innerHTML += "<p>" + sentence + "</p> </br>";
+    r = "yn" 
+}
+
 function answer() {
     var x = document.getElementById('entry');
     var curr = x.value;
@@ -118,7 +126,7 @@ function script() {
     read('print("[System]Error: file not found. New path found. Type \'yes\' to re-create the file.", 8)');
     read('cAsk("[Warn]The re-creation might be very different from the original lost file.</br>You migth not want to start the process.</br>A \'yes/no\' answer is required to start the process.", 10)');
     dissect()
-}
+}*/
 </script>
 <p id="bar" style="position: fixed;bottom:0;left:0;width: 100%;border: 1px solid rgb(70, 70, 70);background-color:grey;color:white;"> 
     <button id="save" onclick="save()">Save</button> <button id="pause" onclick="pause()">Pause</button>
