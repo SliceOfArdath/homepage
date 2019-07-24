@@ -12,7 +12,9 @@
 var i = 0;
 
 function timedCount() {
-   i = i + 1;
+   if (play == 1) {
+       i = i + 1;
+   }
    setTimeout("timedCount()",1000);
    if (i == t) {
     document.getElementById('box').innerHTML += "<p>" + sentence + "</p> </br>";
@@ -30,17 +32,31 @@ var r;
 var path;
 var t;
 var text;
-function print(sentence, time) {
-    t += time;
-    if (t > i) {
-        text = sentence;  
-    } else {
-        
-    }
+var play = 1;
+var pos;
+var currPos;
+var currPath;
+function print(pathValue, position, senderNo, type, sentence, time) {
+    document.getElementById('box').innerHTML += "<p style=\"color=" + color + "\">" + sendtype + sentence + "</p> </br>";
+    currPos++;
+    scipt()
 }
 function cAsk(sentence, time) {
     document.getElementById('box').innerHTML += "<p>" + sentence + "</p> </br>";
     r = "yn" 
+}
+function pause() {
+    if (play == 1) {
+        play = 0
+        document.getElementById('box').style.borderWidth = "5px";
+        document.getElementById('box').style.borderColor = "darkblue";
+        document.getElementById('pause').innerHTML = "Play";
+    } else if (play == 0) {
+        play = 1
+        document.getElementById('box').style.borderWidth = "1px";
+        document.getElementById('box').style.borderColor = "darkgrey";
+        document.getElementById('pause').innerHTML = "Pause";
+    }
 }
 function answer() {
     var x = document.getElementById('entry');
@@ -54,15 +70,57 @@ function answer() {
         }
     }
 }
+function dissect() {
+    var l;
+    var l2
+    var func;
+    var nSend;
+    var messType;
+    var delay;
+    var phrase;
+    nextplay.indexOf("(") = l;
+    nextplay.substr(0, l) = func;
+    nextplay.indexOf(",") = l2;
+    nextplay.substr(l, l2-1) = nSend;
+    l = l2;
+    nextplay.indexOf(",",l+1) = l2;
+    nextplay.substr(l+1, l2-1) = messType;
+    l = l2;
+    nextplay.indexOf(",",l+1) = l2;
+    nextplay.substr(l+1, l2-1) = phrase;
+    l = l2;
+    nextplay.indexOf(",",l+1) = l2;
+    nextplay.substr(l+1, l2-1) = delay;
+    if (func = "print(") {
 
-
+    }
+}
+var nextplay;
+function read(func, pathValue, position) {
+    if (pathValue == currPath && currPos == position) {
+        nextplay = func;
+    } else {
+        
+    }
+}
 //story
-print("[System]Extracting File...", 5);
-print("[System]Error: file not found. New path found. Type 'yes' to re-create the file.", 8);
-cAsk("[Warn]The re-creation might be very different from the original lost file.</br>You migth not want to start the process.</br>A 'yes/no' answer is required to start the process.", 10);
+var sender = [
+    "System"
+]
+var type = [
+    "Text",
+    "Tip",
+    "Info",
+    "Warn"
+]
+function script() {
+    read('print("[System]Extracting File...", 5)');
+    read('print("[System]Error: file not found. New path found. Type \'yes\' to re-create the file.", 8)');
+    read('cAsk("[Warn]The re-creation might be very different from the original lost file.</br>You migth not want to start the process.</br>A \'yes/no\' answer is required to start the process.", 10)');
+    dissect()
+}
 </script>
-<p id="secret" style="position: fixed;bottom:0;left:0;width: 100%;border: 3px solid rgb(70, 70, 70);background-color:grey;color:white"> 
-
+<p id="bar" style="position: fixed;bottom:0;left:0;width: 100%;border: 1px solid rgb(70, 70, 70);background-color:grey;color:white;"> 
+    <button id="save" onclick="save()">Save</button> <button id="pause" onclick="pause()">Pause</button>
     </p>
 </section>
-
