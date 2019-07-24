@@ -9,26 +9,36 @@
 <input id="entry" type="text" name="typezone"> <button id="myBtn" onclick="answer()">Enter</button>
 <script>
     //time machine
-var t = 0;
+var i = 0;
 
 function timedCount() {
-   t = t + 1;
+   i = i + 1;
    setTimeout("timedCount()",1000);
+   if (i == t) {
+    document.getElementById('box').innerHTML += "<p>" + sentence + "</p> </br>";
+   }
 }
     //code
     var input = document.getElementById("entry");
     input.addEventListener("keyup", function(event) {
   if (event.keyCode === 13) {
    event.preventDefault();
-   document.getElementById("mybtn").click();
+   document.getElementById("myBtn").click();
   }
 });
 var r;
-var path
-function print(sentence) {
-    document.getElementById('box').innerHTML += "<p>" + sentence + "</p> </br>";
+var path;
+var t;
+var text;
+function print(sentence, time) {
+    t += time;
+    if (t > i) {
+        text = sentence;  
+    } else {
+        
+    }
 }
-function cAsk(sentence) {
+function cAsk(sentence, time) {
     document.getElementById('box').innerHTML += "<p>" + sentence + "</p> </br>";
     r = "yn" 
 }
@@ -47,9 +57,12 @@ function answer() {
 
 
 //story
-setInterval(print("[System]Extracting File..."), 4000);
-setInterval(print("[System]Error: file not found. New path found. Type 'yes' to re-create the file."), 2000);
-setInterval(cAsk("[Warn]The re-creation might be very different from the original lost file.</br>You migth not want to start the process.</br>A 'yes/no' answer is required to start the process."), 3000);
+print("[System]Extracting File...", 5);
+print("[System]Error: file not found. New path found. Type 'yes' to re-create the file.", 8);
+cAsk("[Warn]The re-creation might be very different from the original lost file.</br>You migth not want to start the process.</br>A 'yes/no' answer is required to start the process.", 10);
 </script>
+<p id="secret" style="position: fixed;bottom:0;left:0;width: 100%;border: 3px solid rgb(70, 70, 70);background-color:grey;color:white"> 
+
+    </p>
 </section>
 
