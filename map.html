@@ -10,7 +10,7 @@
 
 <section style="background-color:black;color:white;">
 
-<p>
+<p id="legal" style="display:none;">
     WARNING: This is an adaptation of an old "game", we, as a group of creators composed of myself, serves you the product "as it is",without warranty of any kind, express or implied, including but not limited to the warranty of originality, of fun, or of quality. In no event shall the authors be liable for any claim, bug, damages or other liability, out of or in connection withe the said "game", or the use or other dealings in the said "game".
 </p>
 <p id="time"> </p>
@@ -21,7 +21,7 @@
 <script>
     //time machine
     
-var i = 0;
+
 
     //code
     var input = document.getElementById("entry");
@@ -37,10 +37,16 @@ var t;
 var text;
 var play = 1;
 var pos;
-var currPos = 1;
-var currPath = 0;
 var redir;
 var out;
+
+var z = 0;
+var currPos = 1;
+var currPath = 0;
+var lastSwitchPos;
+var lastSwitchPath;
+var saveSet;
+
 function pause() {
     if (play == 1) {
         play = 0;
@@ -54,7 +60,7 @@ function pause() {
         document.getElementById('pause').innerHTML = "Pause";
     }
 }
-//Tryin' Switch?
+
 function next() {
     switch (currPath) {
         case 0:
@@ -94,32 +100,20 @@ function next() {
                 case 4: 
                 print("[System]Unfortunately, it seems that no altenate path had been unlocked. Redirecting you to Path=1</p>", 3);
                 currPath = 1;
-                currPos = 4;
+                currPos = 3;
                 break;
                 }
         break;
     } 
 }
-(function timedCount() {
-    if (play == 1) {
-        i = i + 1;
-        document.getElementById('time').innerHTML = i;
-        if (i == t) {
-            document.getElementById('box').innerHTML += "<p>" + text + "</p>";    
-            currPos += 1;
-            next();
-        }
-    }
-    setTimeout(timedCount,1000);
-})();
 next();
 function print(sentence, time) {
     text = sentence;
-    t = i + time;
+    t = z + time;
 }
 function cAsk(sentence, time) {
     text = sentence;
-    t = i + time;
+    t = z + time;
     r = "yn"; 
 }
 
@@ -134,6 +128,8 @@ function answer() {
             currPath = 1;
             console.log(curr);
             next();
+            lastSwitchPos = currPos;
+            lastSwitchPath = currPath;
         } else if (curr == "no" || curr == "nope" || curr == "nop" || curr == "n") {
             document.getElementById('entry').value = "";
             out = curr;
@@ -141,21 +137,115 @@ function answer() {
             currPath = 2;
             console.log(curr);
             next();
+            lastSwitchPos = currPos;
+            lastSwitchPath = currPath;
         } else {
             document.getElementById('entry').value = "";
             out = curr;
             document.getElementById('box').innerHTML += "<p style=\"color:cyan\">" + out + "</p>";
             console.log(curr);
         }
-        box.scrollBy(0, 100);
+        box.scrollBy(0, 10000);
+
+    }
+}
+if (localStorage.posCurr) {
+  currPos = Number(localStorage.posCurr);
+} else {
+  localStorage.posCurr = 1;
+  currPos = 1;
+}
+if (localStorage.pathCurr) {
+  currPath = Number(localStorage.pathCurr);
+} else {
+  localStorage.pathCurr = 0;
+  currPath = 0;
+}
+if (localStorage.time) {
+  z = Number(localStorage.time);
+} else {
+  localStorage.time = 1;
+  z = 1;
+}
+if (localStorage.lastPos) {
+  lastSwitchPos = Number(localStorage.lastPos);
+} else {
+  localStorage.lastPos = 1;
+  lastSwitchPos = 1;
+}
+if (localStorage.lastPath) {
+  lastSwitchPath = Number(localStorage.lastPath);
+} else {
+  localStorage.lastPath = 0;
+  lastSwitchPath = 0;
+}
+if (localStorage.setSave) {
+  saveSet = Number(localStorage.setSave);
+} else {
+  localStorage.setSave = 0;
+  saveSet = 0;
+}
+function wipe() {
+    localStorage.setSave = 0;
+    saveSet = 0;
+    localStorage.lastPath = 0;
+    lastSwitchPath = 0;
+    localStorage.lastPos = 1;
+    lastSwitchPos = 1;
+    localStorage.time = 1;
+    z = 1;
+    localStorage.pathCurr = 0;
+    currPath = 0;
+    localStorage.posCurr = 1;
+    currPos = 1;
+    document.getElementById('box').innerHTML = "";
+    next();
+}
+function ees() {
+    if (saveSet == 0) {
+        saveSet++;
+        document.getElementById('SaveSet').innerHTML = "Disable exact positionnement";
+    } else {
+        saveSet = 0;
+        document.getElementById('SaveSet').innerHTML = "Enable exact positionnement";
     }
 }
 function save() {
-    setCookie("currPos", currPos);
-    setCookie("currPath", currPath);
-    setCookie("time", i);
+    if (saveSet != 0) {
+    localStorage.pathCurr = currPath;
+    localStorage.posCurr = currPos;
+    }
+    localStorage.lastPos = lastSwitchPos;
+    localStorage.time = z;
+    localStorage.lastPath = lastSwitchPath;
+    localStorage.setSave = saveSet;
 }
-function setCookie(cname, cvalue) {
+(function restore() {
+    currPos = Number(localStorage.posCurr);
+    currPath = Number(localStorage.pathCurr);
+    z = Number(localStorage.time);
+    saveSet = Number(localStorage.setSave);
+    lastSwitchPos = Number(localStorage.lastPos);
+    lastSwitchPos = Number(localStorage.lastPath);
+    if (saveSet == 0) {
+        currPos = lastSwitchPos;
+        currPath = lastSwitchPath;
+    }
+
+})();
+
+/*
+function rewind() {
+
+}
+
+
+
+
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  var expires = "expires="+d.toUTCString();
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 function getCookie(cname) {
@@ -183,7 +273,25 @@ function checkCookie() {
     }
   }
 }
-
+if (typeof currPos != "number") {
+    currpath = 1;
+    wipe();
+    currpath = 0;
+}
+*/
+(function timedCount() {
+    if (play == 1) {
+        z = z + 1;
+        document.getElementById('time').innerHTML = z;
+        save();
+        if (z == t) {
+            document.getElementById('box').innerHTML += "<p>" + text + "</p>";    
+            currPos += 1;
+            next();
+        }
+    }
+    setTimeout(timedCount,1000);
+})();
 /*
 function dissect() {
     var l;
@@ -231,7 +339,7 @@ var type = [
 */
 </script>
 <p id="bar" style="position: fixed;bottom:0;left:0;width: 100%;border: 1px solid rgb(70, 70, 70);background-color:grey;color:white;"> 
-    <button id="save" onclick="save()">Save</button> <button id="pause" onclick="pause()">Pause</button> <button id="pause" onclick="pause()">Restart</button> <button id="pause" style="color:red" onclick="pause()">WIPE</button> 
+    <button id="save" onclick="rewind()">Go to last path</button> <button id="save" onclick="save()">Save</button> <button id="pause" onclick="pause()">Pause</button> <button id="pause" onclick="pause()">Restart</button> <button id="pause" style="color:red" onclick="wipe()"><b>WIPE</b></button> <button id="SaveSet" onclick="ees()">Enable exact positionnement</button> (Disabled by default to help remember the story between sessions.)
     </p>
 </section>
 
