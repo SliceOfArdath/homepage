@@ -1,25 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="spooky place ;)">
+  <meta name="author" content="OscarHavril">
+</head>
+<body style="background-color:black;color:grey;">
+
 <section style="background-color:black;color:white;">
 
 <h1>
     WARNING: This is an adaptation of an old "game", we, as a group of creators composed of myself, serves you the product "as it is",without warranty of any kind, express or implied, including but not limited to the warranty of originality, of fun, or of quality. In no event shall the authors be liable for any claim, bug, damages or other liability, out of or in connection withe the said "game", or the use or other dealings in the said "game".
 </h1>
+<p id="time"> </p>
 <div id="box" style="border: 1px solid darkgrey;width:500px;height:500px;overflow:auto;color:white;">
 
 </div>
 <input id="entry" type="text" name="typezone"> <button id="myBtn" onclick="answer()">Enter</button>
 <script>
     //time machine
+    
 var i = 0;
-function timedCount() {
-    if (play == 1) {
-        i = i + 1;
-    }
-   setTimeout("timedCount()",1000);
-    if (i == t) {
-        document.getElementById('box').innerHTML += "<p>" + text + "</p> </br>";
-        currPos += 1
-    }
-}
+
     //code
     var input = document.getElementById("entry");
     input.addEventListener("keyup", function(event) {
@@ -34,50 +37,139 @@ var t;
 var text;
 var play = 1;
 var pos;
-var currPos;
-var currPath;
+var currPos = 1;
+var currPath = 0;
+var redir;
 function pause() {
     if (play == 1) {
-        play = 0
+        play = 0;
         document.getElementById('box').style.borderWidth = "5px";
         document.getElementById('box').style.borderColor = "darkblue";
         document.getElementById('pause').innerHTML = "Play";
     } else if (play == 0) {
-        play = 1
+        play = 1;
         document.getElementById('box').style.borderWidth = "1px";
         document.getElementById('box').style.borderColor = "darkgrey";
         document.getElementById('pause').innerHTML = "Pause";
     }
 }
-//Tryin' Switch ?
+//Tryin' Switch?
 function next() {
-    switch (currPos) {
+    switch (currPath) {
+        case 0:
+            switch (currPos) {
+                case 1: 
+                    print("[System]Extracting File...", 3);
+                break;
+                case 2: 
+                    print("[System]Error: file not found. New path found. Type 'yes' to re-create the file.", 3);
+                break;
+                case 3:
+                    cAsk("[Warn]The re-creation might be very different from the original lost file.</br>You migth not want to start the process.</br>A 'yes/no' answer is required to start the process.", 2);
+                break;
+                }
+        break;
         case 1:
-    }
+            switch (currPos) {
+                case 4: 
+                    print("[System]Making File from new path...", 3);
+                break;
+                case 5: 
+                    print("[System]Done!", 7);
+                break;
+                case 6:
+                    print("[System]Loading File...", 3);
+                break;
+                case 7:
+                    print("[System]File loaded with succes! </br></br>", 4);
+                break;
+                case 8:
+                    print("[MENU]Hello, I am the menu instance. Unfortunately, I seem to have been made with some lack of options. In fact, I have only one option to offer you. So type 'start', I guess.", 4);
+                break;
+                }
+        break;
+    } 
 }
-
-/*function print(pathValue, position, senderNo, type, sentence, time) {
-    document.getElementById('box').innerHTML += "<p style=\"color=" + color + "\">" + sendtype + sentence + "</p> </br>";
-    currPos++;
-    scipt()
+(function timedCount() {
+    if (play == 1) {
+        i = i + 1;
+        document.getElementById('time').innerHTML = i;
+        if (i == t) {
+            document.getElementById('box').innerHTML += "<p>" + text + "</p>";    
+            currPos += 1;
+            next();
+        }
+    }
+    setTimeout(timedCount,1000);
+})();
+next();
+function print(sentence, time) {
+    text = sentence;
+    t = i + time;
 }
 function cAsk(sentence, time) {
-    document.getElementById('box').innerHTML += "<p>" + sentence + "</p> </br>";
-    r = "yn" 
+    text = sentence;
+    t = i + time;
+    r = "yn"; 
 }
 
 function answer() {
     var x = document.getElementById('entry');
-    var curr = x.value;
+    var curr = x.value.toLowerCase();
     if (r == "yn") {
-        if (curr == "yes" || "Yes" || "Y" || "y") {
-            document.getElementById('entry').value = undefined;
-            path = 1;
-        } else {
-            path = 2;
+        if (curr == "yes" || curr == "yep" || curr == "yeah" || curr == "y") {
+            document.getElementById('entry').value = "";
+            text = curr;
+            document.getElementById('box').innerHTML += "<p style=\"color:cyan\">" + text + "</p>";
+            currPath = 1;
+            console.log(curr);
+            next();
+        } else if (curr == "no" || curr == "nope" || curr == "nop" || curr == "y") {
+            text = curr;
+            document.getElementById('box').innerHTML += "<p style=\"color:cyan\">" + text + "</p>";
+            document.getElementById('box').innerHTML += "<p>[System]Unfortunately, it seems that no altenate path had been unlocked. Redirecting you to Path=1</p>";
+            currPath = 1;
+            console.log(curr);
+            next();
         }
     }
 }
+function save() {
+    
+}
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  var expires = "expires="+d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+function getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for(var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+function checkCookie() {
+  var user = getCookie("username");
+  if (user != "") {
+    alert("Welcome again " + user);
+  } else {
+    user = prompt("Please enter your name:", "");
+    if (user != "" && user != null) {
+      setCookie("username", user, 365);
+    }
+  }
+}
+
+/*
 function dissect() {
     var l;
     var l2
@@ -132,3 +224,6 @@ function script() {
     <button id="save" onclick="save()">Save</button> <button id="pause" onclick="pause()">Pause</button>
     </p>
 </section>
+
+</body>
+</html>
