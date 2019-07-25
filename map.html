@@ -10,9 +10,9 @@
 
 <section style="background-color:black;color:white;">
 
-<h1>
+<p>
     WARNING: This is an adaptation of an old "game", we, as a group of creators composed of myself, serves you the product "as it is",without warranty of any kind, express or implied, including but not limited to the warranty of originality, of fun, or of quality. In no event shall the authors be liable for any claim, bug, damages or other liability, out of or in connection withe the said "game", or the use or other dealings in the said "game".
-</h1>
+</p>
 <p id="time"> </p>
 <div id="box" style="border: 1px solid darkgrey;width:500px;height:500px;overflow:auto;color:white;">
 
@@ -135,12 +135,11 @@ function answer() {
     }
 }
 function save() {
-    
+    setCookie("currPos", currPos);
+    setCookie("currPath", currPath);
+    setCookie("time", i);
 }
-function setCookie(cname, cvalue, exdays) {
-  var d = new Date();
-  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-  var expires = "expires="+d.toUTCString();
+function setCookie(cname, cvalue) {
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 function getCookie(cname) {
@@ -213,15 +212,10 @@ var type = [
     "Info",
     "Warn"
 ]
-function script() {
-    read('print("[System]Extracting File...", 5)');
-    read('print("[System]Error: file not found. New path found. Type \'yes\' to re-create the file.", 8)');
-    read('cAsk("[Warn]The re-creation might be very different from the original lost file.</br>You migth not want to start the process.</br>A \'yes/no\' answer is required to start the process.", 10)');
-    dissect()
-}*/
+*/
 </script>
 <p id="bar" style="position: fixed;bottom:0;left:0;width: 100%;border: 1px solid rgb(70, 70, 70);background-color:grey;color:white;"> 
-    <button id="save" onclick="save()">Save</button> <button id="pause" onclick="pause()">Pause</button>
+    <button id="save" onclick="save()">Save</button> <button id="pause" onclick="pause()">Pause</button> <button id="pause" onclick="pause()">Restart</button> <button id="pause" style="color:red" onclick="pause()">WIPE</button> 
     </p>
 </section>
 
