@@ -14,7 +14,7 @@
     WARNING: This is an adaptation of an old "game", we, as a group of creators composed of myself, serves you the product "as it is",without warranty of any kind, express or implied, including but not limited to the warranty of originality, of fun, or of quality. In no event shall the authors be liable for any claim, bug, damages or other liability, out of or in connection withe the said "game", or the use or other dealings in the said "game".
 </p>
 <p id="time"> </p>
-<div id="box" style="border: 1px solid darkgrey;width:500px;height:500px;overflow:auto;color:white;">
+<div id="box" class="box" style="border: 1px solid darkgrey;width:500px;height:500px;overflow:auto;color:white;position:relative;">
 
 </div>
 <input id="entry" type="text" name="typezone"> <button id="myBtn" onclick="answer()">Enter</button>
@@ -40,6 +40,7 @@ var pos;
 var currPos = 1;
 var currPath = 0;
 var redir;
+var out;
 function pause() {
     if (play == 1) {
         play = 0;
@@ -88,6 +89,15 @@ function next() {
                 break;
                 }
         break;
+        case 2:
+            switch (currPos) {
+                case 4: 
+                print("[System]Unfortunately, it seems that no altenate path had been unlocked. Redirecting you to Path=1</p>", 3);
+                currPath = 1;
+                currPos = 4;
+                break;
+                }
+        break;
     } 
 }
 (function timedCount() {
@@ -119,19 +129,25 @@ function answer() {
     if (r == "yn") {
         if (curr == "yes" || curr == "yep" || curr == "yeah" || curr == "y") {
             document.getElementById('entry').value = "";
-            text = curr;
-            document.getElementById('box').innerHTML += "<p style=\"color:cyan\">" + text + "</p>";
+            out = curr;
+            document.getElementById('box').innerHTML += "<p style=\"color:cyan;\">" + out + "</p>";
             currPath = 1;
             console.log(curr);
             next();
-        } else if (curr == "no" || curr == "nope" || curr == "nop" || curr == "y") {
-            text = curr;
-            document.getElementById('box').innerHTML += "<p style=\"color:cyan\">" + text + "</p>";
-            document.getElementById('box').innerHTML += "<p>[System]Unfortunately, it seems that no altenate path had been unlocked. Redirecting you to Path=1</p>";
-            currPath = 1;
+        } else if (curr == "no" || curr == "nope" || curr == "nop" || curr == "n") {
+            document.getElementById('entry').value = "";
+            out = curr;
+            document.getElementById('box').innerHTML += "<p style=\"color:cyan;\">" + out + "</p>";
+            currPath = 2;
             console.log(curr);
             next();
+        } else {
+            document.getElementById('entry').value = "";
+            out = curr;
+            document.getElementById('box').innerHTML += "<p style=\"color:cyan\">" + out + "</p>";
+            console.log(curr);
         }
+        box.scrollBy(0, 100);
     }
 }
 function save() {
