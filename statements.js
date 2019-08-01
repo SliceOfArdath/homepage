@@ -1,4 +1,4 @@
-var l = 17;
+var l = 20;
 if (window.location.search == '?enhancedmode=true') {
 l++;
 l++;
@@ -23,6 +23,9 @@ var statments = [
 "It's dangerous to go alone! Take <a href='ref.html'><b>this.</b></a>",
 "This satement is false!",
 "Do a set of all sets contain itself ?",
+"You're funny",
+"Please stop",
+"mostly bug free.",
 "Pro tip: the password is someone's name",
 "Did I mention the name was followed by a number between 0 and 9? Oh yeah.",
 "This message will never appear on the top bar, isn't that weird?"
