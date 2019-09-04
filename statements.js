@@ -26,6 +26,7 @@ var statments = [
 "You're funny",
 "Please stop",
 "mostly bug free.",
+"I won't do that if I were you",
 "Pro tip: the password is someone's name",
 "Did I mention the name was followed by a number between 0 and 9? Oh yeah.",
 "This message will never appear on the top bar, isn't that weird?"
