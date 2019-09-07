@@ -120,7 +120,7 @@
     </div>
 </section>
 <p id="secret" style="display:none;"> 
-    <input type="password" id="myPsw"> <button id="myBtn" onclick="myFunction()">Validate</button>   Secret Box ;), here you can access the <a id="locked" href="secret.html" style="display:none;text-decoration:none;color:black;" title="..."><b>Hyper Secret Zone</b></a>
+Secret Box ;), here you can access the <a id="locked" href="secret.html" style="text-decoration:none;color:black;" title="..."><b>Hyper Secret Zone</b></a>
   </p>
   <p id="demo" style="color:white;"></p> 
     <script src="hash.js"></script>
@@ -135,9 +135,7 @@ input.addEventListener("keyup", function(event) {
    document.getElementById("myBtn").click();
   }
 });
-  </script>
-
-  <script>
+/*
     function myFunction() {
   var x = document.getElementById("myPsw");
   var defaultVal = "b64fa3f22c23f62bce4c22c55d79085e5b414b82efb35606068c6ea2f3a62c8e";
