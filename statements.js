@@ -1,4 +1,4 @@
-var l = 20;
+var l = statments.length - 3;
 if (window.location.search == '?enhancedmode=true') {
 l++;
 l++;
