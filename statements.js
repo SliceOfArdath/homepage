@@ -26,6 +26,7 @@ var statments = [
 "You're funny",
 "Please stop",
 "mostly bug free.",
+"<img src="https://crazybandhome.files.wordpress.com/2018/11/img_0630-1.jpg" alt="Random strip yeah!">
 "I won't do that if I were you",
 "Pro tip: the password is someone's name",
 "Did I mention the name was followed by a number between 0 and 9? Oh yeah.",
