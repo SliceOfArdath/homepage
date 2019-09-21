@@ -10,7 +10,6 @@
   #builder {
     display: flex;
     flex-wrap: nowrap;
-    justify-content: space-around;
     height: 100%;
     width: 100%;
     flex-direction: row;
@@ -73,4 +72,5 @@
     cursor: pointer;
     white-space:nowrap;
     border-radius: 1px;
+    margin: 5px;
   }
