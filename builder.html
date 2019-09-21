@@ -108,7 +108,7 @@ function savetext(n) {
   eval("baseItem" + n + ".text = document.getElementById(\"t\"+ baseItem" + n + ".id).value");
   phrasis[n] = eval("baseItem" + n + ".text");
   eval("document.getElementById('baseItem"+ n + "').innerHTML = baseItem" + n + ".text")
-  localStorage.phrasis = phrasis;
+  localStorage.phrasis = JSON.stringify(phrasis);
   //eval("baseItem" + n + ".text = localStorage.baseItem.text" + n);
   console.info("Saved");
 }
