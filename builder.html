@@ -94,7 +94,7 @@ function makeItemBasic() {
   eval("baseItem" + ItemNumber + "= {id:" + ItemNumber + "}");
   document.getElementById("builder").innerHTML += "<div class=\"item\" id=\"" + ItemNumber + "\"><input type=\"text\" id=\"t" + ItemNumber + "\" placeholder=\"Type some text...\"><button onclick=\"savetext(" + ItemNumber + ")\">Save</button></div>";
   console.info("baseItem" + ItemNumber + " creation suceed.");
-  document.getElementById("finalbox").innerHTML += "<div></div>"
+  document.getElementById("finalbox").innerHTML += "<div id=\"Built" + ItemNumber + "\"></div>";
 }
 function savetext(n) {
   eval("baseItem" + n + ".text = document.getElementById(\"t\"+ baseItem" + n + ".id).value");
