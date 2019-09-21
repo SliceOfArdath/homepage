@@ -1,4 +1,4 @@
-#downbar {
+    #downbar {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -6,6 +6,12 @@
     width: 100%;
     background-color:white; 
     color:black;
+  }
+  #builder {
+    display: none;
+    height: 100%;
+    width: 100%;
+    flex-direction: row;
   }
   #topbar {
     position: fixed;
@@ -52,7 +58,6 @@
     align-items: center;
   }
   .item {
-    position: fixed;
     border-style: solid;
     border-width: 1px;
     border-color: rgb(100, 100, 100);
