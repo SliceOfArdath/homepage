@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Where the magic happens!">
+  <meta name="author" content="Delta">
+  <style>
+      #downbar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        height: 50px;
+        width: 100%;
+        background-color:white; 
+        color:black;
+      }
+      #topbar {
+        position: fixed;
+        height: 50px;
+        width: 100%;
+        background-color:white; 
+        color:black;
+        top:0;
+        left:0;
+      }
+      .flex {
+        display: none;
+        height: 100%;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+      .finalbox {
+        border:1px solid darkgrey;
+        width:500px;
+        height:500px;
+        overflow:auto;
+        color:white;
+        background-color: black;
+      }
+      .buttons {
+        border-style: solid;
+        border-width: 5px;
+        border-color: white;
+        display: inline-block;
+        overflow: hidden;
+        text-decoration: none;
+        color: inherit;
+        padding: 10px;
+        text-align: center;
+        background-color: green;
+        cursor: pointer;
+        white-space:nowrap;
+        border-radius: 10px;
+      }
+      .barflex {
+        display: flex;
+        align-items: center;
+      }
+      .item {
+        position: fixed;
+        border-style: solid;
+        border-width: 1px;
+        border-color: rgb(100, 100, 100);
+        display: inline-block;
+        overflow: hidden;
+        text-decoration: none;
+        color: inherit;
+        padding: 10px;
+        text-align: center;
+        background-color: grey;
+        cursor: pointer;
+        white-space:nowrap;
+        border-radius: 1px;
+      }
+      
+  </style>
+</head>
+<body style="background-color: rgb(32, 32, 32)">
+<div id="topbar" class="barflex"> 
+<div>Title:<input type="text" id="title" placeholder="Unnamed auto-generated story"></div> <div>Author:<input type="text" id="author" placeholder="Unspecified"></div> <button class="buttons" onclick="saveTop()">Save</button>
+</div>
+
+<section id="flex" class="flex">
+<hr width="50px" height="50px" style="visibility:hidden;"/>
+<hr width="50px" height="50px" style="visibility:hidden;"/>
+<hr width="50px" height="50px" style="visibility:hidden;"/>
+
+<div class="finalbox">
+<code></code><pre>&lt;!-- This is an auto-generated storysystem used by the tool you used, good luck!-->
+<div id="finalBasic">&lt;!DOCTYPE html>
+&lt;html>
+&lt;head>
+  &lt;meta charset="UTF-8">
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"></div><div id="finalMetas"></div><div id="finalStyle"></div>&lt;/head>
+&lt;body>
+</pre></code>
+</div>
+</section>
+<div id="downbar" class="barflex"> 
+<button class="buttons" onclick="showFinal()">Show/Hide Results</button><button class="buttons" onclick="makeItemBasic()">Summon a new item</button>
+</div>
+
+<section id="builder">
+  
+</section>
+
+<script>
+//load
+var title = "Unnamed auto-generated story";
+var author = "Unspecified";
+var dispfinal = 0;
+var ItemNumber = 0;
+//save retrieval
+if (localStorage.author) {
+  author = localStorage.author;
+} else {
+  localStorage.author = author;
+}
+if (localStorage.title) {
+  title = localStorage.title;
+} else {
+  localStorage.title = title;
+}
+if (localStorage.dispfinal) {
+  dispfinal = Number(localStorage.dispfinal);
+  if (dispfinal == 1) {
+    document.getElementById("flex").style.display = "flex";
+  } else {
+    document.getElementById("flex").style.display = "none";
+  }
+} else {
+  localStorage.dispfinal = dispfinal;
+}
+//first build
+document.getElementById("finalMetas").innerHTML = "  &lt;title>" + title + "&lt;/title>" + "</br>" + "  &lt;meta name=\"author\" content=\"" + author + "\">";
+function showFinal() {
+    if (dispfinal == 0) {
+        document.getElementById("flex").style.display = "flex";
+        console.info("Requested result showing");
+        dispfinal++;
+        localStorage.dispfinal = dispfinal;
+    } else {
+        document.getElementById("flex").style.display = "none";
+        console.info("Requested result hiding");
+        dispfinal--;
+        localStorage.dispfinal = dispfinal;
+    }
+}
+function saveTop() {
+title = document.getElementById("title").value;
+console.info("Changed file title to \"" + title + "\"")
+localStorage.title = title;
+author = document.getElementById("author").value;
+console.info("Changed file author to \"" + author + "\"")
+localStorage.author = author;
+document.getElementById("finalMetas").innerHTML = "  &lt;title>" + title + "&lt;/title>" + "</br>" + "  &lt;meta name=\"author\" content=\"" + author + "\">";
+}
+function makeItemBasic() {
+  ItemNumber++;
+  eval("baseItem" + ItemNumber + "= {id:" + ItemNumber + "}");
+  document.getElementById("builder").innerHTML += "<div class=\"item\" id=\"" + ItemNumber + "\"><input type=\"text\" id=\"t" + ItemNumber + "\" placeholder=\"Type some text...\"><button onclick=\"savetext(" + ItemNumber + ")\">Save</button></div>";
+  console.log("BasicItem" + ItemNumber + " creation suceed.");
+  document.getElementById("finalbox").innerHTML += "<div></div>"
+}
+function savetext(n) {
+  eval("baseItem" + n + ".text = document.getElementById(\"t\"+ baseItem" + n + ".id).value");
+  console.log("Saved");
+}
+</script>
+</body>
+</html>
