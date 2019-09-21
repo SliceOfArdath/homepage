@@ -61,6 +61,11 @@ if (localStorage.title) {
 } else {
   localStorage.title = title;
 }
+if (localStorage.phrasis) {
+  phrasis = JSON.parse('localstorage.phrasis');
+} else {
+   localStorage.phrasis = JSON.stringify('phrasis');
+}
 if (localStorage.dispfinal) {
   dispfinal = Number(localStorage.dispfinal);
   if (dispfinal == 1) {
@@ -107,7 +112,7 @@ function makeItemBasic() {
 function savetext(n) {
   eval("baseItem" + n + ".text = document.getElementById(\"t\"+ baseItem" + n + ".id).value");
   phrasis[n] = eval("baseItem" + n + ".text");
-  eval("document.getElementById('baseItem"+ n + "').innerHTML = baseItem" + n + ".text")
+  eval("document.getElementById('item"+ n + "').innerHTML = baseItem" + n + ".text")
   localStorage.phrasis = JSON.stringify(phrasis);
   //eval("baseItem" + n + ".text = localStorage.baseItem.text" + n);
   console.info("Saved");
