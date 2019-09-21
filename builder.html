@@ -66,7 +66,7 @@ if (localStorage.title) {
   localStorage.title = title;
 }
 if (localStorage.phrasis) {
-  phrasis = JSON.parse(localstorage.phrasis);
+  phrasis = JSON.parse(localstorage["phrasis"]);
 } else {
    localStorage.phrasis = JSON.stringify('phrasis');
 }
