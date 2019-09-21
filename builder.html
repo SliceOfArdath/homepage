@@ -27,7 +27,11 @@
 &lt;body>
 </pre></code>
 </div>
+<div id="finaltext">
+
+</div>
 </section>
+
 <div id="downbar" class="barflex"> 
 <button class="buttons" onclick="showFinal()">Show/Hide Results</button><button class="buttons" onclick="makeItemBasic()">Summon a new item</button>
 </div>
@@ -105,7 +109,7 @@ function makeItemBasic() {
   eval("baseItem" + ItemNumber + "= {id:" + ItemNumber + "}");
   document.getElementById("builder").innerHTML += "<div class=\"item\" id=\"" + ItemNumber + "\"><input type=\"text\" id=\"t" + ItemNumber + "\" placeholder=\"Type some text...\"><button onclick=\"savetext(" + ItemNumber + ")\">Save</button></div>";
   console.info("baseItem" + ItemNumber + " creation suceed.");
-  document.getElementById("finalbox").innerHTML += "<div id=\"item" + ItemNumber + "\"></div>";
+  document.getElementById("finaltext").innerHTML += "<div id=\"item" + ItemNumber + "\"></div>";
   phrasis[ItemNumber] = "0"
   //eval("baseItem" + ItemNumber + " = localStorage.baseItem" + ItemNumber);
 }
