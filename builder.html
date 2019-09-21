@@ -17,7 +17,7 @@
 <hr width="50px" height="50px" style="visibility:hidden;"/>
 <hr width="50px" height="50px" style="visibility:hidden;"/>
 
-<div class="finalbox">
+<div id="finalbox">
 <code></code><pre>&lt;!-- This is an auto-generated storysystem used by the tool you used, good luck!-->
 <div id="finalBasic">&lt;!DOCTYPE html>
 &lt;html>
@@ -91,12 +91,12 @@ function makeItemBasic() {
   ItemNumber++;
   eval("baseItem" + ItemNumber + "= {id:" + ItemNumber + "}");
   document.getElementById("builder").innerHTML += "<div class=\"item\" id=\"" + ItemNumber + "\"><input type=\"text\" id=\"t" + ItemNumber + "\" placeholder=\"Type some text...\"><button onclick=\"savetext(" + ItemNumber + ")\">Save</button></div>";
-  console.log("BasicItem" + ItemNumber + " creation suceed.");
+  console.info("baseItem" + ItemNumber + " creation suceed.");
   document.getElementById("finalbox").innerHTML += "<div></div>"
 }
 function savetext(n) {
   eval("baseItem" + n + ".text = document.getElementById(\"t\"+ baseItem" + n + ".id).value");
-  console.log("Saved");
+  console.info("Saved");
 }
 </script>
 </body>
