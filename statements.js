@@ -4,7 +4,7 @@ l++;
 l++;
     }
 var x = Math.floor(Math.random() * l);
-
+//random satements cus I seemed funny so here it is. Some of them inspired by the Minecraft also random statement thing.
 var statments = [
 "Life is.. wait WHAAAAT???",
 "Existence implies influence, influence implies existence.",
