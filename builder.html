@@ -8,15 +8,16 @@
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body style="background-color: rgb(32, 32, 32)">
+  <!-- Just the place aubout author and title, need to uptdate this to onkeyup event just cus i love active sav- damnit I've done it in NO time -->
 <div id="topbar" class="barflex"> 
-<div>Title: <input type="text" id="title" placeholder="Unnamed auto-generated story"></div><div>  Author: <input type="text" id="author" placeholder="Unspecified"></div> <button class="buttons" onclick="saveTop()">Save</button>
+<div>Title: <input type="text" id="title" placeholder="Unnamed auto-generated story" onkeyup="saveTop()"></div><div>  Author: <input type="text" id="author" placeholder="Unspecified" onkeyup="saveTop()"></div> <button class="buttons" onclick="saveTop()">Save</button>
 </div>
-
+<!-- Love it cus this thing is a nice displayer for the final "code" -->
 <section id="flex" class="flex">
 <hr width="50px" height="50px" style="visibility:hidden;"/>
 <hr width="50px" height="50px" style="visibility:hidden;"/>
 <hr width="50px" height="50px" style="visibility:hidden;"/>
-
+<!-- Actually before was just a thing to make it more visible, here is the box. -->
 <div id="finalbox">
 <code></code><pre>&lt;!-- This is an auto-generated storysystem used by the tool you used, good luck!-->
 <div id="finalBasic">&lt;!DOCTYPE html>
@@ -26,6 +27,7 @@
   &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"></div><div id="finalMetas"></div><div id="finalStyle"></div>&lt;/head>
 &lt;body>
 </pre></code>
+  <!-- The intersting part, each line is one of the boxes -->
 <div id="finaltext">
 
 </div>&lt;/body>
@@ -33,20 +35,22 @@
 </div>
 
 </section>
-
+<!-- The setting bar -->
 <div id="downbar" class="barflex"> 
 <button class="buttons" onclick="showFinal()">Show/Hide Results</button><button class="buttons" onclick="makeItemBasic()">Summon a new item</button>
 </div>
+<!-- This is visibility yeah! -->
 <hr width="50px" height="50px" style="visibility:hidden;"/>
 <hr width="50px" height="50px" style="visibility:hidden;"/>
 <hr width="50px" height="50px" style="visibility:hidden;"/>
 <hr width="50px" height="50px" style="visibility:hidden;"/>
 <hr width="50px" height="50px" style="visibility:hidden;"/>
 <hr width="50px" height="50px" style="visibility:hidden;"/>
+  <!-- Some magic happen here, the box auto build -->
 <section id="builder">
   
 </section>
-
+<!-- where the REAL magic happen. The REAL one. Damnit, looks so cool. Oh, and the comments are somewhat sober after cus the's a lot of things going on-->
 <script>
 //load
 var title = "Unnamed auto-generated story";
@@ -77,21 +81,24 @@ if (localStorage.dispfinal) {
 } else {
   localStorage.dispfinal = dispfinal;
 }
-//first build
+//first build (AKA author and title thing, metas.)
 document.getElementById("finalMetas").innerHTML = "  &lt;title>" + title + "&lt;/title>" + "</br>" + "  &lt;meta name=\"author\" content=\"" + author + "\">";
 function showFinal() {
     if (dispfinal == 0) {
+      //shows "code" box
         document.getElementById("flex").style.display = "flex";
         console.info("Requested result showing");
         dispfinal++;
         localStorage.dispfinal = dispfinal;
     } else {
+      //hides it
         document.getElementById("flex").style.display = "none";
         console.info("Requested result hiding");
         dispfinal--;
         localStorage.dispfinal = dispfinal;
     }
 }
+  //renaming protocol
 function saveTop() {
 title = document.getElementById("title").value;
 console.info("Changed file title to \"" + title + "\"")
@@ -101,21 +108,31 @@ console.info("Changed file author to \"" + author + "\"")
 localStorage.author = author;
 document.getElementById("finalMetas").innerHTML = "  &lt;title>" + title + "&lt;/title>" + "</br>" + "  &lt;meta name=\"author\" content=\"" + author + "\">";
 }
+  //ouch, 
 function makeItemBasic() {
   ItemNumber++;
+  //make the class
   eval("baseItem" + ItemNumber + "= {id:" + ItemNumber + "}");
-  document.getElementById("builder").innerHTML += "<div class=\"item\" id=\"" + ItemNumber + "\"><input type=\"text\" id=\"t" + ItemNumber + "\" placeholder=\"Type some text...\"><button onclick=\"savetext(" + ItemNumber + ")\">Save</button></div>";
+  //box build
+  document.getElementById("builder").innerHTML += "<div class=\"item\" id=\"" + ItemNumber + "\"><input type=\"text\" id=\"t" + ItemNumber + "\" placeholder=\"Type some text...\" onkeyup=\"savetext(" + ItemNumber + ")\"><button onclick=\"savetext(" + ItemNumber + ")\">Save</button></div>";
   console.info("baseItem" + ItemNumber + " creation suceed.");
+  //place text in final zone
   document.getElementById("finaltext").innerHTML += "<div id=\"item" + ItemNumber + "\"></div>";
-  phrasis[ItemNumber] = "0"
-  //eval("baseItem" + ItemNumber + " = localStorage.baseItem" + ItemNumber);
+  phrasis[ItemNumber] = "0";
+  //rebuilds texts because they are breaking ecah time. 
+  for (i,1,ItemNumber-1) {
+    eval("document.getElementById('t"+ ItemNumber + "').value = phrasis[i]");
+  }
 }
 function savetext(n) {
+  //set text value
   eval("baseItem" + n + ".text = document.getElementById(\"t\"+ baseItem" + n + ".id).value");
+  //"Kinda save" (used with localstorage)
   phrasis[n] = eval("baseItem" + n + ".text");
+  //update final text
   eval("document.getElementById('item"+ n + "').innerHTML = baseItem" + n + ".text")
+  //save (broken)
   localStorage.phrasis = JSON.stringify(phrasis);
-  //eval("baseItem" + n + ".text = localStorage.baseItem.text" + n);
   console.info("Saved");
 }
 </script>
