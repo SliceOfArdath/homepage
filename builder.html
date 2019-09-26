@@ -108,7 +108,6 @@ console.info("Changed file author to \"" + author + "\"")
 localStorage.author = author;
 document.getElementById("finalMetas").innerHTML = "  &lt;title>" + title + "&lt;/title>" + "</br>" + "  &lt;meta name=\"author\" content=\"" + author + "\">";
 }
-  //ouch, 
 function makeItemBasic() {
   ItemNumber++;
   //make the class
@@ -119,8 +118,8 @@ function makeItemBasic() {
   //place text in final zone
   document.getElementById("finaltext").innerHTML += "<div id=\"item" + ItemNumber + "\"></div>";
   phrasis[ItemNumber] = "0";
-  //rebuilds texts because they are breaking ecah time. 
-  for (i,1,ItemNumber-1) {
+  //rebuilds texts because they are breaking each time. 
+  for (i;1;ItemNumber-1) {
     eval("document.getElementById('t"+ ItemNumber + "').value = phrasis[i]");
   }
 }
