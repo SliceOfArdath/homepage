@@ -10,7 +10,7 @@
 <body style="background-color: rgb(32, 32, 32)">
   <!-- Just the place aubout author and title, need to uptdate this to onkeyup event just cus i love active sav- damnit I've done it in NO time -->
 <div id="topbar" class="barflex"> 
-<div>Title: <input type="text" id="title" placeholder="Unnamed auto-generated story" onkeyup="saveTop()"></div><div>  Author: <input type="text" id="author" placeholder="Unspecified" onkeyup="saveTop()"></div> <button class="buttons" onclick="saveTop()">Save</button>
+<div>Title: <input type="text" id="title" placeholder="Unnamed auto-generated story" onkeyup="saveTopT()"></div><div>  Author: <input type="text" id="author" placeholder="Unspecified" onkeyup="saveTopA()"></div>
 </div>
 <!-- Love it cus this thing is a nice displayer for the final "code" -->
 <section id="flex" class="flex">
@@ -99,14 +99,17 @@ function showFinal() {
     }
 }
   //renaming protocol
-function saveTop() {
+function saveTopT() {
 title = document.getElementById("title").value;
-console.info("Changed file title to \"" + title + "\"")
+console.info("Auto-saved story title")
 localStorage.title = title;
+document.getElementById("finalMetas").innerHTML = "  &lt;title>" + title + "&lt;/title>" + "</br>" + "  &lt;meta name=\"author\" content=\"" + author + "\">"; 
+}
+function saveTopA() {
 author = document.getElementById("author").value;
-console.info("Changed file author to \"" + author + "\"")
+console.info("Auto-saved story author name")
 localStorage.author = author;
-document.getElementById("finalMetas").innerHTML = "  &lt;title>" + title + "&lt;/title>" + "</br>" + "  &lt;meta name=\"author\" content=\"" + author + "\">";
+document.getElementById("finalMetas").innerHTML = "  &lt;title>" + title + "&lt;/title>" + "</br>" + "  &lt;meta name=\"author\" content=\"" + author + "\">";  
 }
 function makeItemBasic() {
   ItemNumber++;
