@@ -57,9 +57,7 @@ var title = "Unnamed auto-generated story";
 var author = "Unspecified";
 var dispfinal = 0;
 var ItemNumber = 0;
-var phrasis = [
-"0"
-];
+var phrasis = [];
 //save retrieval
 if (localStorage.author) {
   author = localStorage.author;
@@ -81,8 +79,13 @@ if (localStorage.dispfinal) {
 } else {
   localStorage.dispfinal = dispfinal;
 }
+//pretty much working retrive system
 if (localStorage.phrasis) {
   phrasis = JSON.parse(localStorage.getItem("phrasis"));
+  for (i = 0; i < phrasis.length; i++) {
+    makeItemBasic();
+
+  }
 } else {
   localStorage.phrasis = JSON.stringify(pharsis);
 }
@@ -117,7 +120,7 @@ localStorage.author = author;
 document.getElementById("finalMetas").innerHTML = "  &lt;title>" + title + "&lt;/title>" + "</br>" + "  &lt;meta name=\"author\" content=\"" + author + "\">";  
 }
 function makeItemBasic() {
-  ItemNumber++;
+
   //make the class
   eval("baseItem" + ItemNumber + "= {id:" + ItemNumber + "}");
   //box build
@@ -131,6 +134,7 @@ function makeItemBasic() {
   for (i = 1; i < ItemNumber; i++) {
     eval("document.getElementById('t"+ i + "').value = phrasis[i]");
   }
+  ItemNumber++;
 }
 function savetext(n) {
   //set text value
