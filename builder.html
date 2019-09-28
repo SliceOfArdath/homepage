@@ -124,7 +124,7 @@ function makeItemBasic() {
   //rebuilds texts because they are breaking each time. 
   var i;
   for (i = 1; i < ItemNumber-1; i++) {
-    eval("document.getElementById('t"+ ItemNumber + "').value = phrasis[i]");
+    eval("document.getElementById('t"+ i + "').value = phrasis[i]");
   }
 }
 function savetext(n) {
