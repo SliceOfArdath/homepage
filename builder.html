@@ -84,8 +84,8 @@ if (localStorage.phrasis) {
   phrasis = JSON.parse(localStorage.getItem("phrasis"));
   for (i = 0; i < phrasis.length; i++) {
     makeItemBasic();
-    eval("baseItem" + i + ".text = document.getElementById(\"t\"+ baseItem" + i + ".id).value");
-    eval("document.getElementById('item"+ i + "').innerHTML = baseItem" + i + ".text")
+    eval("baseItem" + i + ".text = phrasis[i]");
+    eval("document.getElementById('item"+ i + "').innerHTML = phrasis[i]")
     eval("document.getElementById('t"+ i + "').value = phrasis[i]");
   }
 } else {
@@ -138,7 +138,7 @@ function makeItemBasic() {
 }
 function savetext(n) {
   //set text value
-  eval("baseItem" + n + ".text = document.getElementById(\"t\"+ baseItem" + n + ".id).value");
+  eval("baseItem" + n + ".text = document.getElementById('t" + n + "').value");
   //"Kinda save" (used with localstorage)
   phrasis[n] = eval("baseItem" + n + ".text");
   //update final text
