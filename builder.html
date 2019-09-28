@@ -132,7 +132,7 @@ function makeItemBasic() {
   document.getElementById("finaltext").innerHTML += "<div id=\"item" + ItemNumber + "\"></div>";
   //rebuilds texts because they are breaking each time. 
   var i;
-  for (i = 1; i < ItemNumber; i++) {
+  for (i = 0; i < ItemNumber; i++) {
     eval("document.getElementById('t"+ i + "').value = phrasis[i]");
   }
   ItemNumber++;
