@@ -123,7 +123,7 @@ function makeItemBasic() {
   phrasis[ItemNumber] = "0";
   //rebuilds texts because they are breaking each time. 
   var i;
-  for (i = 1; i < ItemNumber-1; i++) {
+  for (i = 1; i < ItemNumber; i++) {
     eval("document.getElementById('t"+ i + "').value = phrasis[i]");
   }
 }
