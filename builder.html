@@ -84,7 +84,9 @@ if (localStorage.phrasis) {
   phrasis = JSON.parse(localStorage.getItem("phrasis"));
   for (i = 0; i < phrasis.length; i++) {
     makeItemBasic();
-
+    eval("baseItem" + i + ".text = document.getElementById(\"t\"+ baseItem" + i + ".id).value");
+    eval("document.getElementById('item"+ i + "').innerHTML = baseItem" + i + ".text")
+    eval("document.getElementById('t"+ i + "').value = phrasis[i]");
   }
 } else {
   localStorage.phrasis = JSON.stringify(pharsis);
@@ -143,7 +145,7 @@ function savetext(n) {
   phrasis[n] = eval("baseItem" + n + ".text");
   //update final text
   eval("document.getElementById('item"+ n + "').innerHTML = baseItem" + n + ".text")
-  //save (broken)
+  //save (half working)
   localStorage.phrasis = JSON.stringify(phrasis);
   console.info("Saved");
 }
