@@ -81,6 +81,11 @@ if (localStorage.dispfinal) {
 } else {
   localStorage.dispfinal = dispfinal;
 }
+if (localStorage.phrasis) {
+  phrasis = JSON.parse(localStorage.getItem("phrasis"));
+} else {
+  localStorage.phrasis = JSON.stringify(pharsis);
+}
 //first build (AKA author and title thing, metas.)
 document.getElementById("finalMetas").innerHTML = "  &lt;title>" + title + "&lt;/title>" + "</br>" + "  &lt;meta name=\"author\" content=\"" + author + "\">";
 function showFinal() {
