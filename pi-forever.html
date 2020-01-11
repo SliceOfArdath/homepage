@@ -55,11 +55,13 @@
         v--;
         localStorage.v = v;
         console.log("Wrong digit!");
-        if(v==0) {
+        if(v<0) {
           document.getElementById("digit").style.display = "none";
           document.getElementById("dis").innerHTML += "<span style='color:red;'>"+pi.substr(i,8)+"</span>";
           alert("Score:"+(i+1))
           localStorage.i = 0;
+          v=5;
+          localStorage.v=5;
           if(i>r) {
             alert("New high score!")
           }
