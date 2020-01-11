@@ -42,6 +42,8 @@
         console.log("Wrong digit!");
         if(v==0) {
           document.getElementById("digit").style.display = "none";
+          document.getElementById("dis").innerHTML += "<span style='color:red;'>"+pi.substr(i,8)+"</span>";
+          alert("Score:"+(i+1))
         }
       }
       document.getElementById("digit").value = "";
