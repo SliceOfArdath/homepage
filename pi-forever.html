@@ -22,6 +22,7 @@
   <pre id="flexy">
     <div><span id="dis">3.</span><input type="text" id="digit" size="1" oninput="checkDigit()" value=''></div>
     <div></div>
+    <div id="strch">Check a string... <input type="text" id="string" oninput="checkStr()" value=''></div>
   </p>
   <script>
     var i=0;
@@ -48,6 +49,17 @@
       }
       document.getElementById("digit").value = "";
     }
+  function checkStr() {
+    var d=document.getElementById("digit").value
+    var f=-1;
+    f=pi.indexOf(d);
+    if(f!=-1) {
+      alert("String found at"+f)
+    } else {
+      alert("String not found")
+    }
+    
+  }
   </script>
 </body>
 </html> 
