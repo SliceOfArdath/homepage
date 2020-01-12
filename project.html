@@ -282,6 +282,9 @@
       "For him to come",
       "Have a good day, don't think of what I said, and..."
     ];
+    var events = [
+      "print("Who are you?","0","0",0,0)"
+    ];
     var l = sent.length;
     function next() {
       if (i<l) {
@@ -302,6 +305,7 @@
   </div>
 
   <script>
+var r= -1;
     if (localStorage.i) {
       i = Number(localStorage.i);
       document.getElementById("bt").innerHTML = sent[i-1];
@@ -321,10 +325,33 @@
     var input = document.getElementById("bt");
 input.addEventListener("keyup", function(event) {
   if (event.keyCode === 13) {
-   event.preventDefault();
-   document.getElementById("bt").click();
+    event.preventDefault();
+    if(r==-1) {
+      document.getElementById("bt").click();
+    } else {
+      document.getElementById("one").click();
+    }
   }
 });
+function second() {
+  if(r<events.lenght) {
+    r++;
+    eval(events[r]);
+    console.log("You are useless and everyone hates you");
+  }
+}
+function print(se,bc,tc,st,i) {
+  if(bc!="0") {
+    
+  }
+  if(tc!="0") {
+    "<span style='color:"+tc+";'>"+se+"</span>"=se;
+  }
+  if(st!=0) {
+    "<strong>"+se+"</strong>";
+  }
+  document.getElementById("one").innerHTML = se;
+}
 
   </script>
 </body>
