@@ -320,7 +320,7 @@ var r= -1;
     } else {
       localStorage.i = 0;
       i = 0;
-      console.log("No Save Found, starting from begging.");
+      console.log("No save found, starting from begging.");
     }
     var input = document.getElementById("bt");
 input.addEventListener("keyup", function(event) {
@@ -345,10 +345,10 @@ function print(se,bc,tc,st,i) {
     
   }
   if(tc!="0") {
-    "<span style='color:"+tc+";'>"+se+"</span>"=se;
+    se="<span style='color:"+tc+";'>"+se+"</span>";
   }
   if(st!=0) {
-    "<strong>"+se+"</strong>";
+    se="<strong>"+se+"</strong>";
   }
   document.getElementById("one").innerHTML = se;
 }
