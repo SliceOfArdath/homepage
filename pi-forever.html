@@ -73,31 +73,32 @@
         i++;
         console.log("Digit number "+(i+1)+" is "+pi.substr(i,1));
         localStorage.i = i;
-        document.getElementsByClassName("digit").classList.add("true");
+        /*document.getElementsByClassName("digit").classList.add("true");
         setTimeout(function() { 
           document.getElementsByClassName("digit").classList.add("default");
           document.getElementsByClassName("digit").classList.remove("true"); 
         },200);
         setTimeout(function() { 
           document.getElementsByClassName("digit").classList.remove("default");
-        },400);
+        },400);*/
         if(i/100==Math.floor(i)) {
           v+=5;
           localStorage.v = v;
         }
         document.getElementById("dis").innerHTML += d;
+        document.getElementById("digit").value = "";
       } else {
         v--;
         localStorage.v = v;
         console.log("Wrong digit!");
-        document.getElementsByClassName("digit").classList.add("wrong");
+        /*document.getElementsByClassName("digit").classList.add("wrong");
         setTimeout(function() {
           document.getElementsByClassName("digit").classList.add("default");
           document.getElementsByClassName("digit").classList.remove("wrong");
         },200);
         setTimeout(function() {
           document.getElementsByClassName("digit").classList.remove("default");
-        },400);
+        },400);*/
         if(v<0) {
           document.getElementById("digit").style.display = "none";
           document.getElementById("dis").innerHTML += "<span style='color:red;'>"+pi.substr(i,8)+"</span>";
@@ -110,6 +111,7 @@
           }
           localStorage.r = i;
         }
+        document.getElementById("digit").value = "";
       }
       document.getElementById("digit").value = "";
     }
