@@ -298,6 +298,7 @@
 <body style="background-color:black; color:white;">
   <div class="flexbox">
     <button id="bt" class="bt" onclick="next()">Press me!</button>
+    <button class="bt" id="one" style="background-color:blue;display:none;" onclick="second()">Hello.</button>
   </div>
 
   <script>
@@ -308,10 +309,14 @@
         document.getElementById("bt").innerHTML = "Press me!";
       }
       console.log(i);
+      if(i>=l) {
+        document.getElementById("bt").style.display = "none";
+        document.getElementById("one").style.display = "inline-block";
+      }
     } else {
       localStorage.i = 0;
       i = 0;
-      console.log("No Save Found");
+      console.log("No Save Found, starting from begging.");
     }
     var input = document.getElementById("bt");
 input.addEventListener("keyup", function(event) {
@@ -320,6 +325,7 @@ input.addEventListener("keyup", function(event) {
    document.getElementById("bt").click();
   }
 });
+
   </script>
 </body>
 </html>
