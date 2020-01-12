@@ -69,51 +69,52 @@
     } 
     console.log("Digit number "+(i+1)+" is "+pi.substr(i,1));
     function checkDigit() {
+      var x=document.getElementsByClassName("digit");
       var d=document.getElementById("digit").value;
-      if(pi.substr(i,1)==d) {
-        i++;
-        console.log("Digit number "+(i+1)+" is "+pi.substr(i,1));
-        localStorage.i = i;
-        /*document.getElementsByClassName("digit").classList.add("true");
-        setTimeout(function() { 
-          document.getElementsByClassName("digit").classList.add("default");
-          document.getElementsByClassName("digit").classList.remove("true"); 
-        },200);
-        setTimeout(function() { 
-          document.getElementsByClassName("digit").classList.remove("default");
-        },400);*/
-        if(i/100==Math.floor(i)) {
-          v+=5;
-          localStorage.v = v;
-        }
-        document.getElementById("dis").innerHTML += d;
-        document.getElementById("digit").value = "";
-      } else {
-        v--;
-        localStorage.v = v;
-        console.log("Wrong digit!");
-        /*document.getElementsByClassName("digit").classList.add("wrong");
-        setTimeout(function() {
-          document.getElementsByClassName("digit").classList.add("default");
-          document.getElementsByClassName("digit").classList.remove("wrong");
-        },200);
-        setTimeout(function() {
-          document.getElementsByClassName("digit").classList.remove("default");
-        },400);*/
-        if(v<0) {
-          document.getElementById("digit").style.display = "none";
-          document.getElementById("dis").innerHTML += "<span style='color:red;'>"+pi.substr(i,8)+"</span>";
-          alert("Score:"+(i+1));
-          localStorage.i = 0;
-          v=5;
-          localStorage.v=5;
-          if(i>r) {
-            alert("New high score!");
+      if(d.length==1 && parseInt(d)>= -1 && parseInt(d)<= 9) {
+        if(pi.substr(i,1)==d) {
+          i++;
+          console.log("Digit number "+(i+1)+" is "+pi.substr(i,1));
+          localStorage.i = i;
+          /*x.classList.add("true");
+          /*setTimeout(function() { 
+            document.getElementsByClassName("digit").classList.add("default");
+            document.getElementsByClassName("digit").classList.remove("true"); 
+          },200);
+          setTimeout(function() { 
+            document.getElementsByClassName("digit").classList.remove("default");
+          },400);*/
+          if(i/100==Math.floor(i)) {
+            v+=5;
+            localStorage.v = v;
           }
-          localStorage.r = i;
+          document.getElementById("dis").innerHTML += d;
+        } else {
+          v--;
+          localStorage.v = v;
+          console.log("Wrong digit!");
+          /*x.classList.add("wrong");
+          /*setTimeout(function() {
+            document.getElementsByClassName("digit").classList.add("default");
+            document.getElementsByClassName("digit").classList.remove("wrong");
+          },200);
+          setTimeout(function() {
+            document.getElementsByClassName("digit").classList.remove("default");
+          },400);*/
+          if(v<0) {
+            document.getElementById("digit").style.display = "none";
+            document.getElementById("dis").innerHTML += "<span style='color:red;'>"+pi.substr(i,8)+"</span>";
+            alert("Score:"+(i+1));
+            localStorage.i = 0;
+            v=5;
+            localStorage.v=5;
+            if(i>r) {
+              alert("New high score!");
+            }
+            localStorage.r = i;
+          }
         }
-        document.getElementById("digit").value = "";
-      }
+      } 
       document.getElementById("digit").value = "";
     }
   function checkStr() {
