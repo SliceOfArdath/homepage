@@ -293,7 +293,7 @@
         document.getElementById("bt").innerHTML = "Goodbye :)";
       }
       i++;
-      localStorage.i = i;
+      localStorage.it = i;
       console.log(i);
     }
   </script>
@@ -306,8 +306,8 @@
 
   <script>
 var r= -1;
-    if (localStorage.i) {
-      i = Number(localStorage.i);
+    if (localStorage.it) {
+      i = Number(localStorage.it);
       document.getElementById("bt").innerHTML = sent[i-1];
       if (i == 0) {
         document.getElementById("bt").innerHTML = "Press me!";
@@ -318,7 +318,7 @@ var r= -1;
         document.getElementById("one").style.display = "inline-block";
       }
     } else {
-      localStorage.i = 0;
+      localStorage.it = 0;
       i = 0;
       console.log("No save found, starting from begging.");
     }
