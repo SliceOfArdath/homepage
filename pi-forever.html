@@ -16,11 +16,38 @@
       width:100%;
       height:100%;
     }
+    #digit {
+    background-color:white;
+    }
+    .digit.wrong {
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+    background-color:red;
+    }
+    .digit.true {
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+    backgroud-color:green;
+    }
+    .digit.default {
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+    background-color:white;
+    }
   </style>
 </head>
 <body style="background-color:black;color:white">
   <pre id="flexy">
-    <div><span id="dis">3.</span><input type="text" id="digit" size="1" oninput="checkDigit()" value=''></div>
+    <div><span id="dis">3.</span><input type="text" class="digit" id="digit" size="1" oninput="checkDigit()" value=''></div>
     <div></div>
     <div id="strch">Check a string... <input type="text" id="string" value=''><button onclick="checkStr()">Search</button></div>
   </p>
@@ -40,42 +67,62 @@
       r = Number(localStorage.r);
     } 
     console.log("Digit number "+(i+1)+" is "+pi.substr(i,1));
-    function checkDigit(){
-      var d=document.getElementById("digit").value
+    function checkDigit() {
+      var d=document.getElementById("digit").value;
       if(pi.substr(i,1)==d) {
         i++;
         console.log("Digit number "+(i+1)+" is "+pi.substr(i,1));
         localStorage.i = i;
+        /*document.getElementsByClassName("digit").classList.add("true");
+        setTimeout(function() { 
+          document.getElementsByClassName("digit").classList.add("default");
+          document.getElementsByClassName("digit").classList.remove("true"); 
+        },200);
+        setTimeout(function() { 
+          document.getElementsByClassName("digit").classList.remove("default");
+        },400);*/
         if(i/100==Math.floor(i)) {
           v+=5;
           localStorage.v = v;
         }
         document.getElementById("dis").innerHTML += d;
+        document.getElementById("digit").value = "";
       } else {
         v--;
         localStorage.v = v;
         console.log("Wrong digit!");
-        if(v==0) {
+        /*document.getElementsByClassName("digit").classList.add("wrong");
+        setTimeout(function() {
+          document.getElementsByClassName("digit").classList.add("default");
+          document.getElementsByClassName("digit").classList.remove("wrong");
+        },200);
+        setTimeout(function() {
+          document.getElementsByClassName("digit").classList.remove("default");
+        },400);*/
+        if(v<0) {
           document.getElementById("digit").style.display = "none";
           document.getElementById("dis").innerHTML += "<span style='color:red;'>"+pi.substr(i,8)+"</span>";
-          alert("Score:"+(i+1))
+          alert("Score:"+(i+1));
           localStorage.i = 0;
+          v=5;
+          localStorage.v=5;
           if(i>r) {
             alert("New high score!");
           }
           localStorage.r = i;
         }
+        document.getElementById("digit").value = "";
       }
       document.getElementById("digit").value = "";
     }
   function checkStr() {
-    var d=document.getElementById("string").value
+    var d=document.getElementById("string").value;
     var f=-1;
     f=pi.indexOf(d);
     if(f!=(-1)) {
-      alert("String found at pos "+(f+1))
+      alert("String found at pos "+(f+1));
     } else {
-      alert("String not found")
+      alert("String not found");
     }
   }
   </script>
