@@ -16,11 +16,28 @@
       width:100%;
       height:100%;
     }
+    #digit {
+    background-color:white;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+    }
+    .digit.wrong {
+    background-color:red;
+    }
+    .digit.true {
+    backgroud-color:green;
+    }
+    .digit.default {
+    background-color:white;
+    }
   </style>
 </head>
 <body style="background-color:black;color:white">
   <pre id="flexy">
-    <div><span id="dis">3.</span><input type="text" id="digit" size="1" oninput="checkDigit()" value=''></div>
+    <div><span id="dis">3.</span><input type="text" class="digit" id="digit" size="1" oninput="checkDigit()" value=''></div>
     <div></div>
     <div id="strch">Check a string... <input type="text" id="string" value=''><button onclick="checkStr()">Search</button></div>
   </p>
@@ -46,6 +63,9 @@
         i++;
         console.log("Digit number "+(i+1)+" is "+pi.substr(i,1));
         localStorage.i = i;
+        document.getElementsByClassName"digit").classList.add("true");
+        setTimeout(function() { document.getElementsByClassName"digit").classList.add("default"); document.getElementsByClassName"digit").classList.remove("true"); },200);
+        setTimeout(function() { document.getElementsByClassName"digit").classList.remove("default"); },400);
         if(i/100==Math.floor(i)) {
           v+=5;
           localStorage.v = v;
@@ -55,6 +75,9 @@
         v--;
         localStorage.v = v;
         console.log("Wrong digit!");
+        document.getElementsByClassName"digit").classList.add("wrong");
+        setTimeout(function() { document.getElementsByClassName"digit").classList.add("default"); document.getElementsByClassName"digit").classList.remove("wrong"); },200);
+        setTimeout(function() { document.getElementsByClassName"digit").classList.remove("default"); },400);
         if(v<0) {
           document.getElementById("digit").style.display = "none";
           document.getElementById("dis").innerHTML += "<span style='color:red;'>"+pi.substr(i,8)+"</span>";
