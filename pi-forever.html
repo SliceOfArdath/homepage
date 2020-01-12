@@ -68,6 +68,9 @@
     if (localStorage.r) {
       r = Number(localStorage.r);
     } 
+    if (localStorage.fail) {
+      fail = Number(localStorage.fail);
+    } 
     console.log("Digit number "+(i+1)+" is "+pi.substr(i,1));
     function checkDigit() {
       var x=document.getElementsByClassName("digit");
@@ -77,6 +80,10 @@
           i++;
           console.log("Digit number "+(i+1)+" is "+pi.substr(i,1));
           localStorage.i = i;
+          document.getElementById("digit").style.backgroundColor = "green";
+          setTimeout(function() {
+            document.getElementById("digit").style.backgroundColor = "white";
+          },300);
           /*x.classList.add("true");
           /*setTimeout(function() { 
             document.getElementsByClassName("digit").classList.add("default");
@@ -95,11 +102,17 @@
             document.getElementById("dis").innerHTML += "<span style='color:orange;'>"+d+"</span>";
           }
           fail=0;
+          localStorage.fail = fail;
         } else {
           v--;
           localStorage.v = v;
           fail=1;
+          localStorage.fail = fail;
           console.log("Wrong digit!");
+          document.getElementById("digit").style.backgroundColor = "red";
+          setTimeout(function() {
+            document.getElementById("digit").style.backgroundColor = "white";
+          },300);
           /*x.classList.add("wrong");
           /*setTimeout(function() {
             document.getElementsByClassName("digit").classList.add("default");
@@ -116,6 +129,7 @@
             v=5;
             localStorage.v=5;
             fail=0;
+            localStorage.fail = fail;
             if(i>r) {
               alert("New high score!");
             }
