@@ -73,8 +73,8 @@
         i++;
         console.log("Digit number "+(i+1)+" is "+pi.substr(i,1));
         localStorage.i = i;
-        document.getElementsByClassName("digit").classList.add("true");
-        /*setTimeout(function() { 
+        /*document.getElementsByClassName("digit").classList.add("true");
+        setTimeout(function() { 
           document.getElementsByClassName("digit").classList.add("default");
           document.getElementsByClassName("digit").classList.remove("true"); 
         },200);
@@ -91,8 +91,8 @@
         v--;
         localStorage.v = v;
         console.log("Wrong digit!");
-        document.getElementsByClassName("digit").classList.add("wrong");
-        /*setTimeout(function() {
+        /*document.getElementsByClassName("digit").classList.add("wrong");
+        setTimeout(function() {
           document.getElementsByClassName("digit").classList.add("default");
           document.getElementsByClassName("digit").classList.remove("wrong");
         },200);
