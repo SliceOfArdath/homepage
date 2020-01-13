@@ -8,13 +8,11 @@
   <style>
     .flexZone {
       display:flex;
-      flex-direction:column; 
+      flex-direction:row; 
       flex-wrap:wrap;
       align-items:flex-start;
       align-content:space-around;
       word-wrap:normal;
-      width:100%;
-      height:100%;
     }
     #digit {
     background-color:white;
@@ -44,6 +42,7 @@
     transition: all 0.2s;
     background-color:white;
     }
+
   </style>
 </head>
 <body style="background-color:black;color:white">
@@ -51,6 +50,7 @@
     <div><span id="dis">3.</span><input type="text" class="digit" id="digit" size="1" oninput="checkDigit()" value=''></div>
     <div><button id="iron" onclick="ironify()">Enable Iron Man mode!</button></div>
     <div id="strch">Check a string... <input type="text" id="string" value=''><button onclick="checkStr()">Search</button></div>
+    <div id="ach" class='flexZone'></div>
   </p>
   <script>
     var i=0;
@@ -158,6 +158,20 @@
       document.getElementById("iron").innerHTML = "<span style='color:red;'>Disable Iron Man mode!</span>";
     }
   }
+  function getAch(id) {
+    document.getElementById("ach").innerHTML = "<div class='achbox'>"+achieves[id].name+"</br>";
+    document.getElementById("ach").innerHTML = "<span style='color:grey;'>"+achieves[id].comm+"</span></br>";
+  }
+  function Achivement(name, commentary, digit, mode, obtained) {
+    this.name = name;
+    this.comm = commentary;
+    this.req = digit;
+    this.mode = mode;
+    this.got = obtained;
+  }
+  var achieves = [
+    Achivement('Sart something, start somewhere', '"It ain\'t much, but it\'s honest work."', 10, 0, false)
+  ];
   </script>
 </body>
 </html> 
