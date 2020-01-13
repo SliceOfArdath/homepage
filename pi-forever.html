@@ -42,7 +42,9 @@
     transition: all 0.2s;
     background-color:white;
     }
-
+    .achbox {
+      border: 3px solid green;
+    }
   </style>
 </head>
 <body style="background-color:black;color:white">
@@ -71,6 +73,10 @@
     } 
     if (localStorage.fail) {
       fail = Number(localStorage.fail);
+    } 
+    if (localStorage.achGot) {
+      achGot = Number(localStorage.achGot);
+      loadAch
     } 
     console.log("Digit number "+(i+1)+" is "+pi.substr(i,1));
     function checkDigit() {
@@ -136,6 +142,13 @@
               alert("New high score!");
             }
             localStorage.r = i;
+            for (let range = 0; range < achieves.length-achGot.length+1; range++) {
+              if(achieves[range].digit>=i && achieves[range].mode==iron) {
+                achieves[range].obtained = true;
+                getAch(range);
+                achGot+=1;
+              }
+            }
           }
         }
       } 
@@ -160,7 +173,10 @@
   }
   function getAch(id) {
     document.getElementById("ach").innerHTML = "<div class='achbox'>"+achieves[id].name+"</br>";
-    document.getElementById("ach").innerHTML = "<span style='color:grey;'>"+achieves[id].comm+"</span></br>";
+    document.getElementById("ach").innerHTML = "<span style='color:grey;'><i>"+achieves[id].comm+"</i></span></div>";
+  }
+  function loadAch() {
+    
   }
   function Achivement(name, commentary, digit, mode, obtained) {
     this.name = name;
@@ -170,8 +186,17 @@
     this.got = obtained;
   }
   var achieves = [
-    Achivement('Sart something, start somewhere', '"It ain\'t much, but it\'s honest work."', 10, 0, false)
+    Achivement('Sart something, start somewhere', '"It ain\'t much, but it\'s honest work."', 5, 0, false),
+    Achivement('Good work', 'Go on. You can do this. I believe in you.', 10, 0, false),
+    Achivement('25 bugs on a wall,', 'take one, patch it up, 28 bugs on a wall.', 25, 0, false),
+    Achivement('A few pounds of potatoes', '"Your stomach growls."', 50, 0, false),
+    Achivement('When the digits start coming and they don\'t stop.', '"Nice."', 69, 0, false),
+    Achivement('A new place', 'Don\'t be afraid.', 75, 0, false),
+    Achivement('Going somewhere', '"Your journey is long, but you are fullfilled with determination to reach the end."', 100, 0, false),
+    Achivement('Oh.', 'It\'s you.', 125, 0, false),
+    Achivement('A milestone', '"There is a big rock near the road. You take a short break on its shadow"', 150, 0, false)
   ];
+  var achGot = "";
   </script>
 </body>
 </html> 
