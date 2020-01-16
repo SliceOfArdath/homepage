@@ -8,7 +8,7 @@
   <style>
     .flexZone {
       display:flex;
-      flex-direction:row; 
+      flex-direction:column; 
       flex-wrap:wrap;
       align-items:flex-start;
       align-content:space-around;
@@ -43,7 +43,8 @@
     background-color:white;
     }
     .achbox {
-      border: 3px solid green;
+      margin: 3px;
+      border: 1px solid green;
     }
   </style>
 </head>
@@ -55,7 +56,7 @@
     <div id="ach" class='flexZone'></div>
   </p>
   <script>
-    console.log("V:1.5.6")
+    console.log("V:1.5.7")
     var i=0;
     var v=5;
     var r=0;
@@ -174,8 +175,7 @@
     }
   }
   function getAch(id) {
-    document.getElementById("ach").innerHTML += "<div class='achbox'>"+achieves[id].name+"</br>";
-    document.getElementById("ach").innerHTML += "<span style='color:grey;'><i>"+achieves[id].comm+"</i></span></div>";
+    document.getElementById("ach").innerHTML += "<div class='achbox'>"+achieves[id].name+"</br><span style='color:grey;'><i>"+achieves[id].comm+"</i></span></div>";
   }
   function loadAch() {
     
