@@ -139,13 +139,11 @@
             fail=0;
             localStorage.fail = fail;
             for (let range = 0; range < achieves.length; range++) {
-              if(achieves[range].digit<=i) {
+              if(achieves[range].req<=i) {
                 achieves[range].obtained = true;
                 console.log("Achivement obtained!")
                 getAch(range);
                 achGot+="1";
-              } else {
-                console.log("Achivement still locked")
               }
             }
             if(i>r) {
@@ -202,7 +200,7 @@
     eval("achieves.push(a"+number+");");
   }
   var achGot = "";
-  console.log("V:1.5.4")
+  console.log("V:1.5.5")
   </script>
 </body>
 </html> 
