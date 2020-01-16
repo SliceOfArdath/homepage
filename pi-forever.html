@@ -143,8 +143,9 @@
             }
             localStorage.r = i;
             for (let range = 0; range < achieves.length-achGot.length; range++) {
-              if(achieves[range].digit>=i && achieves[range].mode==iron) {
+              if(achieves[range].digit<=i && achieves[range].mode==0) {
                 achieves[range].obtained = true;
+                console.log("Achivement obtained!")
                 getAch(range);
                 achGot+="1";
               }
