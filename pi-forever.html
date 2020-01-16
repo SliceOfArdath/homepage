@@ -55,6 +55,7 @@
     <div id="ach" class='flexZone'></div>
   </p>
   <script>
+    console.log("V:1.5.6")
     var i=0;
     var v=5;
     var r=0;
@@ -173,8 +174,8 @@
     }
   }
   function getAch(id) {
-    document.getElementById("ach").innerHTML = "<div class='achbox'>"+achieves[id].name+"</br>";
-    document.getElementById("ach").innerHTML = "<span style='color:grey;'><i>"+achieves[id].comm+"</i></span></div>";
+    document.getElementById("ach").innerHTML += "<div class='achbox'>"+achieves[id].name+"</br>";
+    document.getElementById("ach").innerHTML += "<span style='color:grey;'><i>"+achieves[id].comm+"</i></span></div>";
   }
   function loadAch() {
     
@@ -200,7 +201,6 @@
     eval("achieves.push(a"+number+");");
   }
   var achGot = "";
-  console.log("V:1.5.5")
   </script>
 </body>
 </html> 
