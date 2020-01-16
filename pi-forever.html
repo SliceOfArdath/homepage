@@ -138,18 +138,20 @@
             localStorage.v=v;
             fail=0;
             localStorage.fail = fail;
-            if(i>r) {
-              alert("New high score!");
-            }
-            localStorage.r = i;
             for (let range = 0; range < achieves.length; range++) {
               if(achieves[range].digit<=i) {
                 achieves[range].obtained = true;
                 console.log("Achivement obtained!")
                 getAch(range);
                 achGot+="1";
+              } else {
+                console.log("Achivement still locked")
               }
             }
+            if(i>r) {
+              alert("New high score!");
+            }
+            localStorage.r = i;
           }
         }
       } 
@@ -200,7 +202,7 @@
     eval("achieves.push(a"+number+");");
   }
   var achGot = "";
-  console.log("V:1.5.3")
+  console.log("V:1.5.4")
   </script>
 </body>
 </html> 
