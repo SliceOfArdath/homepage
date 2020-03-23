@@ -285,7 +285,9 @@
       "Have a good day, don't think of what I said, and..."
     ];
     var events = [
-      "print('Who are you?','0','0',0,0)"
+      "print('I'm.. not sure I kow you.','0','0',0,0)",
+      "print('Who are you?','0','0',0,0)",
+      "print('...','0','0',0,0)"
     ];
     var l = sent.length;
     function next() {
@@ -330,13 +332,14 @@
       e = e || event;
       if (e.code == "Enter") {
         //e.preventDefault();
-        document.getElementById("bt").click();
-        //if (r == -1) { document.getElementById("bt").click(); } 
-        //else { document.getElementById("one").click(); }
+        //document.getElementById("bt").click();
+        if (r == -1) { document.getElementById("bt").click(); } 
+        else { document.getElementById("one").click(); }
       }
     });
     function second() {
-      if (r < events.lenght) {
+      console.log(2); 
+      if (r < events.length) {
         r++;
         eval(events[r]);
         console.log("You are useless and everyone hates you");
