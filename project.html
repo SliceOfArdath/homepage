@@ -1,4 +1,5 @@
 <html>
+
 <head>
   <title>The Button</title>
   <meta charset="UTF-8">
@@ -14,10 +15,11 @@
       text-align: center;
       background-color: green;
       cursor: pointer;
-      white-space:nowrap;
+      white-space: nowrap;
       margin: auto;
       border-radius: 5px;
     }
+
     .flexbox {
       display: flex;
       justify-content: center;
@@ -287,7 +289,7 @@
     ];
     var l = sent.length;
     function next() {
-      if (i<l) {
+      if (i < l) {
         document.getElementById("bt").innerHTML = sent[i];
       } else {
         document.getElementById("bt").innerHTML = "Goodbye :)";
@@ -298,6 +300,7 @@
     }
   </script>
 </head>
+
 <body style="background-color:black; color:white;">
   <div class="flexbox">
     <button id="bt" class="bt" onclick="next()">Press me!</button>
@@ -305,15 +308,15 @@
   </div>
 
   <script>
-var r= -1;
+    var r = -1;
     if (localStorage.it) {
       i = Number(localStorage.it);
-      document.getElementById("bt").innerHTML = sent[i-1];
+      document.getElementById("bt").innerHTML = sent[i - 1];
       if (i == 0) {
         document.getElementById("bt").innerHTML = "Press me!";
       }
       console.log(i);
-      if(i>=l) {
+      if (i >= l) {
         document.getElementById("bt").style.display = "none";
         document.getElementById("one").style.display = "inline-block";
       }
@@ -323,37 +326,36 @@ var r= -1;
       console.log("No save found, starting from begging.");
     }
     var input = document.getElementById("bt");
-input.addEventListener("keyup", function(e) {
-  e = e || event;
-  if (e.code == "Enter") {
-    event.preventDefault();
-    if(r==-1) {
-      document.getElementById("bt").click();
-    } else {
-      document.getElementById("one").click();
+    document.addEventListener("keyup", function (e) {
+      e = e || event;
+      if (e.code == "Enter") {
+        //e.preventDefault();
+        document.getElementById("bt").click();
+        //if (r == -1) { document.getElementById("bt").click(); } 
+        //else { document.getElementById("one").click(); }
+      }
+    });
+    function second() {
+      if (r < events.lenght) {
+        r++;
+        eval(events[r]);
+        console.log("You are useless and everyone hates you");
+      }
     }
-  }
-});
-function second() {
-  if(r<events.lenght) {
-    r++;
-    eval(events[r]);
-    console.log("You are useless and everyone hates you");
-  }
-}
-function print(se,bc,tc,st,i) {
-  if(bc!="0") {
-    
-  }
-  if(tc!="0") {
-    se="<span style='color:"+tc+";'>"+se+"</span>";
-  }
-  if(st!=0) {
-    se="<strong>"+se+"</strong>";
-  }
-  document.getElementById("one").innerHTML = se;
-}
+    function print(se, bc, tc, st, i) {
+      if (bc != "0") {
+
+      }
+      if (tc != "0") {
+        se = "<span style='color:" + tc + ";'>" + se + "</span>";
+      }
+      if (st != 0) {
+        se = "<strong>" + se + "</strong>";
+      }
+      document.getElementById("one").innerHTML = se;
+    }
 
   </script>
 </body>
+
 </html>
