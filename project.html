@@ -324,7 +324,7 @@ var r= -1;
     }
     var input = document.getElementById("bt");
 input.addEventListener("keyup", function(event) {
-  if (event.keyCode === 13) {
+  if (event.code === "Enter") {
     event.preventDefault();
     if(r==-1) {
       document.getElementById("bt").click();
