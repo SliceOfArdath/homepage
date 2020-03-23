@@ -285,9 +285,9 @@
       "Have a good day, don't think of what I said, and..."
     ];
     var events = [
-      "print('I'm.. not sure I kow you.','0','0',0,0)",
-      "print('Who are you?','0','0',0,0)",
-      "print('...','0','0',0,0)"
+      "print('I\\'m.. not sure I know you.','0','0',0,0);",
+      "print('Who are you?','0','0',0,0);",
+      "print('...','0','0',0,0);"
     ];
     var l = sent.length;
     function next() {
@@ -346,15 +346,9 @@
       }
     }
     function print(se, bc, tc, st, i) {
-      if (bc != "0") {
-
-      }
-      if (tc != "0") {
-        se = "<span style='color:" + tc + ";'>" + se + "</span>";
-      }
-      if (st != 0) {
-        se = "<strong>" + se + "</strong>";
-      }
+      if (bc != "0") {  }
+      if (tc != "0") { se = "<span style='color:" + tc + ";'>" + se + "</span>"; }
+      if (st != 0) { se = "<strong>" + se + "</strong>"; }
       document.getElementById("one").innerHTML = se;
     }
 
