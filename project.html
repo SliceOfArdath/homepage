@@ -315,6 +315,11 @@
       "print('...','red','black',0,0);",
       "print('Don\\'t trust him.','0','black',0,0);",
       "print('...','cyan','0',0,0);",
+      "print('Ouch...','0','0',0,0);",
+      "print('My head...','0','0',0,0);",
+      "print('I hurts...','0','0',0,0);",
+      "print('What...','0','0',0,0);",
+      "print('What happened?','0','0',0,0);",
     ];
     var l = sent.length;
     function next() {
@@ -339,8 +344,8 @@
     function plsw() {
       var audio = new Audio('switchsound.mp3');
       audio.play();
-      document.body.style.backgroundColor = red;
-      setTimeout(document.body.style.backgroundColor = red, 1000/60)
+      //document.body.style.backgroundColor = red;
+      //setTimeout("document.body.style.backgroundColor = black;", 1000/60)
     }
     var r = -1;
     if (localStorage.it) {
