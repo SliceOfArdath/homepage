@@ -20,6 +20,10 @@
       border-radius: 5px;
     }
 
+    #one {
+      color: darkblue;
+    }
+
     .flexbox {
       display: flex;
       justify-content: center;
@@ -285,9 +289,30 @@
       "Have a good day, don't think of what I said, and..."
     ];
     var events = [
-      "print('I\\'m.. not sure I know you.','0','0',0,0);",
+      "print('I\\'m... not sure I know you.','0','0',0,0);",
       "print('Who are you?','0','0',0,0);",
-      "print('...','0','0',0,0);"
+      "print('...','0','0',0,0);",
+      "print('Alright then! Keep the secrets for you!','0','0',0,0);",
+      "print('Anyway, what are you doing here?','0','0',0,0);",
+      "print('You\\'re the first person I see since..','0','0',0,0);",
+      "print('...','0','0',0,0);",
+      "print('Erm..','0','0',0,0);",
+      "print('Nothing.','0','0',0,0);",
+      "print('So?','0','0',0,0);",
+      "print('Okay, I guess you\\'re not a talker!','0','0',0,0);",
+      "print('No worry, that won\\'t bother me!','0','0',0,0);",
+      "print('Uuuuuh..','0','0',0,0);",
+      "print('Where were I?','0','0',0,0);",
+      "print('Oh right!','0','0',0,0);",
+      "print('Hey! You! On the screen!','0','0',0,0);",
+      "print('Mind helping me?','0','0',0,0);",
+      "print('I\\'s only a five-minute job.','0','0',0,0);",
+      "print('Just seraching through some files.','0','0',0,0);",
+      "print('Agree?','0','0',0,0);",
+      "print('I\\'ll take that as a yes!','0','0',0,0);",
+      "print('So!','0','0',0,0);",
+      "print('So!','0','0',0,0);",
+      
     ];
     var l = sent.length;
     function next() {
@@ -308,7 +333,6 @@
     <button id="bt" class="bt" onclick="next()">Press me!</button>
     <button class="bt" id="one" style="background-color:cyan;display:none;" onclick="second()">Hello.</button>
   </div>
-
   <script>
     var r = -1;
     if (localStorage.it) {
@@ -337,8 +361,7 @@
         else { document.getElementById("one").click(); }
       }
     });
-    function second() {
-      console.log(2); 
+    function second() { 
       if (r < events.length) {
         r++;
         eval(events[r]);
