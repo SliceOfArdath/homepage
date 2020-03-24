@@ -369,6 +369,9 @@
       //document.body.style.backgroundColor = red;
       //setTimeout("document.body.style.backgroundColor = black;", 1000/60)
     }
+    var context = new (window.AudioContext || window.webkitAudioContext)();
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    var context = new AudioContext();
     var noiseBuffer = null;
     var context;
     window.addEventListener('load', init, false);
