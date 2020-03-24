@@ -311,8 +311,10 @@
       "print('Agree?','0','0',0,0);",
       "print('I\\'ll take that as a yes!','0','0',0,0);",
       "print('So!','0','0',0,0);",
-      "print('So!','0','0',0,0);",
-      
+      "print('It\\'ll be really simple!','0','0',0,0);",
+      "print('...','red','black',0,0);",
+      "print('Don\\'t trust him.','0','black',0,0);",
+      "print('...','cyan','0',0,0);",
     ];
     var l = sent.length;
     function next() {
@@ -334,6 +336,12 @@
     <button class="bt" id="one" style="background-color:cyan;display:none;" onclick="second()">Hello.</button>
   </div>
   <script>
+    function plsw() {
+      var audio = new Audio('switchsound.mp3');
+      audio.play();
+      document.body.style.backgroundColor = red;
+      setTimeout(document.body.style.backgroundColor = red, 1000/60)
+    }
     var r = -1;
     if (localStorage.it) {
       i = Number(localStorage.it);
@@ -357,11 +365,11 @@
       if (e.code == "Enter") {
         //e.preventDefault();
         //document.getElementById("bt").click();
-        if (r == -1) { document.getElementById("bt").click(); } 
+        if (r == -1) { document.getElementById("bt").click(); }
         else { document.getElementById("one").click(); }
       }
     });
-    function second() { 
+    function second() {
       if (r < events.length) {
         r++;
         eval(events[r]);
@@ -369,12 +377,11 @@
       }
     }
     function print(se, bc, tc, st, i) {
-      if (bc != "0") {  }
+      if (bc != "0") { document.getElementById("one").style.backgroundColor = bc; plsw(); }
       if (tc != "0") { se = "<span style='color:" + tc + ";'>" + se + "</span>"; }
       if (st != 0) { se = "<strong>" + se + "</strong>"; }
       document.getElementById("one").innerHTML = se;
     }
-
   </script>
 </body>
 
