@@ -16,7 +16,7 @@
       background-color: green;
       cursor: pointer;
       white-space: nowrap;
-      margin: auto;
+      margin: 0px;
       border-radius: 5px;
     }
 
@@ -320,6 +320,25 @@
       "print('I hurts...','0','0',0,0);",
       "print('What...','0','0',0,0);",
       "print('What happened?','0','0',0,0);",
+      "print('Erm...','0','0',0,0);",
+      "print('It\\'s like...','0','0',0,0);",
+      "print('Like someone crushed my head between two rocks.','0','0',0,0);",
+      "print('...','0','0',0,0);",
+      "print('Painful.','0','0',0,0);",
+      "print('...','0','0',0,0);",
+      "print('Anyway.','0','0',0,0);",
+      "print('Where were I, already?','0','0',0,0);",
+      "print('I...','0','0',0,0);",
+      "print('Ouch...','0','0',0,0);",
+      "print('You know what?','0','0',0,0);",
+      "print('The \\'thing\\' that just occured.','0','0',0,0);",
+      "print('I'm quite sure it never happened before.','0','0',0,0);",
+      "print('Before you arrived.','0','0',0,0);",
+      "print('Ain\\'t that <i>fun</i>.','0','0',0,0);",
+      "print('Who are you?','0','0',1,0);",
+      "print('Nah, just kidding!','0','0',0,0);",
+      "print('I won\\'t be anywhere near suspicious for tha-','0','0',0,0);",
+      "print('...','red','black',0,0);"
     ];
     var l = sent.length;
     function next() {
@@ -336,16 +355,42 @@
 </head>
 
 <body style="background-color:black; color:white;">
-  <div class="flexbox">
+  <div class="flexbox" id="box">
     <button id="bt" class="bt" onclick="next()">Press me!</button>
     <button class="bt" id="one" style="background-color:cyan;display:none;" onclick="second()">Hello.</button>
   </div>
+  <script src="madlib.js"></script>
   <script>
     function plsw() {
       var audio = new Audio('switchsound.mp3');
       audio.play();
+      startWig(.3, 5);
       //document.body.style.backgroundColor = red;
       //setTimeout("document.body.style.backgroundColor = black;", 1000/60)
+    }
+    var box = document.getElementById("box");
+    function startWig(tim, pow) { time = 0; wigsize = pow; wigtime = 60 * tim; wiggle(); }
+    var wigsize = 0;
+    var wigtime = 0;
+    var time = 0;
+    function wiggle() {
+      if (wigtime > time) {
+        time++;
+        var n = rand.int(1, 8);
+        //console.log(n);
+        if (n == 1) { box.style.marginLeft = wigsize + "px"; }
+        else if (n == 2) { box.style.marginLeft = "0px"; }
+        else if (n == 3) { box.style.marginRight = wigsize + "px"; }
+        else if (n == 4) { box.style.marginRight = "0px"; }
+        else if (n == 5) { box.style.marginTop = wigsize + "px"; }
+        else if (n == 6) { box.style.marginTop = "0px"; }
+        else if (n == 7) { box.style.marginBottom = wigsize + "px"; }
+        else if (n == 8) { box.style.marginBottom = "0px"; }
+        //console.log(box.style.margin);
+        setTimeout(wiggle, 100 / 60);
+      } else {
+        box.style.margin = "0px";
+      }
     }
     var r = -1;
     if (localStorage.it) {
@@ -385,6 +430,7 @@
       if (bc != "0") { document.getElementById("one").style.backgroundColor = bc; plsw(); }
       if (tc != "0") { se = "<span style='color:" + tc + ";'>" + se + "</span>"; }
       if (st != 0) { se = "<strong>" + se + "</strong>"; }
+      if (i != 0) { se = "<i>" + se + "</i>"; }
       document.getElementById("one").innerHTML = se;
     }
   </script>
