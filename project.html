@@ -397,6 +397,14 @@
       request.send();
     }
     loadNoiseSound("switchsound.mp3");
+    // Create a gain node.
+    var gainNode = context.createGain();
+    // Connect the source to the gain node.
+    source.connect(gainNode);
+    // Connect the gain node to the destination.
+    gainNode.connect(context.destination);
+    // Reduce the volume.
+    gainNode.gain.value = 2;
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     var context = new AudioContext();
     function playSound(buffer) {
