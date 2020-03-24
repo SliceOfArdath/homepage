@@ -389,7 +389,7 @@
       request.onload = function () {
         context.decodeAudioData(request.response, function (buffer) {
           noiseBuffer = buffer;
-        }, onError);
+        }/*, onError*/);
       }
       request.send();
     }
