@@ -59,7 +59,7 @@ var sound = {
             window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
         } catch (e) { alert('Web Audio API is not supported in this browser'); }
     },
-    load: function (url, bufferName, gain = 1) {
+    load: function (url, bufferName) {
         window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
         var request = new XMLHttpRequest();
         request.open('GET', url, true);
