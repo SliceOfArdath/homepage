@@ -52,6 +52,7 @@ var rand = {
 }
 
 var sound = {
+    bank = null,
     init: function () {
         try {
             // Fix up for prefixing
@@ -66,7 +67,7 @@ var sound = {
         // Decode asynchronously
         request.onload = function () {
             context.decodeAudioData(request.response, function (buffer) {
-                eval("window." + bufferName + "= buffer;");
+                eval("sound.bank." + bufferName + "= buffer;");
                 /*// Create a gain node.
                 var gainNode = context.createGain();
                 // Connect the source to the gain node.
