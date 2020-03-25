@@ -71,10 +71,16 @@ var sound = {
                 eval("sound.bank." + bufferName + "= buffer;");
             }/*, onError*/);
         }
+        eval("sound.sources." + bufferName + " = sound.createSource(sound.bank." + bufferName + ");");
+        //eval("sound.sources." + bufferName + ".gainNode.gain.value = vol * vol;");
         request.send();
     },
-    toogleLoop: function (bufferName) {
-        eval("sound.sources." + buffer + ".source.loop = true;");
+    toogleLoop: function (buffer) {
+        /*if (this.source.loop) { this.source.loop = false; }
+        else { this.source.loop = true; }*/
+        //eval("sound.sources." + buffer + ".source.loop = false;");
+        if (eval("sound.sources." + buffer + ".source.loop == true;")==true) { eval("sound.sources." + buffer + ".source.loop = false;"); }
+        else { eval("sound.sources." + buffer + ".source.loop = true;"); }
     },
     gain: function (bufferName, vol) {
         window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
@@ -91,8 +97,6 @@ var sound = {
     play: function (buffer, vol = 1) {
         window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
         var source = context.createBufferSource();
-        eval("sound.sources." + buffer + " = sound.createSource(sound.bank." + buffer + ");");
-        eval("sound.sources." + buffer + ".gainNode.gain.value = vol * vol;");
         eval("sound.sources." + buffer + ".source.start(0);");
         /*// creates a sound source
         source.buffer = buffer;
