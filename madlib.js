@@ -53,51 +53,51 @@ var rand = {
 
 var sound = {
     init: function () {
-      try {
-        // Fix up for prefixing
-        window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
-      } catch (e) { alert('Web Audio API is not supported in this browser'); }
+        try {
+            // Fix up for prefixing
+            window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
+        } catch (e) { alert('Web Audio API is not supported in this browser'); }
     },
-    load: function (url, bufferName, gain=1) {
+    load: function (url, bufferName, gain = 1) {
         window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
         var request = new XMLHttpRequest();
         request.open('GET', url, true);
         request.responseType = 'arraybuffer';
         // Decode asynchronously
         request.onload = function () {
-          context.decodeAudioData(request.response, function (buffer) {
-            eval("window."+bufferName+"= buffer;");
-            // Create a gain node.
-            var gainNode = context.createGain();
-            // Connect the source to the gain node.
-            source.connect(gainNode);
-            // Connect the gain node to the destination.
-            gainNode.connect(context.destination);
-            // Reduce the volume.
-            gainNode.gain.value = gain;
-          }/*, onError*/);
-            
-        }
-        request.send();
-      },
-      /*gain: function (buffer, gain) {
-                // Create a gain node.
+            context.decodeAudioData(request.response, function (buffer) {
+                eval("window." + bufferName + "= buffer;");
+                /*// Create a gain node.
                 var gainNode = context.createGain();
                 // Connect the source to the gain node.
                 source.connect(gainNode);
                 // Connect the gain node to the destination.
                 gainNode.connect(context.destination);
                 // Reduce the volume.
-                gainNode.gain.value = gain;
-      },*/
-      play: function (buffer) {
+                gainNode.gain.value = gain;*/
+            }/*, onError*/);
+
+        }
+        request.send();
+    },
+    /*gain: function (buffer, gain) {
+              // Create a gain node.
+              var gainNode = context.createGain();
+              // Connect the source to the gain node.
+              source.connect(gainNode);
+              // Connect the gain node to the destination.
+              gainNode.connect(context.destination);
+              // Reduce the volume.
+              gainNode.gain.value = gain;
+    },*/
+    play: function (buffer) {
         window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
         var source = context.createBufferSource(); // creates a sound source
         source.buffer = buffer;                    // tell the source which sound to play
         source.connect(context.destination);       // connect the source to the context's destination (the speakers)
         source.start(0);                           // play the source now
         // note: on older systems, may have to use deprecated noteOn(time);
-      }
+    }
 }
 window.addEventListener('load', sound.init, false);
 var bubble = {
@@ -107,7 +107,7 @@ var bubble = {
         generalBehavior: 0,
         generalRangeEffect: 0,
         restricted: false,
-        restrictions: {xMin: 0, xMax: 1, yMin: 0, yMax: 1}
+        restrictions: { xMin: 0, xMax: 1, yMin: 0, yMax: 1 }
     },
     restrict: function (x1, x2, y1, y2) {
         bubble.settings.restrictions.xMin = x1; bubble.settings.restrictions.xMax = x2; bubble.settings.restrictions.yMin = y1; bubble.settings.restrictions.yMax = y2; bubble.settings.restricted = true;
@@ -143,8 +143,8 @@ var bubble = {
         if (bubble.data[i].angle > pi) { bubble.data[i].angle -= 2 * pi; }
         if (bubble.data[i].angle < -pi) { bubble.data[i].angle += 2 * pi; }
         x = bubble.data[i].x; y = bubble.data[i].y;
-        x += Math.cos(mix(bubble.data[i].angle, cAngle, (1 / norme * bubble.settings.rangeEffectArea * .1) * rangeEffect)) * t * (bubble.data[i].speed + rangeEffect * (1 / ((1 / bubble.settings.rangeEffectArea) * norme**2 + 1)));
-        y += Math.sin(mix(bubble.data[i].angle, cAngle, (1 / norme * bubble.settings.rangeEffectArea * .1) * rangeEffect)) * t * (bubble.data[i].speed + rangeEffect * (1 / ((1 / bubble.settings.rangeEffectArea) * norme**2 + 1)));
+        x += Math.cos(mix(bubble.data[i].angle, cAngle, (1 / norme * bubble.settings.rangeEffectArea * .1) * rangeEffect)) * t * (bubble.data[i].speed + rangeEffect * (1 / ((1 / bubble.settings.rangeEffectArea) * norme ** 2 + 1)));
+        y += Math.sin(mix(bubble.data[i].angle, cAngle, (1 / norme * bubble.settings.rangeEffectArea * .1) * rangeEffect)) * t * (bubble.data[i].speed + rangeEffect * (1 / ((1 / bubble.settings.rangeEffectArea) * norme ** 2 + 1)));
         if (this.settings.restricted) {
             /*
             if (bubble.settings.restrictions.xMin >= x || bubble.settings.restrictions.xMax <= x) { bubble.data[i].angle = pi - bubble.data[i].angle; }
@@ -167,8 +167,8 @@ var text = {
     letter: function (ltr) { eval(this.to + " += ltr;"); },
     pointer: 0,
     string: [],
-    startSay: function(str) { eval(this.to + " = '';"); text.pointer = 0; text.string = str.split(''); text.say(); },
-    say: function () { if (text.string.length > text.pointer) { text.letter(text.string[text.pointer]); effect(); text.pointer++; setTimeout(text.say, 1000/text.lps); } }
+    startSay: function (str) { eval(this.to + " = '';"); text.pointer = 0; text.string = str.split(''); text.say(); },
+    say: function () { if (text.string.length > text.pointer) { text.letter(text.string[text.pointer]); effect(); text.pointer++; setTimeout(text.say, 1000 / text.lps); } }
 }
 var cursor = {
     enable: false,
@@ -182,7 +182,7 @@ var key = {
     restrictions: function (x1, x2, y1, y2) {
         key.border.xMin = x1; key.border.xMax = x2; key.border.yMin = y1; key.border.yMax = y2; key.restrict = true;
     },
-    border: {xMin: 0, xMax: 1, yMin: 0, yMax: 1},
+    border: { xMin: 0, xMax: 1, yMin: 0, yMax: 1 },
     pos: {
         x: 100,
         y: 100
@@ -204,7 +204,7 @@ document.addEventListener("keydown", function (e) {
 document.addEventListener("keyup", function (e) {
     e = e || event; // to deal with IE
     eval("key.val." + e.code + " = e.type == 'keydown'");
-    if (event.code=="Escape") { pause() }
+    if (event.code == "Escape") { pause() }
 });
 function keymotion() {
     var t = 0;
