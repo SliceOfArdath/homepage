@@ -73,6 +73,9 @@ var sound = {
         }
         request.send();
     },
+    toogleLoop: function (bufferName) {
+        eval("sound.sources." + buffer + ".source.loop = true;");
+    }
     gain: function (bufferName, vol) {
         window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
         var source = context.createBufferSource();
