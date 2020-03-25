@@ -96,7 +96,7 @@ var sound = {
         gainNode.connect(context.destination);
         // Reduce the volume.
         gainNode.gain.value = vol * vol;
-        source.loop = true;
+        //source.loop = true;
         source.start(0);
         gainNode.gain.value = vol * vol;                           // play the source now
         // note: on older systems, may have to use deprecated noteOn(time);
