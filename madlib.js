@@ -59,7 +59,7 @@ var sound = {
             window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
         } catch (e) { alert('Web Audio API is not supported in this browser'); }
     },
-    load: function (url, bufferName,) {
+    load: function (url, bufferName, ) {
         window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
         var request = new XMLHttpRequest();
         request.open('GET', url, true);
@@ -84,21 +84,26 @@ var sound = {
         // Reduce the volume.
         gainNode.gain.value = vol;
     },
-    play: function (buffer, vol=1) {
+    play: function (buffer, vol = 1) {
         window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
-        var source = context.createBufferSource(); // creates a sound source
-        source.buffer = buffer;                    // tell the source which sound to play
-        source.connect(context.destination);       // connect the source to the context's destination (the speakers)
-        var gainNode = context.createGain();
-        // Connect the source to the gain node.
-        source.connect(gainNode);
-        // Connect the gain node to the destination.
-        gainNode.connect(context.destination);
-        // Reduce the volume.
-        gainNode.gain.value = vol * vol;
-        //source.loop = true;
+        var source = context.createBufferSource();
+        // creates a sound source
+        source.buffer = buffer;
+        // tell the source which sound to play
+        source.connect(context.destination);
+        if (vol == 1) {
+            // connect the source to the context's destination (the speakers)
+            var gainNode = context.createGain();
+            // Connect the source to the gain node.
+            source.connect(gainNode);
+            // Connect the gain node to the destination.
+            gainNode.connect(context.destination);
+            // Reduce the volume.
+            gainNode.gain.value = vol * vol;
+            //source.loop = true;
+        }
         source.start(0);
-        gainNode.gain.value = vol * vol;                           // play the source now
+        // play the source now
         // note: on older systems, may have to use deprecated noteOn(time);
     }
 }
