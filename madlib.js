@@ -52,7 +52,7 @@ var rand = {
 }
 
 var sound = {
-    bank = null,
+    bank: null,
     init: function () {
         try {
             // Fix up for prefixing
