@@ -341,7 +341,8 @@
       "print('...','red','black',0,0);",
       "print('You\\'re talking to them right now?','0','black',0,0);",
       "print('...','0','black',0,0);",
-      "print('Yes you are.','0','black',0,0);"
+      "print('Yes you are.','0','black',0,0);",
+      "print('You.','0','black',0,0);",
     ];
     var l = sent.length;
     function next() {
@@ -369,8 +370,8 @@
       playSound(noiseBuffer);
       //audio.play();
       startWig(.4, 5);
-      //document.body.style.backgroundColor = red;
-      //setTimeout("document.body.style.backgroundColor = black;", 1000/60)
+      document.getElementById("body").style.backgroundColor = "#00FFFF";
+      setTimeout(document.getElementById('body').style.backgroundColor = '#000000', 1000/60)
     }
     var context = new (window.AudioContext || window.webkitAudioContext)();
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
