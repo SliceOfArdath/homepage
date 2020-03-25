@@ -53,6 +53,7 @@ var rand = {
 
 var sound = {
     bank: {},
+    sources: {},
     init: function () {
         try {
             // Fix up for prefixing
@@ -87,7 +88,10 @@ var sound = {
     play: function (buffer, vol = 1) {
         window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
         var source = context.createBufferSource();
-        // creates a sound source
+        eval("sound.sources" + buffer + " = createSource(sound.bank" + buffer + ");");
+        eval("sound.sources" + buffer + ".gainNode.gain.value = vol * vol;");
+        eval("sound.sources" + buffer + ".start(0);");
+        /*// creates a sound source
         source.buffer = buffer;
         // tell the source which sound to play
         source.connect(context.destination);
@@ -105,6 +109,21 @@ var sound = {
         source.start(0);
         // play the source now
         // note: on older systems, may have to use deprecated noteOn(time);
+        */
+    },
+    createSource: function (buffer) {
+        var source = context.createBufferSource();
+        var gainNode = context.createGain ? context.createGain() : context.createGainNode();
+        source.buffer = buffer;
+        // Connect source to gain.
+        source.connect(gainNode);
+        // Connect gain to destination.
+        gainNode.connect(context.destination);
+
+        return {
+            source: source,
+            gainNode: gainNode
+        };
     }
 }
 window.addEventListener('load', sound.init, false);
