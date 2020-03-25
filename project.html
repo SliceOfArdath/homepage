@@ -344,7 +344,7 @@
       "print('Yes you are.');",
       "print('Be aware.');",
       "print('They are not what they pretend to be.');",
-      "print('AAAAAAAARRRG.','cyan','blue'); sound.play(sound.bank.noise);",
+      "print('AAAAAAAARRRG.','cyan','blue'); sound.play(sound.bank.noise, 0.2);",
       "print('WHAT.');",
       "print('WHAT THE FRICK IS HAPPENING TO ME.');",
       "print('PAIN.');",
@@ -374,9 +374,10 @@
   </div>
   <script src="madlib.js"></script>
   <script>
-    sound.init();
+    var version = "1.2.0";
+    console.warn(version);
     sound.load("switchsound.mp3","swit");
-    sound.load("noise.mp3",'noise',0.2);
+    sound.load("noise.mp3",'noise');
     //var noise = null;
     //var swit = null;
     function plsw() {
