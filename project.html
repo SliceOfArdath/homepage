@@ -332,7 +332,7 @@
       "print('Ouch...','0','0',0,0);",
       "print('You know what?','0','0',0,0);",
       "print('The \\'thing\\' that just occured.','0','0',0,0);",
-      "print('I'm quite sure it never happened before.','0','0',0,0);",
+      "print('I\\'m quite sure it never happened before.','0','0',0,0);",
       "print('Before you arrived.','0','0',0,0);",
       "print('Ain\\'t that <i>fun</i>.','0','0',0,0);",
       "print('Who are you?','0','0',1,0);",
@@ -416,7 +416,7 @@
       gainNode.gain.value = 2;
     }
     var box = document.getElementById("box");
-    function startWig(tim, pow) { time = 0; wigsize = pow; wigtime = 60 * tim; wiggle(); }
+    function startWig(tim, pow) { time = 0; wigsize = pow; wigtime = 100 * tim; wiggle(); }
     var wigsize = 0;
     var wigtime = 0;
     var time = 0;
@@ -434,7 +434,7 @@
         else if (n == 7) { box.style.marginBottom = wigsize + "px"; }
         else if (n == 8) { box.style.marginBottom = "0px"; }
         //console.log(box.style.margin);
-        setTimeout(wiggle, 100 / 60);
+        setTimeout(wiggle, 1000 / 100);
       } else {
         box.style.margin = "0px";
       }
