@@ -63,21 +63,11 @@ var sound = {
         window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
         var request = new XMLHttpRequest();
         request.open('GET', url, true);
-        var source = context.createBufferSource();
-        source.connect(context.destination);
         request.responseType = 'arraybuffer';
         // Decode asynchronously
         request.onload = function () {
             context.decodeAudioData(request.response, function (buffer) {
                 eval("sound.bank." + bufferName + "= buffer;");
-                // Create a gain node.
-                var gainNode = context.createGain();
-                // Connect the source to the gain node.
-                source.connect(gainNode);
-                // Connect the gain node to the destination.
-                gainNode.connect(context.destination);
-                // Reduce the volume.
-                gainNode.gain.value = vol;
             }/*, onError*/);
         }
         request.send();
@@ -94,21 +84,18 @@ var sound = {
         // Reduce the volume.
         gainNode.gain.value = vol;
     },
-    /*gain: function (buffer, gain) {
-              // Create a gain node.
-              var gainNode = context.createGain();
-              // Connect the source to the gain node.
-              source.connect(gainNode);
-              // Connect the gain node to the destination.
-              gainNode.connect(context.destination);
-              // Reduce the volume.
-              gainNode.gain.value = gain;
-    },*/
     play: function (buffer) {
         window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
         var source = context.createBufferSource(); // creates a sound source
         source.buffer = buffer;                    // tell the source which sound to play
         source.connect(context.destination);       // connect the source to the context's destination (the speakers)
+        var gainNode = context.createGain();
+        // Connect the source to the gain node.
+        source.connect(gainNode);
+        // Connect the gain node to the destination.
+        gainNode.connect(context.destination);
+        // Reduce the volume.
+        gainNode.gain.value = vol;
         source.start(0);                           // play the source now
         // note: on older systems, may have to use deprecated noteOn(time);
     }
