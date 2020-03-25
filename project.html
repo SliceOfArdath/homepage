@@ -397,14 +397,7 @@
       request.send();
     }
     loadNoiseSound("switchsound.mp3");
-    // Create a gain node.
-    var gainNode = context.createGain();
-    // Connect the source to the gain node.
-    source.connect(gainNode);
-    // Connect the gain node to the destination.
-    gainNode.connect(context.destination);
-    // Reduce the volume.
-    gainNode.gain.value = 2;
+
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     var context = new AudioContext();
     function playSound(buffer) {
@@ -413,6 +406,14 @@
       source.connect(context.destination);       // connect the source to the context's destination (the speakers)
       source.start(0);                           // play the source now
       // note: on older systems, may have to use deprecated noteOn(time);
+      // Create a gain node.
+      var gainNode = context.createGain();
+      // Connect the source to the gain node.
+      source.connect(gainNode);
+      // Connect the gain node to the destination.
+      gainNode.connect(context.destination);
+      // Reduce the volume.
+      gainNode.gain.value = 2;
     }
     var box = document.getElementById("box");
     function startWig(tim, pow) { time = 0; wigsize = pow; wigtime = 60 * tim; wiggle(); }
