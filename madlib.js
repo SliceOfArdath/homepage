@@ -90,7 +90,7 @@ var sound = {
         var source = context.createBufferSource();
         eval("sound.sources." + buffer + " = sound.createSource(sound.bank." + buffer + ");");
         eval("sound.sources." + buffer + ".gainNode.gain.value = vol * vol;");
-        eval("sound.sources." + buffer + ".start(0);");
+        eval("sound.sources." + buffer + ".source.start(0);");
         /*// creates a sound source
         source.buffer = buffer;
         // tell the source which sound to play
