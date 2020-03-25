@@ -50,6 +50,55 @@ var rand = {
         }
     }
 }
+
+var sound = {
+    init: function () {
+      try {
+        // Fix up for prefixing
+        window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
+      } catch (e) { alert('Web Audio API is not supported in this browser'); }
+    },
+    load: function (url, gain=1) {
+        window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
+        var request = new XMLHttpRequest();
+        request.open('GET', url, true);
+        request.responseType = 'arraybuffer';
+        // Decode asynchronously
+        request.onload = function () {
+          context.decodeAudioData(request.response, function (buffer) {
+            noiseBuffer = buffer;
+          }/*, onError*/);
+            // Create a gain node.
+            var gainNode = context.createGain();
+            // Connect the source to the gain node.
+            source.connect(gainNode);
+            // Connect the gain node to the destination.
+            gainNode.connect(context.destination);
+            // Reduce the volume.
+            gainNode.gain.value = gain;
+        }
+        request.send();
+      },
+      /*gain: function (buffer, gain) {
+                // Create a gain node.
+                var gainNode = context.createGain();
+                // Connect the source to the gain node.
+                source.connect(gainNode);
+                // Connect the gain node to the destination.
+                gainNode.connect(context.destination);
+                // Reduce the volume.
+                gainNode.gain.value = gain;
+      },*/
+      play: function (buffer) {
+        window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
+        var source = context.createBufferSource(); // creates a sound source
+        source.buffer = buffer;                    // tell the source which sound to play
+        source.connect(context.destination);       // connect the source to the context's destination (the speakers)
+        source.start(0);                           // play the source now
+        // note: on older systems, may have to use deprecated noteOn(time);
+      }
+}
+window.addEventListener('load', sound.init, false);
 var bubble = {
     data: [],
     settings: {

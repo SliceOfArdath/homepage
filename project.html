@@ -374,15 +374,18 @@
   </div>
   <script src="madlib.js"></script>
   <script>
+    sound.init();
+    sound.load("switchsound.mp3");
+    sound.load("noise.mp3",0.25);
     function plsw() {
       //var audio = new Audio('switchsound.mp3');
-      playSound(noiseBuffer);
+      sound.play(noiseBuffer);
       //audio.play();
       startWig(.2, 5);
       //document.getElementById("body").style.backgroundColor = "#00FFFF";
       //setTimeout(document.getElementById('body').style.backgroundColor = '#000000', 1000/60)
     }
-    var context = new (window.AudioContext || window.webkitAudioContext)();
+    /*var context = new (window.AudioContext || window.webkitAudioContext)();
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     var context = new AudioContext();
     var noiseBuffer = null;
@@ -402,7 +405,7 @@
       request.onload = function () {
         context.decodeAudioData(request.response, function (buffer) {
           noiseBuffer = buffer;
-        }/*, onError*/);
+        }/*, onError);
       }
       request.send();
     }
@@ -424,7 +427,7 @@
       gainNode.connect(context.destination);
       // Reduce the volume.
       gainNode.gain.value = 2;
-    }
+    }*/
     var box = document.getElementById("box");
     function startWig(tim, pow) { time = 0; wigsize = pow; wigtime = 100 * tim; wiggle(); }
     var wigsize = 0;
