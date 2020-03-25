@@ -376,7 +376,7 @@
   <script>
     sound.init();
     sound.load("switchsound.mp3","swit");
-    sound.load("noise.mp3",'noise');
+    sound.load("noise.mp3",'noise',0.2);
     //var noise = null;
     //var swit = null;
     function plsw() {
@@ -431,7 +431,7 @@
       gainNode.gain.value = 2;
     }*/
     var box = document.getElementById("box");
-    function startWig(tim, pow) { time = 0; wigsize = pow; wigtime = 100 * tim; wiggle(); }
+    function startWig(tim, pow) { time = 0; wigsize = pow; wigtime = 200 * tim; wiggle(); console.time('wig'); }
     var wigsize = 0;
     var wigtime = 0;
     var time = 0;
@@ -439,7 +439,6 @@
       if (wigtime > time) {
         time++;
         var n = rand.int(1, 8);
-        console.log(n);
         if (n == 1) { box.style.marginLeft = wigsize + "px"; }
         else if (n == 2) { box.style.marginLeft = "0px"; }
         else if (n == 3) { box.style.marginRight = wigsize + "px"; }
@@ -449,9 +448,10 @@
         else if (n == 7) { box.style.marginBottom = wigsize + "px"; }
         else if (n == 8) { box.style.marginBottom = "0px"; }
         //console.log(box.style.margin);
-        setTimeout(wiggle, 1000 / 100);
+        setTimeout(wiggle, 1000 / 200);
       } else {
         box.style.margin = "0px";
+        console.timeEnd('wig');
       }
     }
     var r = -1;
