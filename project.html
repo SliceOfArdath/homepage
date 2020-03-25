@@ -369,7 +369,7 @@
 
 <body style="background-color:black; color:white;">
   <div class="flexbox" id="box">
-    <button id="bt" class="bt" onclick="next()">Press me!</button>
+    <button id="bt" class="bt" style="display:none;" onclick="next()">Press me!</button>
     <button class="bt" id="one" style="background-color:cyan;display:none;" onclick="second()">Hello.</button>
   </div>
   <script src="madlib.js"></script>
@@ -452,9 +452,11 @@
     var r = -1;
     if (localStorage.it) {
       i = Number(localStorage.it);
+      document.getElementById("one").style.display = "inline-block";
       document.getElementById("bt").innerHTML = sent[i - 1];
       if (i == 0) {
         document.getElementById("bt").innerHTML = "Press me!";
+        document.getElementById("bt").style.display = "inline-block";
       }
       console.log(i);
       if (i >= l) {
