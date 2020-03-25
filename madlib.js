@@ -58,7 +58,7 @@ var sound = {
         window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
       } catch (e) { alert('Web Audio API is not supported in this browser'); }
     },
-    load: function (url, gain=1) {
+    load: function (url, bufferName, gain=1) {
         window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
         var request = new XMLHttpRequest();
         request.open('GET', url, true);
@@ -66,8 +66,7 @@ var sound = {
         // Decode asynchronously
         request.onload = function () {
           context.decodeAudioData(request.response, function (buffer) {
-            noiseBuffer = buffer;
-          }/*, onError*/);
+            eval(bufferName+"= buffer;");
             // Create a gain node.
             var gainNode = context.createGain();
             // Connect the source to the gain node.
@@ -76,6 +75,8 @@ var sound = {
             gainNode.connect(context.destination);
             // Reduce the volume.
             gainNode.gain.value = gain;
+          }/*, onError*/);
+            
         }
         request.send();
       },
