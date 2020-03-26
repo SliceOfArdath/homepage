@@ -19,8 +19,6 @@ function angle(a, b) {
 }
 mix = (a, b, d) => (1 - d) * a + d * b;
 getMix = (a, b, c) => (c * a) / (c * b);
-//on a 1 et 3
-//cherche ou est 2 entre les deux
 var rand = {
     seed: 1,
     step: .005,
@@ -30,7 +28,7 @@ var rand = {
         for (let i = 0; i < rand.len; i++) {
             t += 1 / (i + 1) ** .3 * Math.sin(i ** 2 * x * rand.step + rand.seed * i);
         }
-        return .5 * Math.cos(64 * Math.PI * t) + .5
+        return .5 * Math.cos(64 * pi * t) + .5
     },
     int: (a, b, x = Math.random()) => Math.round(a + rand.noise(x) * (b - a)),
     real: function (a, b, acc = -1, x = Math.random()) {
@@ -45,9 +43,11 @@ var rand = {
         for (let x = zero; x < a + zero; x++) {
             var r = [];
             for (let y = zero; y < b + zero; y++) {
-                r.push(rand.noise(x + ay));
+                r.push(rand.noise(x + a * y));
             }
+            result.push(r);
         }
+        return result
     }
 }
 
@@ -78,7 +78,6 @@ var sound = {
     toogleLoop: function (buffer) {
         /*if (this.source.loop) { this.source.loop = false; }
         else { this.source.loop = true; }*/
-        //eval("sound.sources." + buffer + ".source.loop = false;");
         if (eval("sound.sources." + buffer + ".source.loop == true;")==true) { eval("sound.sources." + buffer + ".source.loop = false;"); }
         else { eval("sound.sources." + buffer + ".source.loop = true;"); }
     },
@@ -102,25 +101,6 @@ var sound = {
         eval("sound.sources." + buffer + ".gainNode.gain.value = vol * vol;");
         eval("sound.sources." + buffer + ".source.start(0);");
         setTimeout(eval("sound.sources." + buffer + " = sound.createSource(sound.bank." + buffer + ");"), eval("sound.bank."+buffer+".duration")*1000)
-        /*// creates a sound source
-        source.buffer = buffer;
-        // tell the source which sound to play
-        source.connect(context.destination);
-        if (vol == 1) {
-            // connect the source to the context's destination (the speakers)
-            var gainNode = context.createGain();
-            // Connect the source to the gain node.
-            source.connect(gainNode);
-            // Connect the gain node to the destination.
-            gainNode.connect(context.destination);
-            // Reduce the volume.
-            gainNode.gain.value = vol * vol;
-            //source.loop = true;
-        }
-        source.start(0);
-        // play the source now
-        // note: on older systems, may have to use deprecated noteOn(time);
-        */
     },
     createSource: function (buffer) {
         var source = context.createBufferSource();
