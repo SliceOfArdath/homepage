@@ -97,9 +97,9 @@ var sound = {
     play: function (buffer, vol = 1 ,loop = false) {
         window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
         var source = context.createBufferSource();
-        eval("sound.sources." + bufferName + " = sound.createSource(sound.bank." + bufferName + ");");
+        eval("sound.sources." + buffer + " = sound.createSource(sound.bank." + buffer + ");");
         eval("sound.sources." + buffer + ".source.loop = loop;");
-        eval("sound.sources." + bufferName + ".gainNode.gain.value = vol * vol;");
+        eval("sound.sources." + buffer + ".gainNode.gain.value = vol * vol;");
         eval("sound.sources." + buffer + ".source.start(0);");
         setTimeout(eval("sound.sources." + buffer + " = sound.createSource(sound.bank." + buffer + ");"), eval("sound.bank."+buffer+".duration")*1000)
         /*// creates a sound source
