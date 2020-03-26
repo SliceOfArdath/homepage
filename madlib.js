@@ -133,6 +133,9 @@ var sound = {
         eval("sound.sources." + buffer + ".source.start(0);");
         setTimeout(eval("sound.sources." + buffer + " = sound.createSource(sound.bank." + buffer + ");"), eval("sound.bank." + buffer + ".duration") * 1000)
     },
+    pause: function (buffer) {
+        eval("sound.sources." + buffer + ".source.stop(0);");
+    },
     createSource: function (buffer) {
         var source = context.createBufferSource();
         var gainNode = context.createGain ? context.createGain() : context.createGainNode();
