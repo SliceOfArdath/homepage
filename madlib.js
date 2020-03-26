@@ -98,6 +98,7 @@ var sound = {
         window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
         var source = context.createBufferSource();
         eval("sound.sources." + buffer + ".source.start(0);");
+        eval("sound.sources." + bufferName + " = sound.createSource(sound.bank." + bufferName + ");");
         /*// creates a sound source
         source.buffer = buffer;
         // tell the source which sound to play
