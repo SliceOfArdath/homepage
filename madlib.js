@@ -23,6 +23,12 @@ var rand = {
     seed: 1,
     step: .005,
     len: 10,
+    map: {
+        x: 0,
+        y: 0,
+        elem: [],
+        smoothed: []
+    },
     noise: function (x = Math.random) {
         var t = 0;
         for (let i = 0; i < rand.len; i++) {
@@ -39,15 +45,45 @@ var rand = {
     },
     knuth: (a, b, c) => b < 2 || c < 1 ? a ** c : knuth(a, b - 1, knuth(a, b, c - 1)),
     gen2D: function (a, b, zero = 0) {
-        var result = [];
+        rand.map.x = a - zero; rand.map.y = b - zero;
         for (let x = zero; x < a + zero; x++) {
             var r = [];
             for (let y = zero; y < b + zero; y++) {
                 r.push(rand.noise(x + a * y));
             }
+            rand.map.elem.push(r);
+        }
+        for (let x = zero; x < a + zero; x++) {
+            var r = [];
+            for (let y = zero; y < b + zero; y++) {
+                r.push(rand.smooth(x,y));
+            }
             result.push(r);
         }
         return result
+    },
+    smooth: function (x, y) {
+        //get fractional part of x and y
+        x = 256 * x;
+        y = 256 * y;
+        var fractX = x - Math.round(x);
+        var fractY = y - Math.round(y);
+
+        //wrap around
+        var x1 = (Math.round(x) + rand.map.x) / rand.map.x;
+        var y1 = (Math.round(y) + rand.map.y) / rand.map.y;
+
+        //neighbor values
+        x2 = (x1 + rand.map.x - 1) / rand.map.x;
+        y2 = (y1 + rand.map.y - 1) / rand.map.y;
+        console.log(x1, y1, x2, y2)
+        //smooth the noise with bilinear interpolation
+        var value = fractX * fractY * rand.map.elem[y1][x1];
+        value += (1 - fractX) * fractY * rand.map.elem[y1][x2];
+        value += fractX * (1 - fractY) * rand.map.elem[y2][x1];
+        value += (1 - fractX) * (1 - fractY) * rand.map.elem[y2][x2];
+
+        return value;
     }
 }
 
@@ -60,7 +96,7 @@ var sound = {
             window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
         } catch (e) { alert('Web Audio API is not supported in this browser'); }
     },
-    load: function (url, bufferName, vol= 1) {
+    load: function (url, bufferName, vol = 1) {
         window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
         var request = new XMLHttpRequest();
         request.open('GET', url, true);
@@ -78,7 +114,7 @@ var sound = {
     toogleLoop: function (buffer) {
         /*if (this.source.loop) { this.source.loop = false; }
         else { this.source.loop = true; }*/
-        if (eval("sound.sources." + buffer + ".source.loop == true;")==true) { eval("sound.sources." + buffer + ".source.loop = false;"); }
+        if (eval("sound.sources." + buffer + ".source.loop == true;") == true) { eval("sound.sources." + buffer + ".source.loop = false;"); }
         else { eval("sound.sources." + buffer + ".source.loop = true;"); }
     },
     gain: function (bufferName, vol) {
@@ -93,14 +129,14 @@ var sound = {
         // Reduce the volume.
         gainNode.gain.value = vol;
     },
-    play: function (buffer, vol = 1 ,loop = false) {
+    play: function (buffer, vol = 1, loop = false) {
         window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
         var source = context.createBufferSource();
         eval("sound.sources." + buffer + " = sound.createSource(sound.bank." + buffer + ");");
         eval("sound.sources." + buffer + ".source.loop = loop;");
         eval("sound.sources." + buffer + ".gainNode.gain.value = vol * vol;");
         eval("sound.sources." + buffer + ".source.start(0);");
-        setTimeout(eval("sound.sources." + buffer + " = sound.createSource(sound.bank." + buffer + ");"), eval("sound.bank."+buffer+".duration")*1000)
+        setTimeout(eval("sound.sources." + buffer + " = sound.createSource(sound.bank." + buffer + ");"), eval("sound.bank." + buffer + ".duration") * 1000)
     },
     createSource: function (buffer) {
         var source = context.createBufferSource();
