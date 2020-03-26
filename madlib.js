@@ -64,15 +64,11 @@ var rand = {
     },
     smooth: function (x, y) {
         //get fractional part of x and y
-        x = 256 * x;
-        y = 256 * y;
         var fractX = x - Math.round(x);
         var fractY = y - Math.round(y);
-
         //wrap around
         var x1 = (Math.round(x) + rand.map.x) / rand.map.x;
         var y1 = (Math.round(y) + rand.map.y) / rand.map.y;
-
         //neighbor values
         x2 = (x1 + rand.map.x - 1) / rand.map.x;
         y2 = (y1 + rand.map.y - 1) / rand.map.y;
@@ -82,8 +78,7 @@ var rand = {
         value += (1 - fractX) * fractY * rand.map.elem[y1][x2];
         value += fractX * (1 - fractY) * rand.map.elem[y2][x1];
         value += (1 - fractX) * (1 - fractY) * rand.map.elem[y2][x2];
-
-        return value;
+        return value
     }
 }
 
