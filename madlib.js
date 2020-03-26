@@ -98,7 +98,7 @@ var sound = {
         window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
         var source = context.createBufferSource();
         eval("sound.sources." + buffer + ".source.start(0);");
-        eval("sound.sources." + bufferName + " = sound.createSource(sound.bank." + bufferName + ");");
+        setTimeout(eval("sound.sources." + buffer + " = sound.createSource(sound.bank." + buffer + ");"), eval("sound.bank."+buffer+".duration")*1000)
         /*// creates a sound source
         source.buffer = buffer;
         // tell the source which sound to play
