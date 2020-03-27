@@ -373,9 +373,8 @@
       "print('Don\\'t answer them.','red','black',1); sound.play('noise', 0.12, true);",
       "print('And he is still right now, isn\\'t he?','cyan','blue'); sound.pause('noise');",
     ];
-    var l = sent.length;
     function next() {
-      if (i < l) {
+      if (i < sent.length) {
         document.getElementById("bt").innerHTML = sent[i];
       } else {
         document.getElementById("bt").innerHTML = "Goodbye :)";
@@ -438,16 +437,22 @@
       document.getElementById("bt").innerHTML = sent[i - 1];
       if (i == 0) {
         document.getElementById("bt").innerHTML = "Press me!";
+        document.getElementById("one").style.display = "none";
+        document.getElementById("bt").style.display = "inline-block";
+      }
+      else if (i < sent.length) {
+        document.getElementById("one").style.display = "none";
         document.getElementById("bt").style.display = "inline-block";
       }
       console.log(i);
-      if (i >= l) {
+      if (i >= sent.length) {
         document.getElementById("bt").style.display = "none";
         document.getElementById("one").style.display = "inline-block";
       }
     } else {
       localStorage.it = 0;
       i = 0;
+      document.getElementById("bt").style.display = "inline-block";
       console.log("No save found, starting from begging.");
     }
     var input = document.getElementById("bt");
