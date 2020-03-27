@@ -99,18 +99,21 @@ var sound = {
         // Decode asynchronously
         request.onload = function () {
             context.decodeAudioData(request.response, function (buffer) {
-                eval("sound.bank." + bufferName + "= buffer;");
+                sound.bank[bufferName] = buffer;
+                //eval("sound.bank." + bufferName + "= buffer;");
             }/*, onError*/);
         }
-        eval("sound.sources." + bufferName + " = sound.createSource(sound.bank." + bufferName + ");");
-        eval("sound.sources." + bufferName + ".gainNode.gain.value = vol * vol;");
+        sound.sources[bufferName] = sound.createSource(sound.bank[bufferName]);
+        sound.sources[bufferName].gainNode.gain.value = vol * vol;
+        //eval("sound.sources." + bufferName + " = sound.createSource(sound.bank." + bufferName + ");");
+        //eval("sound.sources." + bufferName + ".gainNode.gain.value = vol * vol;");
         request.send();
     },
     toogleLoop: function (buffer) {
         /*if (this.source.loop) { this.source.loop = false; }
         else { this.source.loop = true; }*/
-        if (eval("sound.sources." + buffer + ".source.loop == true;") == true) { eval("sound.sources." + buffer + ".source.loop = false;"); }
-        else { eval("sound.sources." + buffer + ".source.loop = true;"); }
+        if (sound.sources[buffer].source.loop == true) { sound.sources[buffer].source.loop = false; }
+        else { sound.sources[buffer].source.loop = true; }
     },
     gain: function (bufferName, vol) {
         window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
@@ -140,7 +143,7 @@ var sound = {
     pause: function (buffer) {
         window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
         var source = context.createBufferSource();
-        eval("sound.sources." + buffer + ".source.stop(0);");
+        sound.sources[buffer].source.stop(0);
     },
     createSource: function (buffer) {
         var source = context.createBufferSource();
@@ -222,10 +225,10 @@ var bubble = {
 var text = {
     lps: 15,
     to: "undefined",
-    letter: function (ltr) { eval(this.to + " += ltr;"); },
+    letter: function (ltr) { this.to += ltr; },
     pointer: 0,
     string: [],
-    startSay: function (str) { eval(this.to + " = '';"); text.pointer = 0; text.string = str.split(''); text.say(); },
+    startSay: function (str) { this.to = ''; text.pointer = 0; text.string = str.split(''); text.say(); },
     say: function () { if (text.string.length > text.pointer) { text.letter(text.string[text.pointer]); effect(); text.pointer++; setTimeout(text.say, 1000 / text.lps); } }
 }
 var cursor = {
@@ -249,19 +252,19 @@ var key = {
     val: {},
     act: {}
 }
-function setKeyVal(k) { eval("key.state[key.state.length] = '" + k + "';"); eval("key.val." + k + " = false;") }
-function setKeyAct(k, act) { eval("key.act." + k + " = " + act + ";"); }
+function setKeyVal(k) { key.state[key.state.length] = k; key.val[k] = false; }
+function setKeyAct(k, act) { key.act[k] = act; }
 setKeyVal("ArrowUp")
 setKeyVal("ArrowDown")
 setKeyVal("ArrowLeft")
 setKeyVal("ArrowRight")
 document.addEventListener("keydown", function (e) {
     e = e || event; // to deal with IE
-    eval("key.val." + e.code + " = e.type == 'keydown'");
+    key.val[e.code] = e.type == 'keydown';
 });
 document.addEventListener("keyup", function (e) {
     e = e || event; // to deal with IE
-    eval("key.val." + e.code + " = e.type == 'keydown'");
+    key.val[e.code] = e.type == 'keydown'
     if (event.code == "Escape") { pause() }
 });
 function keymotion() {
@@ -269,8 +272,8 @@ function keymotion() {
     if (key.enable) {
         pre();
         for (let t = 0; t < key.state.length; t++) {
-            eval("i = key.val." + key.state[t]);
-            if (i == true) { eval('key.act. ' + key.state[t] + '()'); }
+            i = key.val[key.state[t]];
+            if (i == true) { key.act[key.state[t]](); }
         }
         if (key.restrict) {
             if (key.border.xMin >= key.pos.x) { key.pos.x = key.border.xMin; }
