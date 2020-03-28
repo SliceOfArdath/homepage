@@ -372,6 +372,15 @@
       { say: 'Did anyone talk to you?' },
       { say: 'Don\'t answer them.', soundon:['noise', 0.2, true]},
       { say: 'And he is still right now, isn\'t he?', soundoff:'noise'},
+      { say: "That's odd." },
+      { say: "Why is he?" },
+      { say: "There must be something special you." },
+      { say: "You wouldn't be even existing in his mad brain if that wasn't the case." },
+      { say: "I wonder... Is that the first time you come here?" },
+      { say: "Do you remember seeing a nice boy?" },
+      { say: "Like the kind that bring compassion with him everywhere he goes." },
+      { say: "Som-" },
+      { say: "...", persona:'green'},
     ];
     function next() {
       if (i < sent.length) {
@@ -466,6 +475,7 @@
         if (events[r].say != undefined) { 
           if (events[r].persona == 'red') { document.getElementById("one").style.backgroundColor = 'red'; document.getElementById("one").style.color = 'black'; plsw(); }
           else if (events[r].persona == 'cyan') { document.getElementById("one").style.backgroundColor = 'cyan'; document.getElementById("one").style.color = 'blue'; plsw(); }
+          else if (events[r].persona == 'green') { document.getElementById("one").style.backgroundColor = 'green'; document.getElementById("one").style.color = 'black'; plsw(); }
           if (events[r].bald) { events[r].say = "<strong>" + events[r].say + "</strong>"; }
           document.getElementById("one").innerHTML = events[r].say;
           if (logs) { document.getElementById("text").innerHTML += events[r].say + "</br>"; }
