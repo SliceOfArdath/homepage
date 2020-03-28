@@ -480,8 +480,8 @@
           else if (events[r].persona == 'cyan') { document.getElementById("one").style.backgroundColor = 'cyan'; document.getElementById("one").style.color = 'blue'; plsw(); }
           else if (events[r].persona == 'green') { document.getElementById("one").style.backgroundColor = 'green'; document.getElementById("one").style.color = 'black'; plsw(); }
           if (events[r].bald) { events[r].say = "<strong>" + events[r].say + "</strong>"; }
-          if (events[r].soundon != undefined) { play(events[r].soundon[0], events[r].soundon[1], events[r].soundon[2]); }
-          if (events[r].soundoff != undefined) { pause(events[r].soundon[0]); }
+          if (events[r].soundon != undefined) { sound.play(events[r].soundon[0], events[r].soundon[1], events[r].soundon[2]); }
+          if (events[r].soundoff != undefined) { sound.pause(events[r].soundon[0]); }
           document.getElementById("one").innerHTML = events[r].say;
           if (logs) { document.getElementById("text").innerHTML += events[r].say + "</br>"; }
         }
