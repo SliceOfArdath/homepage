@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <canvas id="game"></canvas>
+</body>
+<script src="madlib.js"></script>
+<script>
+    rand.seed = Math.random();
+    var c = document.getElementById("game");
+    c.width = 256;
+    c.height = 256;
+    var arr = rand.gen3D(c.width, c.height, 120);
+    //var arr = rand.quadr();
+    //var arr = rand.level();
+    var ctx = c.getContext("2d");
+    ctx.fillStyle = "#000000";
+    ctx.fillRect(0, 0, c.width, c.height);
+    console.log(c.width, c.height);
+    var g = 0;
+    var z = 0;
+    function anim() {
+        for (let x = 0; x < c.width; x++) {
+            for (let y = 0; y < c.height; y++) {
+                if (rand.map.elem[z][y][x] > g) { g = rand.map.elem[z][y][x]; }
+                var grad = Math.round(arr[z][y][x]);
+                ctx.fillStyle = "rgb(" + grad + ', ' + grad + ', ' + grad + ')';
+                ctx.fillRect(x, y, 1, 1)
+            }
+        }
+        z++
+        if (z<rand.map.z) { setTimeout(anim, 1000/30) }
+    }
+    anim();
+    console.log(g);
+</script>
+
+</html>

@@ -7,6 +7,7 @@ revToDeg = (a) => a * (180 / .5);
 revToRad = (a) => a * (pi / .5);
 toogle = (a) => a == false;
 norm = (x, y) => Math.sqrt(x ** 2 + y ** 2);
+knuth = (a, b, c) => b < 2 || c < 1 ? a ** c : knuth(a, b - 1, knuth(a, b, c - 1))
 var rad = pi;
 var rev = 1;
 var deg = 180;
@@ -21,8 +22,8 @@ mix = (a, b, d) => (1 - d) * a + d * b;
 getMix = (a, b, c) => (c * a) / (c * b);
 var rand = {
     seed: 1,
-    step: .005,
-    len: 10,
+    step: .0005,
+    len: 20,
     map: {
         x: 0,
         y: 0,
@@ -32,7 +33,7 @@ var rand = {
     noise: function (x = Math.random) {
         var t = 0;
         for (let i = 0; i < rand.len; i++) {
-            t += 1 / (i + 1) ** .3 * Math.sin(i ** 2 * x * rand.step + rand.seed * i);
+            t += (1 / (i + 1)) ** (1 / 3) * Math.sin(i ** 2 * x * rand.step + rand.seed * (i + 1));
         }
         return .5 * Math.cos(64 * pi * t) + .5
     },
@@ -43,45 +44,158 @@ var rand = {
         }
         return a + Math.random() * (b - a)
     },
-    knuth: (a, b, c) => b < 2 || c < 1 ? a ** c : knuth(a, b - 1, knuth(a, b, c - 1)),
-    gen2D: function (a, b, zero = 0) {
-        rand.map.x = a - zero; rand.map.y = b - zero;
-        for (let x = zero; x < a + zero; x++) {
+    gen2D: function (a, b) {
+        rand.map.x = a ; rand.map.y = b;
+        for (let y = 0; y < b; y++) {
             var r = [];
-            for (let y = zero; y < b + zero; y++) {
+            for (let x = 0; x < a; x++) {
                 r.push(rand.noise(x + a * y));
             }
             rand.map.elem.push(r);
         }
-        for (let x = zero; x < a + zero; x++) {
+        for (let y = 0; y < b; y++) {
             var r = [];
-            for (let y = zero; y < b + zero; y++) {
-                r.push(rand.smooth(x,y));
+            for (let x = 0; x < a; x++) {
+                r.push(rand.turbulence(x, y, 64));
             }
-            result.push(r);
+            rand.map.smoothed.push(r);
         }
-        return result
+        return rand.map.smoothed
     },
-    smooth: function (x, y) {
-        //get fractional part of x and y
+    marble: function (xPeriod = 5, yPeriod = 10, turbPower = 10, turbSize = 64) {
+        if (rand.map.elem[1] != undefined) {
+            for (y = 0; y < rand.map.y; y++) {
+                for (x = 0; x < rand.map.x; x++) {
+                    var xyValue = x * xPeriod / rand.map.x + y * yPeriod / rand.map.y + turbPower * rand.turbulence(x, y, turbSize) / 256.0;
+                    var sineValue = 256 * Math.abs(Math.sin(xyValue * pi));
+                    rand.map.smoothed[y][x] = sineValue;
+                }
+            }
+            return rand.map.smoothed
+        } else {
+            return 'Error: No map found'
+        }
+    },
+    degrad: function (x, y) {
         var fractX = x - Math.round(x);
         var fractY = y - Math.round(y);
-        //wrap around
-        var x1 = (Math.round(x) + rand.map.x) / rand.map.x;
-        var y1 = (Math.round(y) + rand.map.y) / rand.map.y;
-        //neighbor values
-        x2 = (x1 + rand.map.x - 1) / rand.map.x;
-        y2 = (y1 + rand.map.y - 1) / rand.map.y;
-        console.log(x1, y1, x2, y2)
-        //smooth the noise with bilinear interpolation
+        var x1 = (Math.round(x) + rand.map.x) % rand.map.x;
+        var y1 = (Math.round(y) + rand.map.y) % rand.map.y;
+        var x2 = (x1 + rand.map.x - 1) % rand.map.x;
+        var y2 = (y1 + rand.map.y - 1) % rand.map.y;
         var value = fractX * fractY * rand.map.elem[y1][x1];
         value += (1 - fractX) * fractY * rand.map.elem[y1][x2];
         value += fractX * (1 - fractY) * rand.map.elem[y2][x1];
         value += (1 - fractX) * (1 - fractY) * rand.map.elem[y2][x2];
-        return value
+        return value;
+    },
+    smooth: function (x, y) {
+        var fractX = x - Math.floor(x);
+        var fractY = y - Math.floor(y);
+        var x1 = (Math.floor(x) + rand.map.x) % rand.map.x;
+        var y1 = (Math.floor(y) + rand.map.y) % rand.map.y;
+        var x2 = (x1 + rand.map.x - 1) % rand.map.x;
+        var y2 = (y1 + rand.map.y - 1) % rand.map.y;
+        var value = fractX * fractY * rand.map.elem[y1][x1];
+        value += (1 - fractX) * fractY * rand.map.elem[y1][x2];
+        value += fractX * (1 - fractY) * rand.map.elem[y2][x1];
+        value += (1 - fractX) * (1 - fractY) * rand.map.elem[y2][x2];
+        return value;
+    },
+    smooth3D: function (x, y, z) {
+        var fractX = x - Math.floor(x);
+        var fractY = y - Math.floor(y);
+        var fractZ = z - Math.floor(z);
+        var x1 = (Math.floor(x) + rand.map.x) % rand.map.x;
+        var y1 = (Math.floor(y) + rand.map.y) % rand.map.y;
+        var z1 = (Math.floor(z) + rand.map.z) % rand.map.z;
+        var x2 = (x1 + rand.map.x - 1) % rand.map.x;
+        var y2 = (y1 + rand.map.y - 1) % rand.map.y;
+        var z2 = (z1 + rand.map.z - 1) % rand.map.z;
+        var value = fractX * fractY * fractZ * rand.map.elem[z1][y1][x1];
+        value += (1 - fractX) * fractY * fractZ * rand.map.elem[z1][y1][x2];
+        value += fractX * (1 - fractY) * fractZ * rand.map.elem[z1][y2][x1];
+        value += (1 - fractX) * (1 - fractY) * fractZ * rand.map.elem[z1][y2][x2];
+        value += fractX * fractY * (1 - fractZ) * rand.map.elem[z2][y1][x1];
+        value += (1 - fractX) * fractY * (1 - fractZ) * rand.map.elem[z2][y1][x2];
+        value += fractX * (1 - fractY) * (1 - fractZ) * rand.map.elem[z2][y2][x1];
+        value += (1 - fractX) * (1 - fractY) * (1 - fractZ) * rand.map.elem[z2][y2][x2];
+        return value;
+    },
+    turbulence: function (x, y, size) {
+        var value = 0, initialSize = size;
+        while (size >= 1) {
+            value += rand.smooth(x / size, y / size) * size;
+            size /= 2;
+        }
+        return (128 * value / initialSize);
+    },
+    turb3D: function (x, y, z, size) {
+        var value = 0, initialSize = size;
+        while (size >= 1) {
+            value += rand.smooth3D(x / size, y / size, z / size) * size;
+            size /= 2;
+        }
+        return (128 * value / initialSize);
+    },
+    wood: function (xyPeriod = 7, turbPower = .1, turbSize = 32) {
+        for (y = 0; y < rand.map.y; y++) {
+            for (x = 0; x < rand.map.x; x++) {
+                var xValue = (x - rand.map.x / 2) / rand.map.x;
+                var yValue = (y - rand.map.y / 2) / rand.map.y;
+                var distValue = norm(xValue, yValue) + turbPower * rand.turbulence(x, y, turbSize) / 256;
+                var sineValue = 256 * Math.abs(Math.sin(2 * xyPeriod * distValue * pi));
+                rand.map.smoothed[y][x] = sineValue;
+            }
+        }
+        return rand.map.smoothed
+    },
+    level: function (density = 1, turbPower = 5, turbSize = 64) {
+        for (y = 0; y < rand.map.y; y++) {
+            for (x = 0; x < rand.map.x; x++) {
+                rand.map.smoothed[y][x] = mix(rand.map.smoothed[y][x], rand.turbulence(x, y, turbSize), .72)
+            }
+        }
+        return rand.map.smoothed
+    },
+    quadr: function (xPeriod = 32, yPeriod = 32, turbPower = 5, turbSize = 64) {
+        for (y = 0; y < rand.map.y; y++) {
+            for (x = 0; x < rand.map.x; x++) {
+                var xValue = (x - rand.map.x / 2) / rand.map.x + turbPower * rand.turbulence(x, y, turbSize) / 256;
+                var yValue = (y - rand.map.y / 2) / rand.map.y + turbPower * rand.turbulence(rand.map.y - y, rand.map.x - x, turbSize) / 256;
+                var sineValue = 128 * Math.abs(Math.sin(xPeriod * xValue * pi) + Math.sin(yPeriod * yValue * pi));
+                rand.map.smoothed[y][x] = sineValue;
+            }
+        }
+        return rand.map.smoothed
+    },
+    gen3D: function (a, b, c) {
+        rand.map.x = a ; rand.map.y = b; rand.map.z = c;
+        for (let z = 0; z < c; z++) {
+            var r = [];
+            for (let y = 0; y < b; y++) {
+                var pre = [];
+                for (let x = 0; x < a; x++) {
+                    pre.push(rand.noise(x + a * y + a * b * z * 20));
+                }
+                r.push(pre);
+            }
+            rand.map.elem.push(r);
+        }
+        for (let z = 0; z < c; z++) {
+            var r = [];
+            for (let y = 0; y < b; y++) {
+                var pre = [];
+                for (let x = 0; x < a; x++) {
+                    pre.push(rand.turb3D(x, y, z, 64));
+                }
+                r.push(pre);
+            }
+            rand.map.smoothed.push(r);
+        }
+        return rand.map.smoothed
     }
-}
-
+};
 var sound = {
     bank: {},
     sources: {},
@@ -100,13 +214,10 @@ var sound = {
         request.onload = function () {
             context.decodeAudioData(request.response, function (buffer) {
                 sound.bank[bufferName] = buffer;
-                //eval("sound.bank." + bufferName + "= buffer;");
             }/*, onError*/);
         }
         sound.sources[bufferName] = sound.createSource(sound.bank[bufferName]);
         sound.sources[bufferName].gainNode.gain.value = vol * vol;
-        //eval("sound.sources." + bufferName + " = sound.createSource(sound.bank." + bufferName + ");");
-        //eval("sound.sources." + bufferName + ".gainNode.gain.value = vol * vol;");
         request.send();
     },
     toogleLoop: function (buffer) {
@@ -134,11 +245,7 @@ var sound = {
         sound.sources[buffer].source.loop = loop;
         sound.sources[buffer].gainNode.gain.value = vol * vol;
         sound.sources[buffer].source.start(0);
-        //eval("sound.sources." + buffer + " = sound.createSource(sound.bank." + buffer + ");");
-        //eval("sound.sources." + buffer + ".source.loop = loop;");
-        //eval("sound.sources." + buffer + ".gainNode.gain.value = vol * vol;");
-        //eval("sound.sources." + buffer + ".source.start(0);");
-        //setTimeout(eval("sound.sources." + buffer + " = sound.createSource(sound.bank." + buffer + ");"), eval("sound.bank." + buffer + ".duration") * 1000)
+
     },
     pause: function (buffer) {
         window.AudioContext = window.AudioContext || window.webkitAudioContext; context = new AudioContext();
@@ -159,7 +266,7 @@ var sound = {
             gainNode: gainNode
         };
     }
-}
+};
 window.addEventListener('load', sound.init, false);
 var bubble = {
     data: [],
@@ -221,7 +328,25 @@ var bubble = {
         return this.data[i]
     },
     edit: function (i, x, y, speed = 5, rs = .1, angle = 0) { this.data[i] = { angle: angle, x: x, y: y, rspeed: rs, speed: speed }; }
-}
+};
+//2D block game handler
+var texture = {
+    size: 32,
+    pos: (x, y) => [size * x, size * y],
+};
+var tile = {
+    Block: function (item) { tile.blocks[tile.blocks.length] = item },
+    randomTicks: function () {},
+    onTick: function () {},
+    blocks: []
+};
+    //redesign this
+var coords = {
+    x: 0,
+    y: 0,
+    blocks: []
+};
+//Interactive typing
 var text = {
     lps: 15,
     to: "undefined",
@@ -230,12 +355,13 @@ var text = {
     string: [],
     startSay: function (str) { this.to = ''; text.pointer = 0; text.string = str.split(''); text.say(); },
     say: function () { if (text.string.length > text.pointer) { text.letter(text.string[text.pointer]); effect(); text.pointer++; setTimeout(text.say, 1000 / text.lps); } }
-}
+};
+//motions
 var cursor = {
     enable: false,
     x: 1,
     y: 1
-}
+};
 var key = {
     spd: 5,
     enable: false,
@@ -251,7 +377,7 @@ var key = {
     state: [],
     val: {},
     act: {}
-}
+};
 function setKeyVal(k) { key.state[key.state.length] = k; key.val[k] = false; }
 function setKeyAct(k, act) { key.act[k] = act; }
 setKeyVal("ArrowUp")
