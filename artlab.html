@@ -11,19 +11,24 @@
 <script src="madlib.js"></script>
 <script>
     rand.seed = Math.random();
+    //0.1810459860266831
     var c = document.getElementById("game");
     c.width = 256;
     c.height = 256;
-    var arr = rand.gen3D(c.width, c.height, 120);
-    //var arr = rand.quadr();
-    //var arr = rand.level();
+    //rand.gen3D(c.width, c.height, 120, false);
+    //rand.marble3D();
+    //var arr = rand.level3D(.72);
+    rand.gen3D(c.width, c.height, 120, false);
+    rand.quadr3D();
+    var arr = rand.level3D();
+    //rand.fog(2, 0);
+    //var arr = rand.grain(0.6);
     var ctx = c.getContext("2d");
     ctx.fillStyle = "#000000";
     ctx.fillRect(0, 0, c.width, c.height);
-    console.log(c.width, c.height);
     var g = 0;
     var z = 0;
-    function anim() {
+    function anim3D() {
         for (let x = 0; x < c.width; x++) {
             for (let y = 0; y < c.height; y++) {
                 if (rand.map.elem[z][y][x] > g) { g = rand.map.elem[z][y][x]; }
@@ -33,9 +38,20 @@
             }
         }
         z++
-        if (z<rand.map.z) { setTimeout(anim, 1000/30) }
+        if (z < rand.map.z) { setTimeout(anim3D, 1); }
     }
-    anim();
+    function anim() {
+        for (let x = 0; x < c.width; x++) {
+            for (let y = 0; y < c.height; y++) {
+                if (rand.map.elem[y][x] > g) { g = rand.map.elem[y][x]; }
+                var grad = Math.round(arr[y][x]);
+                ctx.fillStyle = "rgb(" + grad + ', ' + grad + ', ' + grad + ')';
+                ctx.fillRect(x, y, 1, 1)
+            }
+        }
+    }
+    anim3D();
+    //anim();
     console.log(g);
 </script>
 

@@ -7,9 +7,17 @@ revToDeg = (a) => a * (180 / .5);
 revToRad = (a) => a * (pi / .5);
 toogle = (a) => a == false;
 norm = (x, y) => Math.sqrt(x ** 2 + y ** 2);
-knuth = (a, b, c) => b < 2 || c < 1 ? a ** c : knuth(a, b - 1, knuth(a, b, c - 1))
+knuth = (a, b, c) => b < 2 || c < 1 ? a ** c : knuth(a, b - 1, knuth(a, b, c - 1));
+function ncdf(x, mean, std) {
+    var x = (x - mean) / std
+    var t = 1 / (1 + .2315419 * Math.abs(x))
+    var d = .3989423 * Math.exp(-x * x / 2)
+    var prob = d * t * (.3193815 + t * (-.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))))
+    if (x > 0) prob = 1 - prob
+    return prob
+}
 var rad = pi;
-var rev = 1;
+var rev = 0.5;
 var deg = 180;
 convertAngle = (a, from, to) => a * (to / from);
 var goldenRatio = (Math.sqrt(5) + 1) / 2;
@@ -19,11 +27,11 @@ function angle(a, b) {
     else { return Math.atan(b / a) + Math.PI }
 }
 mix = (a, b, d) => (1 - d) * a + d * b;
-getMix = (a, b, c) => (c * a) / (c * b);
+getMix = (a, b, c) => (c - a) / (b - a);
 var rand = {
     seed: 1,
     step: .0005,
-    len: 20,
+    len: 10,
     map: {
         x: 0,
         y: 0,
@@ -44,8 +52,8 @@ var rand = {
         }
         return a + Math.random() * (b - a)
     },
-    gen2D: function (a, b) {
-        rand.map.x = a ; rand.map.y = b;
+    gen2D: function (a, b, turb = true) {
+        rand.map.x = a; rand.map.y = b;
         for (let y = 0; y < b; y++) {
             var r = [];
             for (let x = 0; x < a; x++) {
@@ -53,22 +61,49 @@ var rand = {
             }
             rand.map.elem.push(r);
         }
-        for (let y = 0; y < b; y++) {
-            var r = [];
-            for (let x = 0; x < a; x++) {
-                r.push(rand.turbulence(x, y, 64));
+        if (turb) {
+            for (let y = 0; y < b; y++) {
+                var r = [];
+                for (let x = 0; x < a; x++) {
+                    r.push(rand.turbulence(x, y, 64));
+                }
+                rand.map.smoothed.push(r);
             }
-            rand.map.smoothed.push(r);
+            return rand.map.smoothed
+        } else {
+            for (let y = 0; y < b; y++) {
+                var r = [];
+                for (let x = 0; x < a; x++) {
+                    r.push(0);
+                }
+                rand.map.smoothed.push(r);
+            }
+            return rand.map.elem
         }
-        return rand.map.smoothed
     },
     marble: function (xPeriod = 5, yPeriod = 10, turbPower = 10, turbSize = 64) {
         if (rand.map.elem[1] != undefined) {
             for (y = 0; y < rand.map.y; y++) {
                 for (x = 0; x < rand.map.x; x++) {
-                    var xyValue = x * xPeriod / rand.map.x + y * yPeriod / rand.map.y + turbPower * rand.turbulence(x, y, turbSize) / 256.0;
+                    var xyValue = x * xPeriod / rand.map.x + y * yPeriod / rand.map.y + turbPower * rand.turbulence(x, y, turbSize) / 256;
                     var sineValue = 256 * Math.abs(Math.sin(xyValue * pi));
                     rand.map.smoothed[y][x] = sineValue;
+                }
+            }
+            return rand.map.smoothed
+        } else {
+            return 'Error: No map found'
+        }
+    },
+    marble3D: function (xPeriod = 5, yPeriod = 10, zPeriod = 5, turbPower = 10, turbSize = 64) {
+        if (rand.map.elem[1] != undefined) {
+            for (z = 0; z < rand.map.z; z++) {
+                for (y = 0; y < rand.map.y; y++) {
+                    for (x = 0; x < rand.map.x; x++) {
+                        var xyzValue = x * xPeriod / rand.map.x + y * yPeriod / rand.map.y + z * zPeriod / rand.map.z + turbPower * rand.turb3D(x, y, z, turbSize) / 256;
+                        var sineValue = 256 * Math.abs(Math.sin(xyzValue * pi));
+                        rand.map.smoothed[z][y][x] = sineValue;
+                    }
                 }
             }
             return rand.map.smoothed
@@ -138,6 +173,14 @@ var rand = {
         }
         return (128 * value / initialSize);
     },
+    level: function (power = .75, turbSize = 64) {
+        for (y = 0; y < rand.map.y; y++) {
+            for (x = 0; x < rand.map.x; x++) {
+                rand.map.smoothed[y][x] = mix(rand.map.smoothed[y][x], rand.turbulence(x, y, turbSize), power);
+            }
+        }
+        return rand.map.smoothed
+    },
     wood: function (xyPeriod = 7, turbPower = .1, turbSize = 32) {
         for (y = 0; y < rand.map.y; y++) {
             for (x = 0; x < rand.map.x; x++) {
@@ -150,15 +193,52 @@ var rand = {
         }
         return rand.map.smoothed
     },
-    level: function (density = 1, turbPower = 5, turbSize = 64) {
+    blur: function () {
         for (y = 0; y < rand.map.y; y++) {
             for (x = 0; x < rand.map.x; x++) {
-                rand.map.smoothed[y][x] = mix(rand.map.smoothed[y][x], rand.turbulence(x, y, turbSize), .72)
+                //to fix
+                rand.map.smoothed[y][x] = this.smooth(x, y);
             }
         }
         return rand.map.smoothed
     },
-    quadr: function (xPeriod = 32, yPeriod = 32, turbPower = 5, turbSize = 64) {
+    grain: function (strengh, key = 0) {
+        for (y = 0; y < rand.map.y; y++) {
+            for (x = 0; x < rand.map.x; x++) {
+                //to fix
+                rand.map.smoothed[y][x] = mix(rand.map.smoothed[y][x], rand.noise(x + rand.map.x), strengh);
+            }
+        }
+        return rand.map.smoothed
+    },
+    alevel: function (power = .75, turbSize = 64) {
+        for (y = 0; y < rand.map.y; y++) {
+            for (x = 0; x < rand.map.x; x++) {
+                //to fix
+                rand.map.smoothed[y][x] = 256 * getMix(rand.map.smoothed[y][x], rand.turbulence(x, y, turbSize), 256 * power);
+            }
+        }
+        return rand.map.smoothed
+    },
+    fog: function (force = 1, level = 0) {
+        for (y = 0; y < rand.map.y; y++) {
+            for (x = 0; x < rand.map.x; x++) {
+                rand.map.smoothed[y][x] = ncdf(rand.map.smoothed[y][x] / 256, -level, force) * 256;
+            }
+        }
+        return rand.map.smoothed
+    },
+    level3D: function (power = .75, turbSize = 64) {
+        for (z = 0; y < rand.map.z; z++) {
+            for (y = 0; y < rand.map.y; y++) {
+                for (x = 0; x < rand.map.x; x++) {
+                    rand.map.smoothed[z][y][x] = mix(rand.map.smoothed[z][y][x], rand.turb3D(x, y, z, turbSize), power);
+                }
+            }
+        }
+        return rand.map.smoothed
+    },
+    quadr: function (xPeriod = 4, yPeriod = 4, turbPower = .2, turbSize = 64) {
         for (y = 0; y < rand.map.y; y++) {
             for (x = 0; x < rand.map.x; x++) {
                 var xValue = (x - rand.map.x / 2) / rand.map.x + turbPower * rand.turbulence(x, y, turbSize) / 256;
@@ -169,8 +249,22 @@ var rand = {
         }
         return rand.map.smoothed
     },
-    gen3D: function (a, b, c) {
-        rand.map.x = a ; rand.map.y = b; rand.map.z = c;
+    quadr3D: function (xPeriod = 4, yPeriod = 4, zPeriod = 4, turbPower = .2, turbSize = 64) {
+        for (z = 0; z < rand.map.z; z++) {
+            for (y = 0; y < rand.map.y; y++) {
+                for (x = 0; x < rand.map.x; x++) {
+                    var xValue = (x - rand.map.x / 2) / rand.map.x + turbPower * rand.turb3D(x, y, z, turbSize) / 256;
+                    var yValue = (y - rand.map.y / 2) / rand.map.y + turbPower * rand.turb3D(rand.map.y - y, rand.map.x - x, rand.map.z - z, turbSize) / 256;
+                    var zValue = (z - rand.map.z / 2) / rand.map.z + turbPower * rand.turb3D(x, y, z, turbSize) / 256;
+                    var sineValue = 128 * Math.abs(Math.sin(xPeriod * xValue * pi) + Math.sin(yPeriod * yValue * pi) + Math.sin(zPeriod * zValue * pi));
+                    rand.map.smoothed[z][y][x] = sineValue;
+                }
+            }
+        }
+        return rand.map.smoothed
+    },
+    gen3D: function (a, b, c, turb = true) {
+        rand.map.x = a; rand.map.y = b; rand.map.z = c;
         for (let z = 0; z < c; z++) {
             var r = [];
             for (let y = 0; y < b; y++) {
@@ -182,19 +276,35 @@ var rand = {
             }
             rand.map.elem.push(r);
         }
-        for (let z = 0; z < c; z++) {
-            var r = [];
-            for (let y = 0; y < b; y++) {
-                var pre = [];
-                for (let x = 0; x < a; x++) {
-                    pre.push(rand.turb3D(x, y, z, 64));
+        if (turb) {
+            for (let z = 0; z < c; z++) {
+                var r = [];
+                for (let y = 0; y < b; y++) {
+                    var pre = [];
+                    for (let x = 0; x < a; x++) {
+                        pre.push(rand.turb3D(x, y, z, 64));
+                    }
+                    r.push(pre);
                 }
-                r.push(pre);
+                rand.map.smoothed.push(r);
             }
-            rand.map.smoothed.push(r);
+            return rand.map.smoothed
+        } else {
+            for (let z = 0; z < c; z++) {
+                var r = [];
+                for (let y = 0; y < b; y++) {
+                    var pre = [];
+                    for (let x = 0; x < a; x++) {
+                        pre.push(0);
+                    }
+                    r.push(pre);
+                }
+                rand.map.smoothed.push(r);
+            }
+            return rand.map.elem
         }
-        return rand.map.smoothed
     }
+
 };
 var sound = {
     bank: {},
@@ -336,11 +446,11 @@ var texture = {
 };
 var tile = {
     Block: function (item) { tile.blocks[tile.blocks.length] = item },
-    randomTicks: function () {},
-    onTick: function () {},
+    randomTicks: function () { },
+    onTick: function () { },
     blocks: []
 };
-    //redesign this
+//redesign this
 var coords = {
     x: 0,
     y: 0,
