@@ -62,7 +62,7 @@
             }
         }
         z++
-        if (z < rand.map.z) { anim3D() }
+        if (z < rand.map.z) { setTimeout(anim3D, 1); }
     }
     function anim() {
         for (let x = 0; x < c.width; x++) {
