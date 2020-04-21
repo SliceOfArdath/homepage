@@ -10,7 +10,13 @@
 </body>
 <script src="madlib.js"></script>
 <script>
+    var x = 0;
+    noise = () => rand.noise(x++);
+    rand.mod = rand.real(0, 100000000);
     rand.seed = Math.random();
+    rand.step = rand.real(0, rand.mod);
+    rand.xlc = rand.real(0, rand.mod);
+    rand.mult = rand.real(0, rand.mod);
     //0.1810459860266831
     var c = document.getElementById("game");
     c.width = 256;
@@ -18,9 +24,27 @@
     //rand.gen3D(c.width, c.height, 120, false);
     //rand.marble3D();
     //var arr = rand.level3D(.72);
-    rand.gen3D(c.width, c.height, 120, false);
-    rand.quadr3D();
-    var arr = rand.level3D();
+    function gen(alg) {
+        rand.gen3D(c.width, c.height, 30, false, alg);
+        rand.marble3D();
+        return rand.level3D();
+    }
+    var arr = gen(true);
+    function spdTest() {
+        var d = new Date();
+        var n = d.getTime();
+        gen(true);
+        d = new Date();
+        var a = d.getTime() - n;
+        d = new Date();
+        var n2 = d.getTime();
+        gen(false);
+        d = new Date();
+        var a2 = d.getTime() - n2;
+        return (a - a2 > 0 ? 'Sinusoidal algorithm faster (' + a2 + 'ms vs ' + a + 'ms) by a factor of ' + a / a2 : 'Linear algorithm faster (' + a + 'ms vs ' + a2 + 'ms) by a factor of ' + a2 / a);
+    }
+    //rand.marble();
+    //var arr = rand.level();
     //rand.fog(2, 0);
     //var arr = rand.grain(0.6);
     var ctx = c.getContext("2d");
@@ -32,7 +56,7 @@
         for (let x = 0; x < c.width; x++) {
             for (let y = 0; y < c.height; y++) {
                 if (rand.map.elem[z][y][x] > g) { g = rand.map.elem[z][y][x]; }
-                var grad = Math.round(arr[z][y][x]);
+                var grad = Math.round(256 * arr[z][y][x]);
                 ctx.fillStyle = "rgb(" + grad + ', ' + grad + ', ' + grad + ')';
                 ctx.fillRect(x, y, 1, 1)
             }
@@ -44,7 +68,7 @@
         for (let x = 0; x < c.width; x++) {
             for (let y = 0; y < c.height; y++) {
                 if (rand.map.elem[y][x] > g) { g = rand.map.elem[y][x]; }
-                var grad = Math.round(arr[y][x]);
+                var grad = Math.round(256 * arr[y][x]);
                 ctx.fillStyle = "rgb(" + grad + ', ' + grad + ', ' + grad + ')';
                 ctx.fillRect(x, y, 1, 1)
             }
