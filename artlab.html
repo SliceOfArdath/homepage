@@ -26,7 +26,7 @@
     //var arr = rand.level3D(.72);
     function gen(alg) {
         rand.gen3D(c.width, c.height, 30, false, alg);
-        rand.marble3D();
+        rand.quadr3D();
         return rand.level3D();
     }
     var arr = gen(true);
@@ -74,8 +74,11 @@
             }
         }
     }
-    anim3D();
-    //anim();
+    if (typeof(rand.map.elem[0][0]) == "object") {
+        anim3D();
+    } else {
+        anim();
+    }
     console.log(g);
 </script>
 

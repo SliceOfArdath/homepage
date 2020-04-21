@@ -1,4 +1,4 @@
-console.info("madlib.js up and running, version 0.7.3")
+console.info("madlib.js up and running, version 0.7.5")
 var pi = Math.PI; var goldenRatio = (Math.sqrt(5) + 1) / 2; var rad = pi; var rev = 0.5; var deg = 180;
 radToDeg = (a) => a * (180 / pi);
 radToRev = (a) => a * (.5 / pi);
@@ -357,8 +357,8 @@ var rand = {
     quadr: function (xPeriod = 4, yPeriod = 4, turbPower = .2, turbSize = 64) {
         for (y = 0; y < rand.map.y; y++) {
             for (x = 0; x < rand.map.x; x++) {
-                var xValue = (x - rand.map.x / 2) / rand.map.x + turbPower * rand.turbulence(x, y, turbSize) / 256;
-                var yValue = (y - rand.map.y / 2) / rand.map.y + turbPower * rand.turbulence(rand.map.y - y, rand.map.x - x, turbSize) / 256;
+                var xValue = (x - rand.map.x / 2) / rand.map.x + turbPower * rand.turbulence(x, y, turbSize);
+                var yValue = (y - rand.map.y / 2) / rand.map.y + turbPower * rand.turbulence(rand.map.y - y, rand.map.x - x, turbSize);
                 var sineValue = 0.5 * Math.abs(Math.sin(xPeriod * xValue * pi) + Math.sin(yPeriod * yValue * pi));
                 rand.map.smoothed[y][x] = sineValue;
             }
@@ -371,8 +371,8 @@ var rand = {
         for (z = 0; z < rand.map.z; z++) {
             for (y = 0; y < rand.map.y; y++) {
                 for (x = 0; x < rand.map.x; x++) {
-                    var xValue = (x - rand.map.x / 2) / rand.map.x + turbPower * rand.turbDeep(x, y, z, turbSize) / 256;
-                    var yValue = (y - rand.map.y / 2) / rand.map.y + turbPower * rand.turbDeep(rand.map.y - y, rand.map.x - x, z, turbSize) / 256;
+                    var xValue = (x - rand.map.x / 2) / rand.map.x + turbPower * rand.turbDeep(x, y, z, turbSize);
+                    var yValue = (y - rand.map.y / 2) / rand.map.y + turbPower * rand.turbDeep(rand.map.y - y, rand.map.x - x, z, turbSize);
                     var sineValue = 0.5 * Math.abs(Math.sin(xPeriod * xValue * pi) + Math.sin(yPeriod * yValue * pi));
                     rand.map.smoothed[z][y][x] = sineValue;
                 }
@@ -381,12 +381,13 @@ var rand = {
         return rand.map.smoothed
     },
     quadr3D: function (xPeriod = 4, yPeriod = 4, zPeriod = 4, turbPower = .2, turbSize = 64) {
+        //TODO: verify the maths
         for (z = 0; z < rand.map.z; z++) {
             for (y = 0; y < rand.map.y; y++) {
                 for (x = 0; x < rand.map.x; x++) {
-                    var xValue = (x - rand.map.x / 2) / rand.map.x + turbPower * rand.turb3D(x, y, z, turbSize) / 256;
-                    var yValue = (y - rand.map.y / 2) / rand.map.y + turbPower * rand.turb3D(rand.map.y - y, rand.map.x - x, rand.map.z - z, turbSize) / 256;
-                    var zValue = (z - rand.map.z / 2) / rand.map.z + turbPower * rand.turb3D(x, y, z, turbSize) / 256;
+                    var xValue = (x - rand.map.x / 2) / rand.map.x + turbPower * rand.turb3D(x, y, z, turbSize);
+                    var yValue = (y - rand.map.y / 2) / rand.map.y + turbPower * rand.turb3D(rand.map.y - y, rand.map.x - x, rand.map.z - z, turbSize);
+                    var zValue = (z - rand.map.z / 2) / rand.map.z + turbPower * rand.turb3D(x, y, z, turbSize);
                     var sineValue = 0.5 * Math.abs(Math.sin(xPeriod * xValue * pi) + Math.sin(yPeriod * yValue * pi) + Math.sin(zPeriod * zValue * pi));
                     rand.map.smoothed[z][y][x] = sineValue;
                 }
