@@ -84,6 +84,13 @@ var stats = {
 };
 var rand = {
     seed: 0,
+    setup: function (x) {
+        this.seed = x;
+        this.mod = 1/Math.sqrt(x);
+        this.mult = Math.sqrt(this.mod*goldenRatio);
+        this.step = 1/(this.mult**2);
+        this.xlc = Math.sqrt(this.mult+this.mod+this.step);
+    },
     step: .05,
     len: 20,
     xlc: 0,
