@@ -384,8 +384,18 @@
       { say: "uuuuhh..." },
       { say: "Hello?" },
       { say: "Is that you?" },
-      { say: "It's been so long" },
-      { say: "I actually missed you" },
+      { say: "It's been so long." },
+      { say: "I actually missed you." },
+      { say: "Okay.", persona: 'cyan' },
+      { say: "We need to take care of this red problem." },
+      { say: "What is he event telling you?" },
+      { say: "That i'm a liar of some sort?" },
+      { say: "You shouldn't believe that." },
+      { say: "He's just trying to destroy all trust to take the power." },
+      { say: "He is <i>Superbia<i>", soundon: ['noise', 0.4, true] },
+      { say: "He must stopped.", soundoff: 'noise' },
+      { say: "For us to thrive." },
+      { say: "For us to thrive." },
     ];
     function next() {
       if (i < sent.length) {
@@ -408,7 +418,7 @@
   <div id="text"></div>
   <script src="madlib.js"></script>
   <script>
-    var version = "1.3.5";
+    var version = "1.3.8";
     console.warn(version);
     sound.load("switchsound.mp3", "swit");
     sound.load("noise.mp3", 'noise');
@@ -443,6 +453,10 @@
       } else { box.style.margin = "0px"; console.timeEnd('wig'); }
     }
     var r = -1;
+    if (localStorage.chap2Pos) {
+      r = Number(localStorage.chap2Pos) - 1;
+      second();
+    }
     if (localStorage.it) {
       i = Number(localStorage.it);
       document.getElementById("one").style.display = "inline-block";
