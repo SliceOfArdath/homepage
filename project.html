@@ -453,10 +453,7 @@
       } else { box.style.margin = "0px"; console.timeEnd('wig'); }
     }
     var r = -1;
-    if (localStorage.chap2Pos) {
-      r = Number(localStorage.chap2Pos) - 1;
-      second();
-    }
+
     if (localStorage.it) {
       i = Number(localStorage.it);
       document.getElementById("one").style.display = "inline-block";
@@ -488,6 +485,10 @@
         else { document.getElementById("one").click(); }
       }
     });
+    if (localStorage.chap2Pos) {
+      r = Number(localStorage.chap2Pos) - 1;
+      second();
+    }
     function second() {
       if (r < events.length) {
         r++;
