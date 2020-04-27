@@ -1,4 +1,167 @@
-console.info("madlib.js up and running, version 0.7.5")
+var mdlUpdateLogs = [
+    {
+        v: 'beta 0.8.6',
+        log: [
+            '+ Added full log-printing support for library and any attached file.',
+            '+ Added full log-loading support for library and any attached file.',
+            ': Edited logs colors.',
+            ': Edited log printing for more readability.'
+        ]
+    },
+    {
+        v: 'beta 0.9.0',
+        log: [
+            '!+ New log system.',
+            ['->', 'Custom Log:',
+                '+ Prior to any log printing you will now need to call logs.setup([optional custom color set]) to ensure a good highlighting.',
+                '+ Added logs.colorSet.add ',
+                '+ Added logs.load for loading an update log.',
+                '+ Added logs.csl for log printing. We do not recommend its direct usage for log printing as you shoud use logs.load for this.',
+                '+ Added color sets to enable color customisation.',
+                '+ Color sets are able to set default colors, and sublevels forms.',
+                '+ Full sublevels support.',
+                ': Maintained total retrocompatibility.'
+            ],
+            ': Technical changes done to tiled.EditChunk.',
+            '- Old update log system now obsolete and removed.',
+            '- Old lod printing system now obsolete and removed.',
+            '- Removed the color set add function as it had no use.'
+        ]
+    },
+    {
+        v: 'beta 0.9.2',
+        log: [
+            '!: Changed the system for adding new color sets:',
+            ['->', 'Color sets edition:',
+                '+ Put the color set add function back on as it have an use now.',
+                'You now need to add a set prior to its enabling.',
+                '+ Added logs.disable to disable sets.',
+                '+ Added logs.enable to enable sets.',
+                'logs.enable should be used as a replacement for the deprecated logs.setup.'
+            ],
+            ': Various bugfixes.',
+            '- No support for total highlighting yet due to technical limitations.'
+        ]
+    },
+    {
+        v: 'beta 0.10.0',
+        log: [
+            '!+ New 2D game handler:',
+            ['->', '2D Tiled Games:',
+                '+ Call World to generate a full world.',
+                '+ Region types supported, you can have multiple regions of the same type.',
+                '+ Able to fill, edit and create chunks',
+            ],
+            ': Fixed a bug where generating random arrays over and over would expand them more and more.',
+            ': Increased pain and entropy.'
+        ]
+    },
+    {
+        v: 'beta 0.11.0',
+        log: [
+            '!+ New 2D platformer game handler:',
+            ['->', '2D Platformer:',
+                '+ You can build squares and circles.',
+                '+ You can link your display canvas to the module so it handles most of the work.',
+                '+ Collison checking and solving is a thing.',
+                '+ Added the player item to help diffetiate.',
+                '!+ Two modes of display:',
+                ['->', 'Display modes:',
+                    '? Partial: Edit the items that are affected by the changes.',
+                    '? Complete/Full: Display the whole map each time.',
+                    'You can use full mode anyways by calling the display function.',
+                    '? In full display mode the items will be displayed by their index which can be edited.'
+                ],
+            ],
+            '+ Added max, min, and copy to array prototypes.',
+            '+ Baked some more potatoes.',
+            ': Fixed a bug where javascript would do a mess with this. Or this.this. I honestly don\'t know.',
+        ]
+    },
+];
+var logs = {
+    colorSet: {
+        list: [],
+        add: function (name, set) {
+            logs.colorSet[name] = set;
+        },
+        current: {},
+        default: {
+            start: [["", "color:grey", "   ->  "], ["+", "color:#4CAF50"], ["?", "color:#D81B60"], ["!+", "color:#4CAF50; font-weight:bold; font-size:13px;"], [":", "color:#FF9822"], ["!:", "color:#FF9822; font-weight:bold; font-size:13px;"], ["-", "color:#B71C1C"], [";", "color:#9C27B0"]],
+            in: [["[", "color:#FF9822", "]"], ["<", "color:#9C27B0", ">"], ['"', "color:grey", '"']],
+            arr: [["", "color:black", "   ->  "], ["->"]]
+        }
+    },
+    disable: function (name) {
+        var a = logs.colorSet.list.indexOf(name);
+        if (a != -1) {
+            logs.colorSet.list.splice(a);
+        }
+        logs.colorSet.current = {};
+        for (let i = 0; i < logs.colorSet.list.length; i++) {
+            logs.colorSet.current = { ...logs.colorSet.current, ...logs.colorSet[logs.colorSet.list[i]] };
+        }
+        return a
+    },
+    enable: function (name = 'default') {
+        logs.colorSet.list.push(name);
+        logs.colorSet.current = { ...logs.colorSet.current, ...logs.colorSet[name] };
+        return logs.colorSet.list.length - 1
+    },
+    setup: function (colorSet = logs.colorSet.default) {
+        //deprecated. use logs.enable instead. 
+        logs.colorSet.current = { ...logs.colorSet.current, ...logs.colorSet.default, ...colorSet };
+    },
+    csl: function (arr, type = 'List', open = false, color = 'default') {
+        if (open) console.group(type);
+        else console.groupCollapsed(type);
+        for (let i = 0; i < arr.length; i++) {
+            if (typeof (arr[i]) != "object") {
+                /*for (let j = 0; j < logs.colorSet.current.in.length; j++) {
+                    if (arr[i].indexOf(logs.colorSet.current.in[j][0])) {
+
+                    }
+                }*/
+                for (let j = logs.colorSet.current.start.length - 1; j >= 0; j--) {
+                    if (logs.colorSet.current.start[j][0] == "") {
+                        if (logs.colorSet.current.start[j][2]) console.log('%c' + logs.colorSet.current.start[j][2] + arr[i], (color == 'default' ? logs.colorSet.current.start[j][1] : color));
+                        else console.log('%c' + arr[i], (color == 'default' ? logs.colorSet.current.start[j][1] : color));
+                        j = -1;
+                    }
+                    else if (arr[i].substring(0, logs.colorSet.current.start[j][0].length) == logs.colorSet.current.start[j][0]) {
+                        if (logs.colorSet.current.start[j][2]) console.log('%c' + logs.colorSet.current.start[j][2] + arr[i], (color == 'default' ? logs.colorSet.current.start[j][1] : color));
+                        else console.log('%c' + arr[i], (color == 'default' ? logs.colorSet.current.start[j][1] : color));
+                        j = -1;
+                    }
+                }
+            } else {
+                for (let j = logs.colorSet.current.arr.length - 1; j >= 0; j--) {
+                    if (logs.colorSet.current.arr[j][0] == "") {
+                        if (logs.colorSet.current.arr[j][2]) console.log('%c' + logs.colorSet.current.arr[j][2] + arr[i], logs.colorSet.current.arr[j][1]);
+                        else console.log('%c' + arr[i], logs.colorSet.current.arr[j][1])
+                        j = -1;
+                    }
+                    else if (arr[i][0] == logs.colorSet.current.arr[j][0]) {
+                        logs.csl(arr[i].slice(2, arr[i].length), arr[i][1], false, (logs.colorSet.current.arr[j][1] ? logs.colorSet.current.arr[j][1] : 'default'));
+                        j = -1
+                    }
+                }
+            }
+        }
+        console.groupEnd();
+    },
+    load: function (target, version, open = false) {
+        var v = -1;
+        for (let i = 0; i < target.length; i++) {
+            if (target[i].v == version) v = i, i = target.length;
+        }
+        if (v >= 0) logs.csl(target[v].log, 'Update logs for ' + version, open);
+        else return 'No logs for this version.'
+    }
+}
+logs.enable();
+console.info("madlib.js up and running, version " + mdlUpdateLogs[mdlUpdateLogs.length - 1].v);
+logs.load(mdlUpdateLogs, mdlUpdateLogs[mdlUpdateLogs.length - 1].v);
 var pi = Math.PI; var goldenRatio = (Math.sqrt(5) + 1) / 2; var rad = pi; var rev = 0.5; var deg = 180;
 radToDeg = (a) => a * (180 / pi);
 radToRev = (a) => a * (.5 / pi);
@@ -13,26 +176,63 @@ getMix = (a, b, c) => (c - a) / (b - a);
 norm = (x, y) => Math.sqrt(x ** 2 + y ** 2);
 knuth = (a, b, c) => b < 2 || c < 1 ? a ** c : knuth(a, b - 1, knuth(a, b, c - 1));
 sortgrow = (array) => array.sort(function (a, b) { return a - b; });
+delta = (a, b, c) => b ** 2 - 4 * a * c;
+isMultipleOf = (i, a) => i / a == Math.abs(i / a);
+Array.prototype.max = function () { return Math.max.apply(null, this); }
+Array.prototype.min = function () { return Math.min.apply(null, this); }
+Array.prototype.copy = function () { return JSON.parse(JSON.stringify(this)); }
+function toTimeFormat(a) {
+    var r = "";
+    var powers = [365.25 * 24 * 60 * 60000, 24 * 60 * 60000, 60 * 60000, 60000, 1000, 1]
+    var suffix = ['years', 'days', 'hours', 'minutes', 'seconds', 'miliseconds']
+    for (let i = 0; i < powers.length; i++) {
+        if (Math.floor(a / powers[i])) r += Math.floor(a / powers[i]) + " " + suffix[i] + ", ", a -= Math.floor(a / powers[i]) * powers[i];
+    }
+    return r
+}
+function getAllProperties(o) {
+    var names = Object.getOwnPropertyNames(o);
+    var prop = [];
+    for (let i = 0; i < names.length; i++) {
+        prop[i] = o[names[i]];
+    }
+    return [names, prop]
+    /*var objectToInspect;
+    var result = [];
+    for(objectToInspect = o;
+        objectToInspect !== null;
+        objectToInspect = Object.getPrototypeOf(objectToInspect)){  
+      result = result.concat(Object.getOwnPropertyNames(objectToInspect));  
+    }
+    return result; */
+}
 function periodicBrute(generator, range, acc = 0, len = 1, inc = 1) {
+    var max = 0; var min = 1;
     if (len > 1) {
         var t = []; var c = 0;
         for (let i = 0; i < len; i += inc) { t[i] = generator(); }
+
         for (let i = 0; i < range; i += inc) {
             var a = generator();
-            if (acc != 0) { if (Math.round(acc * t[c]) == Math.round(acc * a)) if (c++, c == len) return i }
-            else { if (t[c] == a) if (c++, c == len) return i }
+            if (max < a) max = a;
+            else if (min > a) min = a;
+            if (acc != 0) { if (Math.round(acc * t[c]) == Math.round(acc * a)) if (c++, c == len) return [i, min, max] }
+            else { if (t[c] == a) if (c++, c == len) return [i, min, max] }
         }
     } else {
         var t = generator();
         for (let i = 0; i < range; i += inc) {
             var a = generator();
-            if (acc != 0) { if (Math.round(acc * t) == Math.round(acc * a)) return i }
-            else { if (t == a) return i }
+            if (max < a) max = a;
+            else if (min > a) min = a;
+            if (acc != 0) { if (Math.round(acc * t) == Math.round(acc * a)) return [i, min, max] }
+            else { if (t == a) return [i, min, max] }
         }
     }
-    return 'No periodicity found for current range and accuracy.'
+    return ['No periodicity found for current range and accuracy.', min, max]
 }
 function total(array) {
+    array = array.flat(Infinity);
     var t = 0;
     for (let i = 0; i < array.length; i++) t += array[i];
     return t
@@ -86,10 +286,10 @@ var rand = {
     seed: 0,
     setup: function (x) {
         this.seed = x;
-        this.mod = 1/Math.sqrt(x);
-        this.mult = Math.sqrt(this.mod*goldenRatio);
-        this.step = 1/(this.mult**2);
-        this.xlc = Math.sqrt(this.mult+this.mod+this.step);
+        this.mod = 1 / Math.sqrt(x);
+        this.mult = Math.sqrt(this.mod * goldenRatio);
+        this.step = 1 / (this.mult ** 2);
+        this.xlc = Math.sqrt(this.mult + this.mod + this.step);
     },
     step: .05,
     len: 20,
@@ -123,12 +323,12 @@ var rand = {
         for (let i = -Math.ceil(rand.len / 2); i < Math.floor(rand.len / 2); i++) t += (1 / (i + 1 + Math.ceil(rand.len / 2))) ** (1 / 3) * Math.sin(i ** 2 * x * rand.step + rand.seed * (i + 1));
         return .5 * Math.cos(64 * pi * t) + .5
     },
-    int: (a, b, x = Math.random()) => Math.round(a + rand.noise(x) * (b - a)),
+    int: (a, b, x = Math.random()) => Math.round(a + rand.lcg() * (b - a)),
     real: function (a, b, acc = -1, x = Math.random()) {
         return (acc >= 0 ? Math.round((a + Math.random() * (b - a)) * (10 ** acc)) / (10 ** acc) : a + Math.random() * (b - a))
     },
     gen2D: function (a, b, turb = true, lcg = true) {
-        rand.map.x = a; rand.map.y = b;
+        rand.map.x = a; rand.map.y = b; rand.map.smoothed = []; rand.map.elem = [];
         if (lcg) {
             for (let y = 0; y < b; y++) {
                 var r = [];
@@ -403,7 +603,7 @@ var rand = {
         return rand.map.smoothed
     },
     gen3D: function (a, b, c, turb = true, lcg = true) {
-        rand.map.x = a; rand.map.y = b; rand.map.z = c;
+        rand.map.x = a; rand.map.y = b; rand.map.z = c; rand.map.smoothed = []; rand.map.elem = [];
         if (lcg) {
             for (let z = 0; z < c; z++) {
                 var r = [];
@@ -592,6 +792,145 @@ var bubble = {
     },
     edit: function (i, x, y, speed = 5, rs = .1, angle = 0) { this.data[i] = { angle: angle, x: x, y: y, rspeed: rs, speed: speed }; }
 };
+var platformer = {
+    map: [],
+    display: undefined,
+    bgc: undefined,
+    player: {},
+    settings: { g: -9.8 },
+    respawn: function (x, y, w, h, jumpHeight, accTime, decelTime, maxSpd, isTransparent = false, isVisible = false, color = '', index = -1) {
+        platformer.player = { pos: [x, y], size: [w, h], isTransparent: isTransparent, isVisible: isVisible, color: color, index: index, speed: [0, 0], jumpHeight: jumpHeight, spdTime: [accTime, decelTime], maxMotionSpd: maxSpd }
+    },
+    plJump: function () {
+        if (!platformer.isPlayerFalling()) {
+            platformer.player.speed[1] = platformer.player.jumpHeight;
+            return platformer.player.jumpHeight;
+        } return 0
+    },
+    plDisp: function (show) {
+        if (show) platformer.display.getContext("2d").fillStyle = platformer.player.color;
+        else platformer.display.getContext("2d").fillStyle = platformer.bgc;
+        platformer.display.getContext("2d").fillRect(platformer.player.pos[0], platformer.player.pos[1], platformer.player.size[0], platformer.player.size[1]);
+    },
+    plMove: function (dir) {
+        platformer.plDisp(false);
+        platformer.player.speed[0] = platformer.player.maxMotionSpd * (dir == 'right' ? 1 : -1);
+        platformer.player.pos[0] = Math.floor(platformer.player.pos[0] + platformer.player.speed[0]);
+        for (let i = 0; i < platformer.map.length; i++) {
+            var c = platformer.solve(platformer.collison('player', i), 'player', i);
+        }
+        platformer.plDisp(true);
+        return platformer.player.pos[0];
+    },
+    isPlayerFalling: function () {
+        platformer.player.pos[1] -= 1
+        var f = 0;
+        for (let i = 0; i < platformer.map.length; i++) {
+            var a = platformer.collison('player', i);
+            if (a[1] < 0 && a[3] < 0) f++;
+        }
+        return !(f)
+    },
+    plFall: function (t) {
+        var r = platformer.isPlayerFalling();
+        if (r) {
+            platformer.plDisp(false);
+            platformer.player.speed[1] += platformer.settings.g;
+            platformer.player.pos[1] = Math.floor(platformer.player.pos[1] + platformer.player.speed[1]);
+            for (let i = 0; i < platformer.map.length; i++) platformer.solve(platformer.collison('player', i), 'player', i);
+            platformer.plDisp(true);
+            return platformer.player.pos[1]
+        } return platformer.player.pos[1]
+    },
+    getLowestIndex: function (start = -1) {
+        var arr = [];
+        for (let i = 0; i < platformer.map.length; i++) {
+            arr[i] = platformer.map[i].index;
+        }
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] < start) arr.splice(i, 1);
+        }
+        if (platformer.player.index >= start && platformer.player.index < arr.min()) return platformer.player.index;
+        else return arr.min;
+    },
+    displayAll: function () {
+        platformer.display.getContext("2d").fillStyle = platformer.bgc;
+        platformer.display.getContext("2d").fillRect(0, 0, platformer.display.width, platformer.display.height);
+        platformer.display.getContext("2d").fillStyle = platformer.player.color;
+        platformer.display.getContext("2d").fillRect(platformer.player.pos[0], platformer.player.pos[1], platformer.player.size[0], platformer.player.size[1]);
+        for (let i = 0; i < platformer.map.length; i++) {
+            platformer.getLowestIndex(i);
+            if (platformer.map[i].color) platformer.display.getContext("2d").fillStyle = platformer.map[i].color;
+            if (platformer.map[i].type = 'square') {
+                if (platformer.map[i].isVisible) platformer.display.getContext("2d").fillRect(platformer.map[i].pos[0], platformer.map[i].pos[1], platformer.map[i].size[0], platformer.map[i].size[1]);
+            } else if (platformer.map[i].type = 'circle') {
+                if (platformer.map[i].isVisible) platformer.display.getContext("2d").fillRect(platformer.map[i].pos[0], platformer.map[i].pos[1], platformer.map[i].radius, 0, 2 * pi);
+            }
+        }
+    },
+    setDisplay: function (canvas, bgc, displayMode = 'partial') {
+        platformer.display = canvas;
+        platformer.bgc = bgc;
+        platformer.displayMode = displayMode;
+    },
+    collison: function (i1, i2) {
+        if (i1 == 'player') obj1 = platformer.player;
+        else obj1 = platformer.map[i1];
+        if (!obj1.isTransparent && !platformer.map[i2].isTransparent) {
+            var x1 = obj1.pos[0] - (platformer.map[i2].pos[0] + platformer.map[i2].size[0]);
+            var x2 = platformer.map[i2].pos[0] - (obj1.pos[0] + obj1.size[0]);
+            var y1 = obj1.pos[1] - (platformer.map[i2].pos[1] + platformer.map[i2].size[1]);
+            var y2 = platformer.map[i2].pos[1] - (obj1.pos[1] + obj1.size[1]);
+            return [x1, y1, x2, y2]
+        }
+    },
+    solve: function (coords, i1, i2 = undefined) {
+        if (coords.max() < 0) {
+            if (i1 == 'player') obj1 = platformer.player;
+            else obj1 = platformer.map[i1];
+            var m = coords.max();
+            if (platformer.display && platformer.displayMode == 'partial') {
+                if (obj1.isVisible) {
+                    platformer.display.getContext("2d").fillStyle = platformer.bgc;
+                    platformer.display.getContext("2d").fillRect(obj1.pos[0], obj1.pos[1], obj1.size[0], obj1.size[1]);
+                }
+                if (i2 && platformer.map[i2].isVisible) {
+                    platformer.display.getContext("2d").fillStyle = platformer.bgc;
+                    platformer.display.getContext("2d").fillRect(platformer.map[i2].pos[0], platformer.map[i2].pos[1], platformer.map[i2].size[0], platformer.map[i2].size[1]);
+                }
+            }
+            if (isMultipleOf(coords.indexOf(m), 2)) obj1.pos[1] += (isMultipleOf(coords.indexOf(m), 4) ? -coords[1] : -coords[3]);
+            else obj1.pos[0] += (isMultipleOf(coords.indexOf(m), 3) ? -coords[0] : -coords[2]);
+            if (platformer.display && platformer.displayMode == 'partial') {
+                if (obj1.color) platformer.display.getContext("2d").fillStyle = obj1.color;
+                if (obj1.isVisible) platformer.display.getContext("2d").fillRect(obj1.pos[0], obj1.pos[1], obj1.size[0], obj1.size[1]);
+                if (platformer.map[i2].color) platformer.display.getContext("2d").fillStyle = platformer.map[i2].color;
+                if (platformer.map[i2].isVisible) platformer.display.getContext("2d").fillRect(platformer.map[i2].pos[0], platformer.map[i2].pos[1], platformer.map[i2].size[0], platformer.map[i2].size[1]);
+
+            }
+        }
+        return obj1.pos
+    },
+    buildSquare: function (x, y, w, h, isTransparent = false, isVisible = false, isDeadly = false, color = '', index = platformer.map.length) {
+        platformer.map[platformer.map.length] = { type: 'square', pos: [x, y], size: [w, h], isTransparent: isTransparent, isVisible: isVisible, isDeadly: isDeadly, color: color, index: index };
+        if (platformer.display && platformer.displayMode == 'partial') {
+            if (color) platformer.display.getContext("2d").fillStyle = color;
+            if (isVisible) platformer.display.getContext("2d").fillRect(x, y, w, h);
+        }
+        return platformer.map[platformer.map.length - 1];
+    },
+    buildCircle: function (x, y, r, isTransparent = false, isVisible = false, isDeadly = false, color = '', index = platformer.map.length) {
+        platformer.map[platformer.map.length] = { type: 'circle', pos: [x, y], radius: r, isTransparent: isTransparent, isVisible: isVisible, isDeadly: isDeadly, color: color, index: index };
+        if (platformer.display && platformer.displayMode == 'partial') {
+            if (color) platformer.display.getContext("2d").fillStyle = color;
+            if (isVisible) platformer.display.getContext("2d").arc(x, y, r, 0, 2 * Math.PI), platformer.display.getContext("2d").stroke();
+        }
+        return platformer.map[platformer.map.length - 1];
+    },
+    prepBroad: function () {
+
+    }
+}
 //TODO: Sort. This. Fucking. Mess.
 //TODO: From there...
 //2D block game handler
@@ -599,8 +938,135 @@ var tiled = {
     texture: { size: 8, pos: (x, y) => [texture.size * x, texture.size * y], },
     blocks: [],
     map: [],
+    settings: {},
+    metadata: { region: [] },
+    getBlockId: function (block) {
+        var t = -1;
+        for (let i = 0; i < blocks.length; i++) {
+            if (type == blocks[i].name) {
+                t = i;
+                i = blocks.length;
+            }
+        }
+        return t
+    },
+    Setup: function (subLevels, layers, chkSize, dataDef, type = []) {
+        tiled.settings.subLevels = subLevels;
+        tiled.settings.layers = layers;
+        tiled.settings.dataDef = dataDef;
+        tiled.settings.typeData = type;
+        tiled.settings.chunkSize = chkSize;
+        var s = Object.getOwnPropertyNames(tiled.metadata);
+        for (let i = 0; i < s.length; i++) {
+            for (let j = 0; j < type.length; j++) {
+                if (s[i] == type[j]) tiled.metadata[type[j]][tiled.metadata[type[j]].length] = dataDef[j];
+            }
+        }
+    },
+    Region: function (r) {
+        tiled.metadata.region.push(r);
+    },
+    BuildChunk: function (coordinates, data = undefined) {
+        var c = null;
+        for (let i = 0; i < tiled.map.length; i++) {
+            if (tiled.map[i].pos == coordinates.toString()) c = tiled.map[i].pos, i = tiled.map.length;
+        }
+        var t = tiled.map.length;
+        if (c == null) {
+            tiled.map[t] = {
+                data: [], pos: coordinates, meta: [],
+            };
+            for (let i = 0; i < tiled.settings.layers; i++) tiled.map[t].data[i] = [];
+            if (data != undefined) { var a = tiled.EditChunk(coordinates, data); return [tiled.map[t], a]; }
+            else return tiled.map[t]
+        } else return c
+    },
+    EditChunk: function (coordinates, data) {
+        var c = null; var t = 0;
+        for (let i = 0; i < tiled.map.length; i++) {
+            if (tiled.map[i].pos == coordinates.toString()) c = tiled.map[i].pos, t = i, i = tiled.map.length;
+        }
+        if (c != null) {
+            tiled.map[t].meta[tiled.map[t].meta.length] = data;
+        } else return coordinates
+    },
+    Fill: function (coordinates, layer, subLevel, data) {
+        var c = null;
+        for (let i = 0; i < tiled.map.length; i++) {
+            if (tiled.map[i].pos == coordinates.toString()) c = i, i = tiled.map.length;
+        }
+        if (c != null) {
+            var p = 256; var t = -1; var from = -1;
+            for (let i = 0; i < tiled.metadata.region.length; i++) {
+                if (tiled.metadata.region[i].name == tiled.map[c].meta[i].from) from = i, i = tiled.metadata.region.length;
+            }
+            for (let i = 0; i < tiled.map[c].meta.length; i++) {
+                if (tiled.metadata.region[from].type == 'generative' && tiled.metadata.region[from].priority < p) p = tiled.metadata.region[from].priority, t = i;
+            }
+            var arr = [];
+            for (let y = 0; y < data; y++) {
+                var a = [];
+                for (let x = 0; x < data[y]; x++) {
+                    for (let i = 0; i < tiled.map[c].meta[t].depth[layer][subLevel].length; i++) {
+                        if (tiled.map[c].meta[t].depth[layer][subLevel][i][0] >= data[y][x]) a.push(this.getBlockId(tiled.map[c].meta[t].depth[layer][subLevel][i][1]));
+                    }
+                }
+                arr.push(a);
+            }
+            tiled.map[c].data[layer][subLevel] = arr;
+            return tiled.map[c].data[layer][subLevel]
+        } else return coordinates
+    },
+    Filter: function (chunk, array) {
+        var a = 1;
+        var p = Object.getOwnPropertyNames(chunk.meta);
+        var c = -1;
+        for (let i = 0; i < p.length; i++) {
+            if (chunk.meta[p[i]]) return c = i;
+        };
+        if (chunk.meta[p])
+            for (let y = 0; y < 50; y++) {
+                var r = [];
+                for (let x = 0; x < 50; x++) {
+                    var a = Math.floor(mix(0, blocks.length, rand.map.smoothed[y][x]));
+                    r.push(a);
+                }
+                coords.medium.push(r);
+            }
+    },
+    World: function (size, generator = rand.gen2D) {
+        console.info('Hold on.. generating world..')
+        for (let y = 0; y < size; y++) {
+            for (let x = 0; x < size; x++) {
+                this.BuildChunk([x, y]);
+            }
+        }
+        for (let i = 0; i < tiled.metadata.region.length; i++) {
+            var arrey = generator(size, size);
+            var arr = [];
+            for (let j = 0; j < arrey.length; j++) {
+                arr.push(arrey[j].map(x => Math.round(x * tiled.metadata.region[i].data.length)));
+            }
+            for (let y = 0; y < size; y++) {
+                for (let x = 0; x < size; x++) {
+                    this.EditChunk([x, y], tiled.metadata.region[i].data[arr[y][x]]);
+                }
+            }
+
+        }
+        for (let y = 0; y < size; y++) {
+            for (let x = 0; x < size; x++) {
+                for (let l = 0; l < tiled.settings.layers; l++) {
+                    for (let s = 0; s < tiled.settings.subLevels; s++) {
+                        var arr = generator(tiled.settings.chunkSize, tiled.settings.chunkSize);
+                        this.Fill([x, y], l, s, arr)
+                    }
+                }
+            }
+        }
+    }
 };
-var texture = {
+/*var texture = {
     size: 8,
     pos: (x, y) => [texture.size * x, texture.size * y],
 };
@@ -619,7 +1085,7 @@ var coords = {
     y: 0,
     medium: [],
     caves: []
-};
+};*/
 //TODO: ...to here.
 
 //Interactive typing
@@ -644,6 +1110,14 @@ var key = {
     spd: 5,
     enable: false,
     restrict: false,
+    addKey: function (key, action, param = void ("")) {
+        this.setKeyVal(key);
+        this.setKeyAct(key, action);
+        this.setKeyPar(key, param)
+    },
+    setKeyVal: function (k) { key.state[key.state.length] = k; key.val[k] = false; },
+    setKeyAct: function (k, act) { key.act[k] = act; },
+    setKeyPar: function (k, par) { key.par[k] = par },
     restrictions: function (x1, x2, y1, y2) {
         key.border.xMin = x1; key.border.xMax = x2; key.border.yMin = y1; key.border.yMax = y2; key.restrict = true;
     },
@@ -651,14 +1125,24 @@ var key = {
     pos: { x: 100, y: 100 },
     state: [],
     val: {},
-    act: {}
+    act: {},
+    par: {},
+    action: function () {
+        var t = 0;
+        if (key.enable) {
+            for (let t = 0; t < key.state.length; t++) {
+                i = key.val[key.state[t]];
+                if (i == true) { console.log(key.act[key.state[t]](key.par[key.state[t]])); }
+            }
+            if (key.restrict) {
+                if (key.border.xMin >= key.pos.x) key.pos.x = key.border.xMin;
+                else if (key.border.xMax <= key.pos.x) key.pos.x = key.border.xMax;
+                if (key.border.yMin >= key.pos.y) key.pos.y = key.border.yMin;
+                else if (key.border.yMax <= key.pos.y) key.pos.y = key.border.yMax;
+            }
+        }
+    }
 };
-function setKeyVal(k) { key.state[key.state.length] = k; key.val[k] = false; }
-function setKeyAct(k, act) { key.act[k] = act; }
-setKeyVal("ArrowUp")
-setKeyVal("ArrowDown")
-setKeyVal("ArrowLeft")
-setKeyVal("ArrowRight")
 document.addEventListener("keydown", function (e) {
     e = e || event; // to deal with IE
     key.val[e.code] = e.type == 'keydown';
@@ -668,31 +1152,10 @@ document.addEventListener("keyup", function (e) {
     key.val[e.code] = e.type == 'keydown'
     if (event.code == "Escape") { pause() }
 });
-function keymotion() {
-    var t = 0;
-    if (key.enable) {
-        pre();
-        for (let t = 0; t < key.state.length; t++) {
-            i = key.val[key.state[t]];
-            if (i == true) { key.act[key.state[t]](); }
-        }
-        if (key.restrict) {
-            if (key.border.xMin >= key.pos.x) key.pos.x = key.border.xMin;
-            else if (key.border.xMax <= key.pos.x) key.pos.x = key.border.xMax;
-            if (key.border.yMin >= key.pos.y) key.pos.y = key.border.yMin;
-            else if (key.border.yMax <= key.pos.y) key.pos.y = key.border.yMax;
-        }
-        post();
-    }
-}
 function load() { if (key.enable) keymotion(); }
-setKeyAct("ArrowUp", "function up() { key.pos.y -= key.spd; }")
-setKeyAct("ArrowDown", "function down() { key.pos.y += key.spd; }")
-setKeyAct("ArrowLeft", "function left() { key.pos.x -= key.spd; }")
-setKeyAct("ArrowRight", "function right() { key.pos.x += key.spd; }")
 document.addEventListener("mousemove", function (e) {
-    if (cursor.enable) { pre() }
+    if (cursor.enable) { }
     cursor.x = event.clientX;
     cursor.y = event.clientY;
-    if (cursor.enable) { post() }
+    if (cursor.enable) { }
 });
