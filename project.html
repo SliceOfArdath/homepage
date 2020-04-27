@@ -502,7 +502,8 @@
           document.getElementById("one").innerHTML = events[r].say;
           if (logs) { document.getElementById("text").innerHTML += events[r].say + "</br>"; }
         }
-        console.log("%cYou are useless and everyone hates you", 'color: red;');
+        if (events[r].log) console.log(events[r].log);
+        else console.log("%cYou are useless and everyone hates you", 'color: red;');
       }
     }
   </script>
