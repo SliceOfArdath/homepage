@@ -492,6 +492,7 @@
     function second() {
       if (r < events.length) {
         r++;
+        localStorage.chap2Pos = r;
         if (events[r].say != undefined) {
           if (events[r].persona == 'red') { document.getElementById("one").style.backgroundColor = 'red'; document.getElementById("one").style.color = 'black'; plsw(); }
           else if (events[r].persona == 'cyan') { document.getElementById("one").style.backgroundColor = 'cyan'; document.getElementById("one").style.color = 'blue'; plsw(); }
