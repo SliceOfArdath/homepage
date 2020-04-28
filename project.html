@@ -554,7 +554,7 @@
       second();
     }
     function second(elem) {
-      if (r < events.length) {
+      if (r < events.length -1) {
         r++;
         localStorage.chap2Pos = r;
         if (events[r].ttlWig) startWig(Infinity, 2);
@@ -599,7 +599,7 @@
         if (events[r].log) console.log(events[r].log);
         else console.log("%cYou are useless and everyone hates you", 'color: red;');
         if (events[r].fade) (elem == 'one' ? void "" : fade(document.getElementById("one"))), (elem == 'two' ? void "" : fade(document.getElementById("two"))), (elem == 'three' ? void "" : fade(document.getElementById("three")));
-      }
+      } else { localStorage.chap2Pos = -1; }
     }
   </script>
 </body>
