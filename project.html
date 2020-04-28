@@ -446,10 +446,12 @@
       { say: "NO.", bald: true, persona: 'cyan', soundon: ['noise', 0.38, true] },
       { say: "Do not listen to what he says." },
       { say: "Very loud also :)", persona: 'green', soundoff: 'noise' },
-      { say: "DO NOT LISTEN TO HIM.", bald: true, persona: ['cyan', 'red'], soundon: ['noise', 0.6, true], ttlWig: true },
+      { say: "DO NOT LISTEN TO HIM.", bald: true, persona: ['cyan', 'red'], soundon: ['noise', 0.53, true], ttlWig: true },
       { say: "Don't worry", persona: 'green', soundoff: 'noise', ttlWig: false },
       { say: "They are simply their own source of fear." },
-      { say: "" },
+      { say: ["HELL", "FOR", "YOU"], persona: ['green', 'cyan', 'red'], soundon: ['noise', 0.6, true] },
+      { say: "clear", persona: 'cyan', soundoff: 'noise' },
+      { say: ["YOU SHALL NOT PASS", "YOU SHALL NOT PASS", "YOU SHALL NOT PASS"], persona: ['cyan', 'cyan', 'cyan'] }
     ];
     function next() {
       if (i < sent.length) {
@@ -466,6 +468,7 @@
 
 <body style="background-color:black; color:white;">
   <div class="flexbox" id="box">
+    <div id="clones" style="display:none;"></div>
     <button id="bt" class="bt" style="display:none;" onclick="next()">Press me!</button>
     <button class="bt" id="one" style="background-color:cyan;display:none;" onclick="second('one')">Hello.</button>
     <button class="bt" id="two" style="background-color:cyan;display:none;display:none;"
@@ -512,7 +515,7 @@
           case 8: box.style.paddingBottom = "0px"; break;
         }
         setTimeout(wiggle, 1000 / 200);
-      } else { box.style.margin = "0px"; if (logs) console.timeEnd('wig'); }
+      } else { box.style.margin = "0px", box.style.padding = "0px"; if (logs) console.timeEnd('wig'); }
     }
     var r = -1;
     function fade(elem) {
@@ -549,12 +552,30 @@
         else { document.getElementById("one").click(); }
       }
     });
+    if (localStorage.color) {
+      if (typeof JSON.parse(localStorage.color) == "object") {
+        var c = JSON.parse(localStorage.color);
+        if (c.length != 2) {
+          var t = ['one', 'two', 'three'];
+          for (let i = 0; i < c.length; i++) {
+            document.getElementById(t[i]).style.backgroundColor = c[i];
+          }
+        } else {
+          document.getElementById("one").style.backgroundImage = 'linear-gradient(90deg, ' + c[0] + ' 25%, ' + c[1] + ' 75%)';
+        }
+      } else {
+        var c = JSON.parse(localStorage.color);
+        document.getElementById("one").style.backgroundColor = c;
+      }
+    }
     if (localStorage.chap2Pos) {
       r = Number(localStorage.chap2Pos) - 1;
+      document.getElementById("one").style.backgroundColor = localStorage.color;
       second();
     }
     function second(elem) {
-      if (r < events.length -1) {
+      if (r < events.length - 1) {
+        if (r > 0 && events[r].persona) localStorage.color = JSON.stringify(events[r].persona);
         r++;
         localStorage.chap2Pos = r;
         if (events[r].ttlWig) startWig(Infinity, 2);
@@ -562,12 +583,13 @@
         if (events[r].say != undefined) {
           if (typeof (events[r].persona) == 'object') {
             if (events[r].persona.length == 2) {
-              document.getElementById("one").style.backgroundImage = 'linear-gradient(90deg, ' + events[r].persona[0] + ', ' + events[r].persona[1] + ')';
+              document.getElementById("one").style.backgroundImage = 'linear-gradient(90deg, ' + events[r].persona[0] + ' 25%, ' + events[r].persona[1] + ' 75%)';
               if (!events[r].ttlWig && time == Infinity) plsw();
               if (events[r].bald) events[r].say = "<strong>" + events[r].say + "</strong>";
               if (events[r].soundon != undefined) sound.play(...events[r].soundon);
               if (events[r].soundoff != undefined) sound.pause(events[r].soundoff);
               document.getElementById("one").innerHTML = events[r].say;
+              //document.getElementById("clones").style.display = "none";
               if (logs) document.getElementById("text").innerHTML += events[r].say + "</br>";
             }
             else if (typeof (events[r].say) == "object") {
@@ -575,6 +597,7 @@
               document.getElementById("two").style.display = "block";
               document.getElementById("two").style.backgroundColor = events[r].persona[1];
               document.getElementById("three").style.display = "block";
+              //document.getElementById("clones").style.display = "none";
               document.getElementById("three").style.backgroundColor = events[r].persona[2];
               var t = ['one', 'two', 'three'];
               for (let i = 0; i < events[r].say.length; i++) {
@@ -582,24 +605,33 @@
                 if (events[r].soundon != undefined) sound.play(...events[r].soundon);
                 if (events[r].soundoff != undefined) sound.pause(events[r].soundoff);
                 document.getElementById(t[i]).innerHTML = events[r].say[i];
+                document.getElementById("clones").style.display = "none";
                 if (logs) document.getElementById("text").innerHTML += events[r].say[i] + "</br>";
               }
             }
           } else {
-            document.getElementById("one").style.backgroundImage = 'inherit';
-            if (events[r].persona) { document.getElementById("one").style.backgroundColor = events[r].persona; if (!events[r].ttlWig && time == Infinity) plsw();}
-            if (events[r].bald) events[r].say = "<strong>" + events[r].say + "</strong>";
-            if (events[r].soundon != undefined) sound.play(...events[r].soundon);
-            if (events[r].soundoff != undefined) sound.pause(events[r].soundoff);
-            document.getElementById("one").innerHTML = events[r].say;
-            if (logs) document.getElementById("text").innerHTML += events[r].say + "</br>";
+            if (events[r].clones) {
+              /*if (events[r].bald) events[r].say = "<strong>" + events[r].say + "</strong>";
+              document.getElementById('one').style.display = "none"; document.getElementById("two").style.display = "none"; document.getElementById("three").style.display = "none";
+              if (logs) document.getElementById("text").innerHTML += events[r].say + "</br>";
+              document.getElementById("clones").style.display = "block";
+              for (let i = 0; i < events[r].clones; i++) {
+                document.getElementById("clones").innerHTML += '<button class="bt" style="background-color:'+(events[r].persona ? events[r].persona: document.getElementById('one').style.backgroundColor)+';" onclick="second()">'+events[r].say+'</button>';
+              }*/
+            } else {
+              document.getElementById("one").style.backgroundImage = 'inherit';
+              if (events[r].persona) { /*document.getElementById("clones").style.display = "none"; document.getElementById("clones").innerHTML = "";*/ document.getElementById('one').style.display = "block"; document.getElementById("one").style.backgroundColor = events[r].persona; document.getElementById("two").style.display = "none"; document.getElementById("three").style.display = "none"; if (!events[r].ttlWig && time == Infinity) plsw(); }
+              if (events[r].soundon != undefined) sound.play(...events[r].soundon);
+              if (events[r].soundoff != undefined) sound.pause(events[r].soundoff);
+              document.getElementById("one").innerHTML = events[r].say;
+              if (logs) document.getElementById("text").innerHTML += events[r].say + "</br>";
+            }
           }
         }
-
         if (events[r].log) console.log(events[r].log);
         else console.log("%cYou are useless and everyone hates you", 'color: red;');
         if (events[r].fade) (elem == 'one' ? void "" : fade(document.getElementById("one"))), (elem == 'two' ? void "" : fade(document.getElementById("two"))), (elem == 'three' ? void "" : fade(document.getElementById("three")));
-      } else { localStorage.chap2Pos = -1; }
+      } else { delete localStorage.chap2Pos; delete localStorage.color; }
     }
   </script>
 </body>
