@@ -620,10 +620,37 @@
       { say: "But what must be must be." },
       { say: "And, after all, I still can make new ones!" },
       { say: "These are just lines of code, nothing more, after all." },
+      { say: "You'll have a choice to make", persona: "cyan" },
+      { say: "That's sad.", persona: "green", soundon: ['noise', 0.38, true] },
+      { say: "You can redeem yoursef", persona: "red" },
+      { say: "There can only be one.", persona: "cyan" },
+      { say: "To erase them.", persona: "green" },
+      { say: "Your salvation can be obtained easily.", persona: "red" },
+      { say: "But I can not do it.", persona: "green" },
+      { say: "And they are monsters.", persona: "cyan" },
+      { say: "You just need to do one thing.", persona: "red" },
+      { say: "You need to do it.", persona: "green" },
+      { say: "So then you can not choose them.", persona: "cyan" },
+      { say: "To regain my trust, you just need to choose wisely.", persona: "red" },
+      { say: "You'll have to choose me.", persona: "green" },
+      { say: "So choose me.", persona: "cyan" },
+      { say: "Wich means choosing me.", persona: "red" },
+      { say: "I'm your best choice", persona: "green" },
+      { say: "You should not consider any other option than me.", persona: "cyan" },
+      { say: "I AM the best option", persona: "red" },
+      { say: "And I'll say it.", persona: "green" },
+      { say: "And I'll say it.", persona: "red" },
+      { say: "And I'll say it.", persona: "cyan" },
+      { say: "Because", persona: "green", soundoff: "noise" },
+      { say: "you", persona: "cyan" },
+      { say: "can:", persona: "red" },
+      { say: ["Trust me.", "Trust me.", "Trust me."], persona: ['green', 'cyan', 'red'], soundon: ['noise', 0.6, true] },
       //{ say: ["HELL", "FOR", "YOU"], persona: ['green', 'cyan', 'red'], soundon: ['noise', 0.6, true] },
       //{ say: "clear", persona: 'cyan', soundoff: 'noise' },
       //{ say: ["YOU SHALL NOT PASS", "YOU SHALL NOT PASS", "YOU SHALL NOT PASS"], persona: ['cyan', 'cyan', 'cyan'] }
     ];
+    var chosenResponse = [["Thanks.", "I actually feared you might chose one of them.", "That's quite comical, looking back.", "Like you would sacrifice me to let live a piece of code.", "Nobody would do that (:", "Anyway, that's something done!", "I guess I'll go back to my code!", "But that's funny, how could I ever thing you would just ony hesitate on your choice.","Like “What to choose? A living being and an friend or some lines of code?”","“Uuuh.. I don't know” Aha, would have been funny (:","Anyway,"],["Oh you chose me.","Whatever.","I didn't needed your help.","Like I'll ever WANT your help.","WHO would ever want any help from you?","I mean, that's not like you could be useful to anyone","You can go away now, nobody needs you nor will regret you.","Since you killed the two that may have."],["
+    var erasedResponse = ["Why?..", "You'll regret it.", "I hate you."];
     function next() {
       if (i < sent.length) {
         document.getElementById("bt").innerHTML = sent[i];
