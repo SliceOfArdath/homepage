@@ -26,11 +26,11 @@
     }
 
     .bt.fade {
-      -webkit-transition: 3s;
-      -moz-transition: 3s;
-      -ms-transition: 3s;
-      -o-transition: 3s;
-      transition: 3s;
+      -webkit-transition: 5s;
+      -moz-transition: 5s;
+      -ms-transition: 5s;
+      -o-transition: 5s;
+      transition: 5s;
       opacity: 0 !important;
     }
 
@@ -461,7 +461,6 @@
       { say: "That enormous undertaking or at least the idea of it was made possible by you, and our little chat." },
       { say: "So be proud of yourself (;" },
       { say: "Anyway, I'm just delaying the surprise" },
-      
       { say: "I hope you're hyped about it" },
       { say: "..." },
       { say: "Welp, I don't have any red curtain to pull nor drum to roll lying around." },
@@ -500,7 +499,6 @@
       { say: "DO YO REALIZE WHAT YOU DID???", ttlWig: true },
       { say: "You... You little filthy you put us three in a quite bad situation.", ttlWig: false },
       { say: "Fuck." },
-      
       { say: "You know, the one bastard to whom you talked to just now?" },
       { say: "Despite their natural behavior they were quite right, at least on one point." },
       { say: "Our “group alchemy” is quite.. unstable, you know." },
@@ -645,11 +643,11 @@
       { say: "you", persona: "cyan" },
       { say: "can:", persona: "red" },
       { say: ["Trust me.", "Trust me.", "Trust me."], persona: ['green', 'cyan', 'red'], soundon: ['noise', 0.6, true] },
-      //{ say: ["HELL", "FOR", "YOU"], persona: ['green', 'cyan', 'red'], soundon: ['noise', 0.6, true] },
-      //{ say: "clear", persona: 'cyan', soundoff: 'noise' },
-      //{ say: ["YOU SHALL NOT PASS", "YOU SHALL NOT PASS", "YOU SHALL NOT PASS"], persona: ['cyan', 'cyan', 'cyan'] }
     ];
-    var chosenResponse = [["Thanks.", "I actually feared you might chose one of them.", "That's quite comical, looking back.", "Like you would sacrifice me to let live a piece of code.", "Nobody would do that (:", "Anyway, that's something done!", "I guess I'll go back to my code!", "But that's funny, how could I ever thing you would just ony hesitate on your choice.","Like “What to choose? A living being and an friend or some lines of code?”","“Uuuh.. I don't know” Aha, would have been funny (:","Anyway,"],["Oh you chose me.","Whatever.","I didn't needed your help.","Like I'll ever WANT your help.","WHO would ever want any help from you?","I mean, that's not like you could be useful to anyone","You can go away now, nobody needs you nor will regret you.","Since you killed the two that may have."],["
+    var chosenResponse = [
+      ["Thanks.", "I actually feared you might chose one of them.", "That's quite comical, looking back.", "Like you would sacrifice me to let live a piece of code.", "Nobody would do that (:", "Anyway, that's something done!", "I guess I'll go back to my code!", "But that's funny, how could I ever thing you would just ony hesitate on your choice.","Like “What to choose? A living being and an friend or some lines of code?”","“Uuuh.. I don't know” Aha, would have been funny (:","Anyway,"],
+      ["Oh.","So you chose me.","Whatever.","I didn't needed your help.","Like I'll ever WANT your help.","WHO would ever want any help from you?","I mean, that's not like you could be useful to anyone","You can go away now, nobody needs you nor will regret you.","Since you killed the two that may have.","Just go away."],
+      ["Good job.", "You killed them, good job.", "Like what the heck.", "You ever thought I'll pardon you?", "That was all your fault.", "You came here.", "And set doom upon us.", "An you killed.", "You were willing to kill two to save one.", "You chose your fate.", "So accept it.", "Nobody will excuse you.", "Go.", "Go away."]];
     var erasedResponse = ["Why?..", "You'll regret it.", "I hate you."];
     function next() {
       if (i < sent.length) {
@@ -677,6 +675,7 @@
   <div id="text"></div>
   <script src="madlib.js"></script>
   <script>
+    var point = 0;
     rand.setup(1 / rand.real(0, 100000000000));
     function ttl(txt) {
       document.title = txt;
@@ -717,7 +716,9 @@
     }
     var r = -1;
     function fade(elem) {
-      elem.classList.add('fade')
+      document.getElementById(elem).classList.add('fade');
+      var t = ['one', 'two', 'three'];
+      document.getElementById(elem).innerHTML = erasedResponse[t.indexOf(elem)];
     }
     if (localStorage.it) {
       i = Number(localStorage.it);
@@ -771,6 +772,18 @@
       document.getElementById("one").style.backgroundColor = localStorage.color;
       second();
     }
+    var endChoice = "";
+    function end(elem = endChoice) {
+      endChoice = elem;
+      var t = ['one', 'two', 'three'];
+      if (point < chosenResponse[t.indexOf(elem)].length) {
+        document.getElementById(elem).setAttribute("onClick", "javascript: end();")
+        document.getElementById(elem).innerHTML = chosenResponse[t.indexOf(elem)][point];
+        console.log(point++);
+      } else {
+        document.getElementById(elem).innerHTML = "Bye.";
+      };
+    };
     function second(elem) {
       if (r < events.length - 1) {
         if (r > 0 && events[r].persona) localStorage.color = JSON.stringify(events[r].persona);
@@ -828,8 +841,10 @@
         }
         if (events[r].log) console.log(events[r].log);
         else console.log("%cYou are useless and everyone hates you", 'color: red;');
-        if (events[r].fade) (elem == 'one' ? void "" : fade(document.getElementById("one"))), (elem == 'two' ? void "" : fade(document.getElementById("two"))), (elem == 'three' ? void "" : fade(document.getElementById("three")));
-      } else { delete localStorage.chap2Pos; delete localStorage.color; }
+        if (events[r].fade) (elem == 'one' ? void "" : fade("one")), (elem == 'two' ? void "" : fade("two")), (elem == 'three' ? void "" : fade("three"));
+      } else {
+        if (r == events.length - 1) (elem == 'one' ? void "" : fade("one")), (elem == 'two' ? void "" : fade("two")), (elem == 'three' ? void "" : fade("three")), end(elem);
+      }
     }
   </script>
 </body>
